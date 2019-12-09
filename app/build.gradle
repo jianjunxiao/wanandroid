@@ -21,10 +21,26 @@ android {
             }
         }
     }
+    signingConfigs {
+        config {
+            storeFile file("wanandroid.jks")
+            storePassword "1qaz2wsx"
+            keyAlias "wanandroid"
+            keyPassword "1qaz2wsx"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.config
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    outputFileName = "wandroid_v${defaultConfig.versionName}.apk"
+                }
+            }
         }
     }
     androidExtensions {
