@@ -1,0 +1,111 @@
+<resources>
+    <string name="app_name">玩安卓</string>
+    <string name="home">首页</string>
+    <string name="system">体系</string>
+    <string name="discovery">发现</string>
+    <string name="navigation">导航</string>
+    <string name="mine">我的</string>
+
+    <string name="popular_articles">热门</string>
+    <string name="latest_project">最新</string>
+    <string name="plaza">广场</string>
+    <string name="project_category">项目</string>
+    <string name="wechat_public">公众号</string>
+
+    <string name="load_failed">加载失败，请点击重试</string>
+    <string name="load_end">没有更多了</string>
+    <string name="loading">正在加载中&#8230;</string>
+    <string name="reload">重新加载</string>
+    <string name="network_not_available">网络似乎除了点问题&#8230;</string>
+    <string name="no_data">没有相关数据</string>
+
+    <string name="top">置顶</string>
+    <string name="fresh">新</string>
+    <string name="separate">/</string>
+    <string name="search_hint">搜索关键词以空格隔开</string>
+    <string name="everyone_search">大家都在搜</string>
+    <string name="frequently_website">常用网址</string>
+
+    <string name="add_collect">加入收藏</string>
+    <string name="cancel_collect">取消收藏</string>
+    <string name="share">分享</string>
+    <string name="open_in_explorer">浏览器打开</string>
+    <string name="copy_link">复制链接</string>
+    <string name="refresh_page">刷新页面</string>
+    <string name="copy_success">复制成功</string>
+    <string name="press_again_to_exit">再按一次退出</string>
+
+    <string name="login_register">登录/注册</string>
+    <string name="my_points">我的积分</string>
+    <string name="my_points_rank">积分排行</string>
+    <string name="my_collect">我的收藏</string>
+    <string name="my_share">我的分享</string>
+    <string name="my_view_history">浏览历史</string>
+    <string name="my_system_setting">系统设置</string>
+    <string name="my_about_author">关于作者</string>
+    <string name="my_open_source">开源许可</string>
+
+    <string name="login">登录</string>
+    <string name="account">账号</string>
+    <string name="password">密码</string>
+    <string name="go_register">去注册</string>
+    <string name="wanandroid">WANANDROID</string>
+    <string name="register">注册</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="account_can_not_be_empty">账号不能为空</string>
+    <string name="password_can_not_be_empty">密码不能为空</string>
+    <string name="account_length_over_three">账号不能少于3位</string>
+    <string name="password_length_over_six">密码不能少于6位</string>
+    <string name="confirm_password_can_not_be_empty">确认密码不能为空</string>
+    <string name="two_password_are_inconsistent">两次输入的密码不一致</string>
+    <string name="logging_in">正在登陆&#8230;</string>
+    <string name="registerring">正在注册&#8230;</string>
+
+    <string name="network_connection_failed">网络连接失败</string>
+    <string name="network_request_timeout">网络请求超时</string>
+    <string name="api_data_parse_error">数据解析错误</string>
+
+    <string name="hot_search">热门搜索</string>
+    <string name="search_history">搜索历史</string>
+    <string name="system_settings">系统设置</string>
+    <string name="logout">退出登录</string>
+    <string name="confirm_logout">确认退出登录？</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+
+    <string name="share_article">分享文章</string>
+    <string name="title">标题</string>
+    <string name="title_hint">请输入您要分享的文章标题，100字以内。</string>
+    <string name="link_hint">请输入您要分享的文章链接。</string>
+    <string name="title_toast">文章标题不能为空</string>
+    <string name="link_toast">文章链接不能为空</string>
+    <string name="link">链接</string>
+    <string name="share_people">分享人</string>
+    <string name="submit">提交</string>
+    <string name="tips">温馨提示</string>
+    <string name="tips_content">1.只要是任何好文都可以分享哈，并不一定要是原创！投递的文章会进入广场tab；\n2.CSDN、掘金、简书等官方博客站点会直接通过，不需要审核；\n3.其他个人站点会进入审核阶段，不要投递任何无效链接，测试的请尽快删除，否则可能会对你的账号产生一定影响;\n4.目前处于测试阶段，如果你发现500等错误，可以向我提交日志，让我们一起使网站变得更好；\n5.由于本站只有我一个人开发与维护，会尽力保证24小时内审核，当然有可能哪天太累，会延期，请保持佛系&#8230;</string>
+    <string name="share_article_success">文章分享成功</string>
+    <string name="sharing_article">正在分享文章&#8230;</string>
+
+    <string name="night_mode">夜间模式</string>
+    <string name="change_brightness">调整亮度</string>
+    <string name="font_size">字体大小</string>
+    <string name="large">大</string>
+    <string name="medium">中</string>
+    <string name="small">小</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="check_version">检查版本</string>
+    <string name="about_wanandroid">关于玩安卓</string>
+    <string name="abount_us">关于我们</string>
+
+    <string name="level_rank">等级: %1$d\t\t\t排名: %2$d</string>
+    <string name="anonymous">匿名</string>
+    <string name="confirm_delete_shared">确认删除分享?</string>
+    <string name="confirm_delete_history">确认删除浏览历史？</string>
+    <string name="confirm_clear_cache">确认清除缓存？</string>
+    <string name="current_version">当前版本%1$s</string>
+    <string name="already_latest_version">已是最新版</string>
+    <string name="stay_tuned">敬请期待&#8230;</string>
+
+
+</resources>

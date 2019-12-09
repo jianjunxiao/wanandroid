@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ripple_item_select"
+            android:elevation="1dp"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:visibility="visible"
+            tools:listitem="@layout/item_system_category_tag"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/item_article_simple"
+                    android:background="@color/bgColorScondary"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <include
+                    android:id="@+id/reloadView"
+                    layout="@layout/include_reload"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

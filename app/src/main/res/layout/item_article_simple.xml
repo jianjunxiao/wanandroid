@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:paddingBottom="8dp"
+        android:elevation="1dp"
+        android:background="@drawable/ripple_item_select">
+
+    <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="随心音乐，让新跟着跳动起来" />
+
+    <TextView
+            android:id="@+id/tv_fresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/fresh"
+            android:textColor="@color/colorBadge"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tv_author"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_author"
+            tools:visibility="visible" />
+
+    <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_time"
+            app:layout_constraintStart_toEndOf="@+id/tv_fresh"
+            app:layout_constraintTop_toTopOf="@+id/tv_time"
+            app:layout_goneMarginStart="16dp"
+            tools:text="xuexuexue" />
+
+    <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/textColorThird"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_collect"
+            app:layout_constraintStart_toEndOf="@+id/tv_author"
+            app:layout_constraintTop_toTopOf="@+id/iv_collect"
+            tools:text="2019-10-20" />
+
+
+    <ImageView
+            android:id="@+id/iv_collect"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="10dp"
+            android:background="?actionBarItemBackground"
+            android:padding="6dp"
+            android:tint="@color/textColorThird"
+            android:src="@drawable/selector_collect"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

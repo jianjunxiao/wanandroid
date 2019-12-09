@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.main.navigation.NavigationFragment">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/bgColorPrimary"
+            android:elevation="2dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/navigation"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="16sp" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/bgColorScondary"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <TextView
+                    android:id="@+id/tvFloatTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bgColorPrimary"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:textColor="@color/textColorSecondary"
+                    android:visibility="gone"
+                    tools:text="常用网站"
+                    tools:visibility="visible" />
+
+            <include
+                    android:id="@+id/reloadView"
+                    layout="@layout/include_reload"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

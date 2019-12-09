@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.settings.SettingsActivity">
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/bgColorPrimary"
+            android:elevation="2dp">
+
+        <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="?actionBarItemBackground"
+                android:padding="12dp"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:tint="@color/textColorPrimary" />
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/system_settings"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp" />
+    </FrameLayout>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:background="@color/bgColorScondary"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/bgColorPrimary"
+                    android:elevation="1dp"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                        android:id="@+id/llLightDark"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:background="@drawable/ripple_item_select"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/night_mode"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="14sp" />
+
+                    <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/scDayNight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/bgColorScondary" />
+
+                <LinearLayout
+                        android:id="@+id/llFontSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:background="@drawable/ripple_item_select"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/font_size"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="14sp" />
+
+                    <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                    <TextView
+                            android:id="@+id/tvFontSize"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/bgColorScondary" />
+
+                <LinearLayout
+                        android:id="@+id/llClearCache"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:background="@drawable/ripple_item_select"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/clear_cache"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="14sp" />
+
+                    <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                    <TextView
+                            android:id="@+id/tvClearCache"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:text="512MB"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/bgColorPrimary"
+                    android:elevation="1dp"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                        android:id="@+id/llCheckVersion"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:background="@drawable/ripple_item_select"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/check_version"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="14sp" />
+
+                    <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                    <TextView
+                            android:id="@+id/tvCheckVersion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:text="@string/already_latest_version"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/bgColorScondary" />
+
+                <LinearLayout
+                        android:id="@+id/llAboutUs"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:background="@drawable/ripple_item_select"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/abount_us"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="14sp" />
+
+                    <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                    <TextView
+                            android:id="@+id/tvAboutUs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:text="当前版本1.0.0"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="13sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/tvLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/ripple_item_select"
+                    android:elevation="1dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="@string/logout"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="14sp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

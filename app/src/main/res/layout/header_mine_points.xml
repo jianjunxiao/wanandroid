@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bgColorPrimary"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+        <TextView
+                android:id="@+id/tvTotalPoints"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="64sp"
+                tools:text="118"
+                tools:visibility="visible" />
+
+        <TextView
+                android:id="@+id/tvLevelRank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:text="@string/level_rank" />
+    </LinearLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:background="@color/bgColorScondary" />
+</FrameLayout>

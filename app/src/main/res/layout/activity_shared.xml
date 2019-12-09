@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.shared.SharedActivity">
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/bgColorPrimary"
+            android:elevation="2dp">
+
+        <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="?actionBarItemBackground"
+                android:padding="12dp"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:tint="@color/textColorPrimary" />
+
+
+        <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/my_share"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp" />
+
+        <ImageView
+                android:id="@+id/ivAdd"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="5dp"
+                android:background="?actionBarItemBackground"
+                android:padding="11dp"
+                android:src="@drawable/ic_add_black_24dp"
+                android:tint="@color/textColorPrimary" />
+    </FrameLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bgColorScondary">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_article" />
+
+            <include
+                    android:id="@+id/reloadView"
+                    layout="@layout/include_reload"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+            <include
+                    android:id="@+id/emptyView"
+                    layout="@layout/include_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+        </FrameLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

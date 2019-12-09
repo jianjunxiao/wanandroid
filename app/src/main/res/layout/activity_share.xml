@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.share.ShareActivity">
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/bgColorPrimary"
+            android:elevation="2dp">
+
+        <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="?actionBarItemBackground"
+                android:padding="12dp"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:tint="@color/textColorPrimary" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/share_article"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp" />
+
+        <TextView
+                android:id="@+id/tvSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="end|center_vertical"
+                android:background="?actionBarItemBackground"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/submit"
+                android:textSize="14sp" />
+    </FrameLayout>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bgColorPrimary">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/title"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="13sp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/acetTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/shape_share_input"
+                    android:gravity="start"
+                    android:hint="@string/title_hint"
+                    android:lineSpacingExtra="4dp"
+                    android:lines="2"
+                    android:maxLength="100"
+                    android:maxLines="3"
+                    android:padding="8dp"
+                    android:textColor="@color/textColorPrimary"
+                    android:textColorHint="@color/textColorThird"
+                    android:textSize="14sp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/link"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="13sp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/acetlink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/shape_share_input"
+                    android:gravity="start"
+                    android:hint="@string/link_hint"
+                    android:imeOptions="actionDone"
+                    android:lineSpacingExtra="4dp"
+                    android:lines="3"
+                    android:maxLines="3"
+                    android:padding="8dp"
+                    android:textColor="@color/textColorPrimary"
+                    android:textColorHint="@color/textColorThird"
+                    android:textSize="14sp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/share_people"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="13sp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/acetSharePeople"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/shape_share_input"
+                    android:enabled="false"
+                    android:lineSpacingExtra="4dp"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:textColor="@color/textColorPrimary"
+                    android:textColorHint="@color/textColorThird"
+                    android:textSize="14sp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/tips"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="13sp" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:lineSpacingExtra="2dp"
+                    android:text="@string/tips_content"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="13sp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

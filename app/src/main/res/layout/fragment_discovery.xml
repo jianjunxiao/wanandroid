@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.main.discovery.DiscoveryFragment">
+
+    <RelativeLayout
+            android:id="@+id/rlTitle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/bgColorPrimary"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/discovery"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp" />
+
+        <ImageView
+                android:id="@+id/ivAdd"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="5dp"
+                android:background="?actionBarItemBackground"
+                android:padding="11dp"
+                android:src="@drawable/ic_add_black_24dp"
+                android:tint="@color/textColorPrimary" />
+
+        <ImageView
+                android:id="@+id/ivSearch"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:background="?actionBarItemBackground"
+                android:padding="13dp"
+                android:src="@drawable/ic_search_black_24dp"
+                android:tint="@color/textColorPrimary" />
+
+    </RelativeLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                    android:id="@+id/nestedScollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/bgColorPrimary">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                    <com.youth.banner.Banner
+                            android:id="@+id/bannerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            app:banner_default_image="@drawable/shape_bg_image_default"
+                            app:delay_time="5000"
+                            app:is_auto_play="true"
+                            app:layout_constraintDimensionRatio="h,16:7"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:image_scale_type="fit_xy"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:scroll_time="1500" />
+
+                    <TextView
+                            android:id="@+id/tvHotWordTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="@string/everyone_search"
+                            android:textColor="@color/textColorSecondary"
+                            android:textSize="14sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/bannerView"
+                            tools:visibility="visible" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvHotWord"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvHotWordTitle"
+                            app:spanCount="3"
+                            tools:listitem="@layout/item_hot_word" />
+
+                    <TextView
+                            android:id="@+id/tvFrquently"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="@string/frequently_website"
+                            android:textColor="@color/textColorSecondary"
+                            android:textSize="14sp"
+                            android:visibility="gone"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rvHotWord"
+                            tools:visibility="visible" />
+
+                    <com.zhy.view.flowlayout.TagFlowLayout
+                            android:id="@+id/tagFlowLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvFrquently" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <include
+                    android:id="@+id/reloadView"
+                    layout="@layout/include_reload"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

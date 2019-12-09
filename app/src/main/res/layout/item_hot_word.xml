@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_item_hot_word"
+        android:gravity="center"
+        android:lines="1"
+        android:ellipsize="end"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="13sp"
+        tools:text="面试" />
