@@ -25,6 +25,10 @@ class HistoryViewModel : BaseViewModel() {
         launch(
             block = {
                 val readHistory = historyRepository.getReadHistory()
+                val collectIds = userRepository.getUserInfo()?.collectIds ?: emptyList<Int>()
+                // 更新收藏状态
+                readHistory.forEach { it.collect = collectIds.contains(it.id) }
+
                 articleList.value = readHistory.toMutableList()
                 emptyStatus.value = readHistory.isEmpty()
             }

@@ -20,7 +20,7 @@ import com.xiaojianjun.wanandroid.util.clearCache
 import com.xiaojianjun.wanandroid.util.core.ActivityManager
 import com.xiaojianjun.wanandroid.util.getCacheSize
 import com.xiaojianjun.wanandroid.util.isNightMode
-import com.xiaojianjun.wanandroid.util.toggleDayNightMode
+import com.xiaojianjun.wanandroid.util.setNightMode
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.view_change_text_zoom.view.*
 
@@ -41,8 +41,9 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
         tvAboutUs.text = getString(R.string.current_version, BuildConfig.VERSION_NAME)
 
         ivBack.setOnClickListener { ActivityManager.finish(SettingsActivity::class.java) }
-        scDayNight.setOnCheckedChangeListener { _, _ ->
-            toggleDayNightMode(this)
+        scDayNight.setOnCheckedChangeListener { _, checked ->
+            setNightMode(checked)
+            SettingsStore.setNightMode(checked)
         }
         llFontSize.setOnClickListener {
             setFontSize()

@@ -15,8 +15,8 @@ fun isNightMode(context: Context): Boolean {
     return mode == UI_MODE_NIGHT_YES
 }
 
-fun toggleDayNightMode(context: Context) {
+fun setNightMode(isNightMode: Boolean) {
     AppCompatDelegate.setDefaultNightMode(
-        if (isNightMode(context)) MODE_NIGHT_NO else MODE_NIGHT_YES
+        if (isNightMode) MODE_NIGHT_YES else MODE_NIGHT_NO
     )
 }
