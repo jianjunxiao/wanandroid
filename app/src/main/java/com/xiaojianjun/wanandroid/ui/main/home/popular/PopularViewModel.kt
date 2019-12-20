@@ -29,13 +29,15 @@ class PopularViewModel : BaseViewModel() {
         reloadStatus.value = false
         launch(
             block = {
-                val topArticleList = popularRepository.getTopArticleList()
-                    .apply {
-                        forEach {
-                            it.top = true
-                        }
-                    }
-                val pagination = popularRepository.getArticleList(INITIAL_PAGE)
+                val topArticleListDefferd = async {
+                    popularRepository.getTopArticleList()
+                }
+                val paginationDefferd = async {
+                    popularRepository.getArticleList(INITIAL_PAGE)
+                }
+                val topArticleList = topArticleListDefferd.await()
+                    .apply { forEach { it.top = true } }
+                val pagination = paginationDefferd.await()
                 page = pagination.curPage
                 articleList.value = mutableListOf<Article>().apply {
                     addAll(topArticleList)

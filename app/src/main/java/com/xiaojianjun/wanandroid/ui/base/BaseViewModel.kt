@@ -11,14 +11,11 @@ import com.xiaojianjun.wanandroid.model.api.ApiException
 import com.xiaojianjun.wanandroid.ui.common.UserRepository
 import com.xiaojianjun.wanandroid.util.core.bus.Bus
 import com.xiaojianjun.wanandroid.util.core.bus.USER_LOGIN_STATE_CHANGED
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
-typealias Block = suspend () -> Unit
+typealias Block<T> = suspend () -> T
 typealias Error = suspend (e: Exception) -> Unit
 typealias Cancel = suspend (e: Exception) -> Unit
 
@@ -32,11 +29,12 @@ open class BaseViewModel : ViewModel() {
     val loginStateInvalid: MutableLiveData<Boolean> = MutableLiveData()
 
     /**
-     * 执行协程
+     * 创建并执行协程
      * @param block 协程中执行
      * @param error 错误时执行
+     * @return Job
      */
-    protected fun launch(block: Block, error: Error? = null, cancel: Cancel? = null): Job {
+    protected fun launch(block: Block<Unit>, error: Error? = null, cancel: Cancel? = null): Job {
         return viewModelScope.launch {
             try {
                 block.invoke()
@@ -54,21 +52,13 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
-    protected fun async(block: Block, error: Error? = null, cancel: Cancel? = null): Job {
-        return viewModelScope.async {
-            try {
-                block.invoke()
-            } catch (e: Exception) {
-                when (e) {
-                    is CancellationException -> {
-                        cancel?.invoke(e)
-                    }
-                    else -> {
-                        error?.invoke(e)
-                    }
-                }
-            }
-        }
+    /**
+     * 创建并执行协程
+     * @param block 协程中执行
+     * @return Deferred<T>
+     */
+    protected fun <T> async(block: Block<T>): Deferred<T> {
+        return viewModelScope.async { block.invoke() }
     }
 
     /**
