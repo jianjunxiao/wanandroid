@@ -26,7 +26,7 @@ open class BaseViewModel : ViewModel() {
 
     protected val userRepository by lazy { UserRepository() }
 
-    val loginStateInvalid: MutableLiveData<Boolean> = MutableLiveData()
+    val loginStatusInvalid: MutableLiveData<Boolean> = MutableLiveData()
 
     /**
      * 创建并执行协程
@@ -83,7 +83,7 @@ open class BaseViewModel : ViewModel() {
                         // 登录失效
                         userRepository.clearLoginState()
                         Bus.post(USER_LOGIN_STATE_CHANGED, false)
-                        loginStateInvalid.value = true
+                        loginStatusInvalid.value = true
                     }
                     -1 -> {
                         // 其他api错误

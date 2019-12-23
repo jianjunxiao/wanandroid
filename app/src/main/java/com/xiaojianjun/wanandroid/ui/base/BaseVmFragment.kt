@@ -20,7 +20,8 @@ abstract class BaseVmFragment<VM : BaseViewModel> : BaseFragment() {
         initViewModel()
         observe()
         // 因为Fragment恢复后savedInstanceState不为null，
-        // 重新恢复后会自动冲ViewModel中的LiveData恢复数据，不需要重新初始化初级。
+        // 重新恢复后会自动从ViewModel中的LiveData恢复数据，
+        // 不需要重新初始化数据。
         if (savedInstanceState == null) {
             initData()
         }
@@ -47,7 +48,7 @@ abstract class BaseVmFragment<VM : BaseViewModel> : BaseFragment() {
 
     open fun observe() {
         // 登录失效，跳转登录页
-        mViewModel.loginStateInvalid.observe(viewLifecycleOwner, Observer {
+        mViewModel.loginStatusInvalid.observe(viewLifecycleOwner, Observer {
             if (it) {
                 Bus.post(USER_LOGIN_STATE_CHANGED, false)
                 ActivityManager.start(LoginActivity::class.java)

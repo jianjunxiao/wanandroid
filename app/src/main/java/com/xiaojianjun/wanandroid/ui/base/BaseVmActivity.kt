@@ -18,7 +18,8 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
         initViewModel()
         observe()
         // 因为Activity恢复后savedInstanceState不为null，
-        // 重新恢复后会自动冲ViewModel中的LiveData恢复数据，不需要重新初始化初级。
+        // 重新恢复后会自动从ViewModel中的LiveData恢复数据，
+        // 不需要重新初始化数据。
         if (savedInstanceState == null) {
             initData()
         }
@@ -36,7 +37,7 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
 
     open fun observe() {
         // 登录失效，跳转登录页
-        mViewModel.loginStateInvalid.observe(this, Observer {
+        mViewModel.loginStatusInvalid.observe(this, Observer {
             if (it) {
                 Bus.post(USER_LOGIN_STATE_CHANGED, false)
                 ActivityManager.start(LoginActivity::class.java)

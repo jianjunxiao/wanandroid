@@ -36,13 +36,13 @@ class ProgressDialogFragment : DialogFragment() {
     }
 
     fun show(
-        framentManager: FragmentManager,
+        fragmentManager: FragmentManager,
         @StringRes messageResId: Int,
         isCancelable: Boolean = false
     ) {
         this.messageResId = messageResId
         this.isCancelable = isCancelable
-        show(framentManager, "progressDialogFragment")
+        show(fragmentManager, "progressDialogFragment")
     }
 
 }

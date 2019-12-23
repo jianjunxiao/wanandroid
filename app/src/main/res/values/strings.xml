@@ -90,9 +90,6 @@
     <string name="night_mode">夜间模式</string>
     <string name="change_brightness">调整亮度</string>
     <string name="font_size">字体大小</string>
-    <string name="large">大</string>
-    <string name="medium">中</string>
-    <string name="small">小</string>
     <string name="clear_cache">清除缓存</string>
     <string name="check_version">检查版本</string>
     <string name="about_wanandroid">关于玩安卓</string>
