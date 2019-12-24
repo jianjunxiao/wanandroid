@@ -8,7 +8,7 @@
     <color name="textColorThird">#9297A2</color>
 
     <color name="bgColorPrimary">#FFFFFF</color>
-    <color name="bgColorScondary">#F8F8F8</color>
+    <color name="bgColorSecondary">#F8F8F8</color>
     <color name="bgColorThird">#E8E8E8</color>
 
     <color name="colorRipple">#E2E2E2</color>

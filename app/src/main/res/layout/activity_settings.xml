@@ -36,7 +36,7 @@
 
     <ScrollView
             android:layout_width="match_parent"
-            android:background="@color/bgColorScondary"
+            android:background="@color/bgColorSecondary"
             android:layout_height="match_parent">
 
         <LinearLayout
@@ -82,7 +82,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/bgColorScondary" />
+                        android:background="@color/bgColorSecondary" />
 
                 <LinearLayout
                         android:id="@+id/llFontSize"
@@ -117,7 +117,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/bgColorScondary" />
+                        android:background="@color/bgColorSecondary" />
 
                 <LinearLayout
                         android:id="@+id/llClearCache"
@@ -194,7 +194,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/bgColorScondary" />
+                        android:background="@color/bgColorSecondary" />
 
                 <LinearLayout
                         android:id="@+id/llAboutUs"

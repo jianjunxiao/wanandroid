@@ -31,7 +31,7 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/bgColorScondary"
+                    android:background="@color/bgColorSecondary"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <TextView

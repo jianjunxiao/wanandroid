@@ -33,7 +33,7 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
 
     override fun initView() {
 
-        setNavigationBarColor(getColor(R.color.bgColorScondary))
+        setNavigationBarColor(getColor(R.color.bgColorSecondary))
 
         scDayNight.isChecked = isNightMode(this)
         tvFontSize.text = "${SettingsStore.getWebTextZoom()}%"

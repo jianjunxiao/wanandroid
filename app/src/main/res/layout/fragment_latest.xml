@@ -17,7 +17,7 @@
                 android:layout_height="match_parent"
                 android:visibility="visible"
                 tools:listitem="@layout/item_article"
-                android:background="@color/bgColorScondary"
+                android:background="@color/bgColorSecondary"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <include

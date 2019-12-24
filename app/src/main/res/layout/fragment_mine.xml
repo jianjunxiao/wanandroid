@@ -27,7 +27,7 @@
     <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/bgColorScondary"
+            android:background="@color/bgColorSecondary"
             android:fillViewport="true">
 
         <LinearLayout
@@ -139,7 +139,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/bgColorScondary" />
+                        android:background="@color/bgColorSecondary" />
 
                 <LinearLayout
                         android:id="@+id/llPointsRank"
@@ -204,7 +204,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/bgColorScondary" />
+                        android:background="@color/bgColorSecondary" />
 
                 <LinearLayout
                         android:id="@+id/llMyCollect"
@@ -234,7 +234,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/bgColorScondary" />
+                        android:background="@color/bgColorSecondary" />
 
                 <LinearLayout
                         android:id="@+id/llHistory"
@@ -298,7 +298,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/bgColorScondary" />
+                        android:background="@color/bgColorSecondary" />
 
                 <LinearLayout
                         android:id="@+id/llAboutAuthor"
@@ -328,7 +328,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/bgColorScondary" />
+                        android:background="@color/bgColorSecondary" />
 
                 <LinearLayout
                         android:id="@+id/llSetting"

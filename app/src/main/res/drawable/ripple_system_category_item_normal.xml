@@ -4,7 +4,7 @@
         android:color="@color/textColorThird">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/bgColorScondary" />
+            <solid android:color="@color/bgColorSecondary" />
             <corners android:radius="24dp" />
             <size
                     tools:height="24dp"
@@ -18,7 +18,7 @@
     </item>
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
-            <solid android:color="@color/bgColorScondary" />
+            <solid android:color="@color/bgColorSecondary" />
             <corners android:radius="24dp" />
             <size
                     tools:height="24dp"
