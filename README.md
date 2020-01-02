@@ -7,7 +7,7 @@
 
 ------
 
-![](https://github.com/xiaoyanger0825/wanandroid/raw/master/images/home.png）
+![](https://github.com/xiaoyanger0825/wanandroid/raw/master/images/home.png)
 
 ------
 
