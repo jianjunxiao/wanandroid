@@ -31,7 +31,7 @@ class MinePointsViewModel : BaseViewModel() {
             block = {
                 val points = minePointsRespository.getMyPoints()
                 val pagination = minePointsRespository.getPointsRecord(INITIAL_PAGE)
-                page = pagination.pageCount
+                page = pagination.curPage
                 totalPoints.value = points
                 pointsList.value = pagination.datas.toMutableList()
                 refreshStatus.value = false
@@ -48,7 +48,7 @@ class MinePointsViewModel : BaseViewModel() {
         launch(
             block = {
                 val pagination = minePointsRespository.getPointsRecord(page + 1)
-                page = pagination.pageCount
+                page = pagination.curPage
                 pointsList.value?.addAll(pagination.datas)
                 loadMoreStatus.value = if (pagination.offset >= pagination.total) {
                     LoadMoreStatus.END
