@@ -13,9 +13,9 @@
 #### 效果预览
 <table>
 <tr>
-<td bgcolor=#dfe2e5><img src="images/home.png" alt="home"  width="240px" /></td>
-<td bgcolor=#dfe2e5><img src="images/project.png" alt="project"  width="240px" /></td>
-<td bgcolor=#dfe2e5><img src="images/mine.png" alt="mine"  width="240px" /></td>
+<td bgcolor=#dfe2e5><img src="images/home.png" alt="home"  width="33%" /></td>
+<td bgcolor=#dfe2e5><img src="images/project.png" alt="project"  width="33%" /></td>
+<td bgcolor=#dfe2e5><img src="images/mine.png" alt="mine"  width="33%" /></td>
 </tr>
 <tr>
 <td bgcolor=#dfe2e5><img src="images/system.png" alt="system"  width="240px" /></td>
