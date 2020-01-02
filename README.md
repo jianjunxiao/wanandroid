@@ -7,11 +7,11 @@
 
 ------
 
-<img src="images/home.png" alt="home" style="zoom:36%;" width="240px" />    <img src="images/project.png" alt="project" style="zoom:36%;"  width="240px" />
+<img src="images/home.png" alt="home" style="zoom:36%;" width="240" />    <img src="images/project.png" alt="project" style="zoom:36%;"  width="240" />
 
 ------
 
-<img src="images/system+.png" alt="system+" width="240px" />    <img src="images/system.png" alt="system" width="240px" />
+<img src="images/system+.png" alt="system+" width="240" />    <img src="images/system.png" alt="system" width="240" />
 
 ------
 
