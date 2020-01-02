@@ -7,10 +7,6 @@
 
 --
 
-![](https://github.com/xiaoyanger0825/wanandroid/raw/master/images/home.png =320x)
-
---
-
 <img src="https://github.com/xiaoyanger0825/wanandroid/raw/master/images/home.png" alt="home" style="zoom:36%;" />    <img src="https://github.com/xiaoyanger0825/wanandroid/raw/master/images/project.png" alt="project" style="zoom:36%;" />
 
 ------
