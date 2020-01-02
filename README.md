@@ -11,6 +11,7 @@
 - 我的（登录、注册、我的积分、积分排行、我的分享、我的收藏、浏览历史）
 - 系统设置（日夜间模式、文章字体大小、清除缓存）
 #### 效果预览
+<div style="background:'#f2f2f2'">
 <img src="images/home.png" alt="home"  width="240px" />    <img src="images/project.png" alt="project" width="240px" />    <img src="images/mine.png" alt="mine" width="240px" />
 ---
 <img src="images/system.png" alt="system" width="240px" />    <img src="images/system+.png" alt="system+" width="240px" />    <img src="images/nav.png" alt="nav" width="240px" />
@@ -22,3 +23,4 @@
 <img src="images/article.png" alt="article" width="240px" />    <img src="images/article_more.png" alt="article_more"  width="240px" />    <img src="images/points.png" alt="points"  width="240px" />
 ---
 <img src="images/home_night.png" alt="home_night" width="240px" />    <img src="images/mine_night.png" alt="mine_night"  width="240px" />    <img src="images/setting_night.png" alt="setting_night"  width="240px" />
+</div>
