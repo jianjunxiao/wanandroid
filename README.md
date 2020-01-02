@@ -7,11 +7,7 @@
 
 ------
 
-<img src="images/home.png" alt="home"  width="240px" />    <img src="images/project.png" alt="project" width="240px" />
-
-------
-
-<img src="images/system+.png" alt="system+" width="240px" />    <img src="images/system.png" alt="system" width="240px" />
+<img src="images/home.png" alt="home"  width="240px" />    <img src="images/project.png" alt="project" width="240px" />    <img src="images/system+.png" alt="system+" width="240px" />    <img src="images/system.png" alt="system" width="240px" />
 
 ------
 
