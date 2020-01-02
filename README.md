@@ -7,23 +7,23 @@
 
 ------
 
-<img src="images/home.png" alt="home" style="zoom:36%;" width="320px" />    <img src="images/project.png" alt="project" style="zoom:36%;" />
+<img src="images/home.png" alt="home" width="240px" />    <img src="images/project.png" alt="project" width="240px" />
 
 ------
 
-<img src="images/system+.png" alt="system+" style="zoom:36%;" />    <img src="images/system.png" alt="system" style="zoom: 36%;" />
+<img src="images/system+.png" alt="system+" width="240px" />    <img src="images/system.png" alt="system" width="240px" />
 
 ------
 
-<img src="images/find.png" alt="find" style="zoom:36%;" />    <img src="images/nav.png" alt="nav" style="zoom:36%;" />
+<img src="images/find.png" alt="find" width="240px" />    <img src="images/nav.png" alt="nav" width="240px" />
 
 ------
 
-<img src="images/search.png" alt="search" style="zoom:36%;" />    <img src="images/share.png" alt="share" style="zoom: 33%;" />
+<img src="images/search.png" alt="search" width="240px" />    <img src="images/share.png" alt="share" width="240px" />
 
 ------
 
-<img src="images/mine.png" alt="mine" style="zoom:36%;" />    <img src="images/setting.png" alt="setting" style="zoom:36%;" />
+<img src="images/mine.png" alt="mine" width="240px" />    <img src="images/setting.png" alt="setting"  width="240px" />
 
 ------
 
