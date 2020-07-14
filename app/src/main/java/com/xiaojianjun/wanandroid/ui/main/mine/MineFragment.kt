@@ -3,9 +3,10 @@ package com.xiaojianjun.wanandroid.ui.main.mine
 import android.annotation.SuppressLint
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.model.bean.Article
+import com.xiaojianjun.wanandroid.model.store.UserInfoStore
+import com.xiaojianjun.wanandroid.model.store.isLogin
 import com.xiaojianjun.wanandroid.ui.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.ui.collection.CollectionActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
@@ -67,30 +68,28 @@ class MineFragment : BaseVmFragment<MineViewModel>() {
         llSetting.setOnClickListener {
             ActivityManager.start(SettingsActivity::class.java)
         }
+
+        updateUi()
     }
 
-    @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
-        mViewModel.run {
-            isLogin.observe(viewLifecycleOwner, Observer {
-                tvLoginRegister.isGone = it
-                tvNickName.isVisible = it
-                tvId.isVisible = it
-            })
-            userInfo.observe(viewLifecycleOwner, Observer {
-                it?.let {
-                    tvNickName.text = it.nickname
-                    tvId.text = "ID: ${it.id}"
-                }
-            })
-        }
         Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner) {
-            mViewModel.getUserInfo()
+           updateUi()
         }
     }
 
-    override fun initData() {
-        mViewModel.getUserInfo()
+
+    @SuppressLint("SetTextI18n")
+    private fun updateUi() {
+        val isLogin = isLogin()
+        val userInfo = UserInfoStore.getUserInfo()
+        tvLoginRegister.isGone = isLogin
+        tvNickName.isVisible = isLogin
+        tvId.isVisible = isLogin
+        if (isLogin && userInfo != null) {
+            tvNickName.text = userInfo.nickname
+            tvId.text = "ID: ${userInfo.id}"
+        }
     }
 }

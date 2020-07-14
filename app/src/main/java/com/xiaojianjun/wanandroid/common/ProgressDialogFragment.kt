@@ -18,8 +18,7 @@ class ProgressDialogFragment : DialogFragment() {
     private var messageResId: Int? = null
 
     companion object {
-        fun newInstance() =
-            ProgressDialogFragment()
+        fun newInstance() = ProgressDialogFragment()
     }
 
     override fun onCreateView(
@@ -42,7 +41,11 @@ class ProgressDialogFragment : DialogFragment() {
     ) {
         this.messageResId = messageResId
         this.isCancelable = isCancelable
-        show(fragmentManager, "progressDialogFragment")
+        try {
+            show(fragmentManager, "progressDialogFragment")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package com.xiaojianjun.wanandroid.ui.share
 
 import androidx.lifecycle.MutableLiveData
 import com.xiaojianjun.wanandroid.model.bean.UserInfo
+import com.xiaojianjun.wanandroid.model.store.UserInfoStore
 import com.xiaojianjun.wanandroid.ui.base.BaseViewModel
 
 /**
@@ -15,7 +16,7 @@ class ShareViewModel : BaseViewModel() {
     val shareResult = MutableLiveData<Boolean>()
 
     fun getUserInfo() {
-        userInfo.value = userRepository.getUserInfo()
+        userInfo.value = UserInfoStore.getUserInfo()
     }
 
     fun shareArticle(title: String, link: String) {

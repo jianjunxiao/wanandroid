@@ -47,7 +47,7 @@ class LoginActivity : BaseVmActivity<LoginViewModel>() {
         super.observe()
         mViewModel.run {
             submitting.observe(this@LoginActivity, Observer {
-                if (it) showProgressDialog(R.string.logging_in) else hideProgressDialog()
+                if (it) showProgressDialog(R.string.logging_in) else dismissProgressDialog()
             })
             loginResult.observe(this@LoginActivity, Observer {
                 if (it) {

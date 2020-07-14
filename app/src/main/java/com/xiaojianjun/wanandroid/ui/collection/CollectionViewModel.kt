@@ -3,6 +3,7 @@ package com.xiaojianjun.wanandroid.ui.collection
 import androidx.lifecycle.MutableLiveData
 import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
 import com.xiaojianjun.wanandroid.model.bean.Article
+import com.xiaojianjun.wanandroid.model.store.UserInfoStore
 import com.xiaojianjun.wanandroid.ui.base.BaseViewModel
 import com.xiaojianjun.wanandroid.ui.common.CollectRepository
 import com.xiaojianjun.wanandroid.util.core.bus.Bus
@@ -72,9 +73,7 @@ class CollectionViewModel : BaseViewModel() {
         launch(
             block = {
                 collectRepository.uncollect(id)
-                userRepository.updateUserInfo(userRepository.getUserInfo()!!.apply {
-                    if (collectIds.contains(id)) collectIds.remove(id)
-                })
+                UserInfoStore.removeCollectId(id)
                 Bus.post(USER_COLLECT_UPDATED, id to false)
             }
         )

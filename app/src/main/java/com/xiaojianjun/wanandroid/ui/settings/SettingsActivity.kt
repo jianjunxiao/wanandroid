@@ -12,6 +12,7 @@ import com.xiaojianjun.wanandroid.ext.setNavigationBarColor
 import com.xiaojianjun.wanandroid.ext.showToast
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.store.SettingsStore
+import com.xiaojianjun.wanandroid.model.store.isLogin
 import com.xiaojianjun.wanandroid.ui.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity.Companion.PARAM_ARTICLE
@@ -84,6 +85,7 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
                 .setNegativeButton(R.string.cancel) { _, _ -> }
                 .show()
         }
+        tvLogout.isVisible = isLogin()
     }
 
     private fun setFontSize() {
@@ -107,17 +109,5 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
                 SettingsStore.setWebTextZoom(tempTextZoom)
             }
             .show()
-
-    }
-
-    override fun initData() {
-        mViewModel.getLoginStatus()
-    }
-
-    override fun observe() {
-        super.observe()
-        mViewModel.isLogin.observe(this, Observer {
-            tvLogout.isVisible = it
-        })
     }
 }

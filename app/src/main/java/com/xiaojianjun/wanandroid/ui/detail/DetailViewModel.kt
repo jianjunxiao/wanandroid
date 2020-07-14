@@ -2,6 +2,8 @@ package com.xiaojianjun.wanandroid.ui.detail
 
 import androidx.lifecycle.MutableLiveData
 import com.xiaojianjun.wanandroid.model.bean.Article
+import com.xiaojianjun.wanandroid.model.store.UserInfoStore
+import com.xiaojianjun.wanandroid.model.store.isLogin
 import com.xiaojianjun.wanandroid.ui.base.BaseViewModel
 import com.xiaojianjun.wanandroid.ui.common.CollectRepository
 
@@ -19,9 +21,7 @@ class DetailViewModel : BaseViewModel() {
             block = {
                 collectRepository.collect(id)
                 // 收藏成功，更新userInfo
-                userRepository.updateUserInfo(userRepository.getUserInfo()!!.apply {
-                    if (!collectIds.contains(id)) collectIds.add(id)
-                })
+                UserInfoStore.addCollectId(id)
                 collect.value = true
             },
             error = {
@@ -35,9 +35,7 @@ class DetailViewModel : BaseViewModel() {
             block = {
                 collectRepository.uncollect(id)
                 // 取消收藏成功，更新userInfo
-                userRepository.updateUserInfo(userRepository.getUserInfo()!!.apply {
-                    if (collectIds.contains(id)) collectIds.remove(id)
-                })
+                UserInfoStore.removeCollectId(id)
                 collect.value = false
             },
             error = {
@@ -47,8 +45,8 @@ class DetailViewModel : BaseViewModel() {
     }
 
     fun updateCollectStatus(id: Int) {
-        collect.value = if (userRepository.isLogin()) {
-            userRepository.getUserInfo()!!.collectIds.contains(id)
+        collect.value = if (isLogin()) {
+            UserInfoStore.getUserInfo()?.collectIds?.contains(id)
         } else {
             false
         }

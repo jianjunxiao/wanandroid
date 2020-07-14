@@ -3,6 +3,7 @@ package com.xiaojianjun.wanandroid.ui.base
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.xiaojianjun.wanandroid.model.store.isLogin
 import com.xiaojianjun.wanandroid.ui.login.LoginActivity
 import com.xiaojianjun.wanandroid.util.core.ActivityManager
 import com.xiaojianjun.wanandroid.util.core.bus.Bus
@@ -14,27 +15,28 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initView()
         initViewModel()
         observe()
-        // 因为Activity恢复后savedInstanceState不为null，
-        // 重新恢复后会自动从ViewModel中的LiveData恢复数据，
-        // 不需要重新初始化数据。
-        if (savedInstanceState == null) {
-            initData()
-        }
+        initView()
+        initData()
     }
 
+    /**
+     * 初始化ViewModel
+     */
     private fun initViewModel() {
         mViewModel = ViewModelProvider(this).get(viewModelClass())
     }
 
+
+    /**
+     * 获取ViewModel的class
+     */
     protected abstract fun viewModelClass(): Class<VM>
 
-    open fun initView() {
-        // Override if need
-    }
-
+    /**
+     * 订阅，LiveData、Bus
+     */
     open fun observe() {
         // 登录失效，跳转登录页
         mViewModel.loginStatusInvalid.observe(this, Observer {
@@ -45,6 +47,16 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
         })
     }
 
+    /**
+     * 数据初始化相关
+     */
+    open fun initView() {
+        // Override if need
+    }
+
+    /**
+     * 懒加载数据
+     */
     open fun initData() {
         // Override if need
     }
@@ -54,7 +66,7 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
      * @return true-已登录，false-未登录
      */
     fun checkLogin(then: (() -> Unit)? = null): Boolean {
-        return if (mViewModel.loginStatus()) {
+        return if (isLogin()) {
             then?.invoke()
             true
         } else {

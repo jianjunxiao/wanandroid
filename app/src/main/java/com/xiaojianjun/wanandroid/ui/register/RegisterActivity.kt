@@ -54,7 +54,7 @@ class RegisterActivity : BaseVmActivity<RegisterViewModel>() {
         super.observe()
         mViewModel.run {
             submitting.observe(this@RegisterActivity, Observer {
-                if (it) showProgressDialog(R.string.registerring) else hideProgressDialog()
+                if (it) showProgressDialog(R.string.registerring) else dismissProgressDialog()
             })
             registerResult.observe(this@RegisterActivity, Observer {
                 if (it) {

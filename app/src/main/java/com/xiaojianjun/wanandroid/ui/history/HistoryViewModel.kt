@@ -2,6 +2,8 @@ package com.xiaojianjun.wanandroid.ui.history
 
 import androidx.lifecycle.MutableLiveData
 import com.xiaojianjun.wanandroid.model.bean.Article
+import com.xiaojianjun.wanandroid.model.store.UserInfoStore
+import com.xiaojianjun.wanandroid.model.store.isLogin
 import com.xiaojianjun.wanandroid.ui.base.BaseViewModel
 import com.xiaojianjun.wanandroid.ui.common.CollectRepository
 import com.xiaojianjun.wanandroid.util.core.bus.Bus
@@ -25,8 +27,7 @@ class HistoryViewModel : BaseViewModel() {
         launch(
             block = {
                 val readHistory = historyRepository.getReadHistory()
-                val collectIds = userRepository.getUserInfo()?.collectIds ?: emptyList<Int>()
-                // 更新收藏状态
+                val collectIds = UserInfoStore.getUserInfo()?.collectIds ?: emptyList<Int>()
                 readHistory.forEach { it.collect = collectIds.contains(it.id) }
 
                 articleList.value = readHistory.toMutableList()
@@ -39,9 +40,7 @@ class HistoryViewModel : BaseViewModel() {
         launch(
             block = {
                 collectRepository.collect(id)
-                userRepository.updateUserInfo(userRepository.getUserInfo()!!.apply {
-                    if (!collectIds.contains(id)) collectIds.add(id)
-                })
+                UserInfoStore.addCollectId(id)
                 updateItemCollectState(id to true)
                 Bus.post(USER_COLLECT_UPDATED, id to true)
             },
@@ -55,9 +54,7 @@ class HistoryViewModel : BaseViewModel() {
         launch(
             block = {
                 collectRepository.uncollect(id)
-                userRepository.updateUserInfo(userRepository.getUserInfo()!!.apply {
-                    if (collectIds.contains(id)) collectIds.remove(id)
-                })
+                UserInfoStore.removeCollectId(id)
                 updateItemCollectState(id to false)
                 Bus.post(USER_COLLECT_UPDATED, id to false)
             },
@@ -70,8 +67,8 @@ class HistoryViewModel : BaseViewModel() {
     fun updateListCollectState() {
         val list = articleList.value
         if (list.isNullOrEmpty()) return
-        if (userRepository.isLogin()) {
-            val collectIds = userRepository.getUserInfo()?.collectIds ?: return
+        if (isLogin()) {
+            val collectIds = UserInfoStore.getUserInfo()?.collectIds ?: return
             list.forEach { it.collect = collectIds.contains(it.id) }
         } else {
             list.forEach { it.collect = false }

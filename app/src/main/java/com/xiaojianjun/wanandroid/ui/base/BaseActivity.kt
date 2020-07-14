@@ -8,20 +8,6 @@ import com.xiaojianjun.wanandroid.common.ProgressDialogFragment
 abstract class BaseActivity : AppCompatActivity() {
 
     private lateinit var progressDialogFragment: ProgressDialogFragment
-    /**
-     * 加载状态有4种：
-     * 1.整页数据加载，加载动画在页面中间
-     * 2.下拉刷新
-     * 3.分页加载更多
-     * 4.数据提交服务器加载对话框
-     */
-
-    /**
-     * 加载结果：
-     * 1.空，无数据
-     * 2.无网络
-     * 3.失败，点击重试
-     */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,17 +16,24 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun layoutRes() = 0
 
+    /**
+     * 显示加载(转圈)对话框
+     */
     fun showProgressDialog(@StringRes message: Int) {
-
         if (!this::progressDialogFragment.isInitialized) {
             progressDialogFragment = ProgressDialogFragment.newInstance()
         }
-        progressDialogFragment.show(supportFragmentManager, message, false)
+        if (!progressDialogFragment.isAdded) {
+            progressDialogFragment.show(supportFragmentManager, message, false)
+        }
     }
 
-    fun hideProgressDialog() {
+    /**
+     * 隐藏加载(转圈)对话框
+     */
+    fun dismissProgressDialog() {
         if (this::progressDialogFragment.isInitialized && progressDialogFragment.isVisible) {
-            progressDialogFragment.dismiss()
+            progressDialogFragment.dismissAllowingStateLoss()
         }
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.xiaojianjun.wanandroid.model.store.isLogin
 import com.xiaojianjun.wanandroid.ui.login.LoginActivity
 import com.xiaojianjun.wanandroid.util.core.ActivityManager
 import com.xiaojianjun.wanandroid.util.core.bus.Bus
@@ -16,15 +17,10 @@ abstract class BaseVmFragment<VM : BaseViewModel> : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
         initViewModel()
         observe()
-        // 因为Fragment恢复后savedInstanceState不为null，
-        // 重新恢复后会自动从ViewModel中的LiveData恢复数据，
-        // 不需要重新初始化数据。
-        if (savedInstanceState == null) {
-            initData()
-        }
+        initView()
+        initData()
     }
 
     override fun onResume() {
@@ -36,16 +32,21 @@ abstract class BaseVmFragment<VM : BaseViewModel> : BaseFragment() {
         }
     }
 
+    /**
+     * 初始化ViewModel
+     */
     private fun initViewModel() {
         mViewModel = ViewModelProvider(this).get(viewModelClass())
     }
 
+    /**
+     * 获取ViewModel的class
+     */
     abstract fun viewModelClass(): Class<VM>
 
-    open fun initView() {
-        // Override if need
-    }
-
+    /**
+     * 订阅，LiveData、Bus
+     */
     open fun observe() {
         // 登录失效，跳转登录页
         mViewModel.loginStatusInvalid.observe(viewLifecycleOwner, Observer {
@@ -56,10 +57,23 @@ abstract class BaseVmFragment<VM : BaseViewModel> : BaseFragment() {
         })
     }
 
+    /**
+     * View初始化相关
+     */
+    open fun initView() {
+        // Override if need
+    }
+
+    /**
+     * 数据初始化相关
+     */
     open fun initData() {
         // Override if need
     }
 
+    /**
+     * 懒加载数据
+     */
     open fun lazyLoadData() {
         // Override if need
     }
@@ -69,7 +83,7 @@ abstract class BaseVmFragment<VM : BaseViewModel> : BaseFragment() {
      * @return true-已登录，false-未登录
      */
     fun checkLogin(then: (() -> Unit)? = null): Boolean {
-        return if (mViewModel.loginStatus()) {
+        return if (isLogin()) {
             then?.invoke()
             true
         } else {

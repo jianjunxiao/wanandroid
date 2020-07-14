@@ -52,7 +52,7 @@ class ShareActivity : BaseVmActivity<ShareViewModel>() {
                 acetSharePeople.setText(sharePeople)
             })
             submitting.observe(this@ShareActivity, Observer {
-                if (it) showProgressDialog(R.string.sharing_article) else hideProgressDialog()
+                if (it) showProgressDialog(R.string.sharing_article) else dismissProgressDialog()
             })
             shareResult.observe(this@ShareActivity, Observer {
                 if (it) {

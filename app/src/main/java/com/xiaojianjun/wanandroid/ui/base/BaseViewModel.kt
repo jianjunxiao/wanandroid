@@ -8,12 +8,13 @@ import com.xiaojianjun.wanandroid.App
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.ext.showToast
 import com.xiaojianjun.wanandroid.model.api.ApiException
-import com.xiaojianjun.wanandroid.ui.common.UserRepository
-import com.xiaojianjun.wanandroid.util.core.bus.Bus
-import com.xiaojianjun.wanandroid.util.core.bus.USER_LOGIN_STATE_CHANGED
+import com.xiaojianjun.wanandroid.model.api.RetrofitClient
+import com.xiaojianjun.wanandroid.model.store.UserInfoStore
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 typealias Block<T> = suspend () -> T
 typealias Error = suspend (e: Exception) -> Unit
@@ -24,7 +25,7 @@ typealias Cancel = suspend (e: Exception) -> Unit
  */
 open class BaseViewModel : ViewModel() {
 
-    protected val userRepository by lazy { UserRepository() }
+//    protected val userRepository by lazy { UserRepository() }
 
     val loginStatusInvalid: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -32,9 +33,16 @@ open class BaseViewModel : ViewModel() {
      * 创建并执行协程
      * @param block 协程中执行
      * @param error 错误时执行
+     * @param cancel 取消时只需
+     * @param showErrorToast 是否弹出错误吐司
      * @return Job
      */
-    protected fun launch(block: Block<Unit>, error: Error? = null, cancel: Cancel? = null): Job {
+    protected fun launch(
+        block: Block<Unit>,
+        error: Error? = null,
+        cancel: Cancel? = null,
+        showErrorToast: Boolean = true
+    ): Job {
         return viewModelScope.launch {
             try {
                 block.invoke()
@@ -44,7 +52,7 @@ open class BaseViewModel : ViewModel() {
                         cancel?.invoke(e)
                     }
                     else -> {
-                        onError(e)
+                        onError(e, showErrorToast)
                         error?.invoke(e)
                     }
                 }
@@ -74,49 +82,33 @@ open class BaseViewModel : ViewModel() {
     /**
      * 统一处理错误
      * @param e 异常
+     * @param showErrorToast 是否显示错误吐司
      */
-    private fun onError(e: Exception) {
+    private fun onError(e: Exception, showErrorToast: Boolean) {
         when (e) {
             is ApiException -> {
                 when (e.code) {
                     -1001 -> {
-                        // 登录失效
-                        userRepository.clearLoginState()
-                        Bus.post(USER_LOGIN_STATE_CHANGED, false)
+                        // 登录失效，清除用户信息、清除cookie/token
+                        UserInfoStore.clearUserInfo()
+                        RetrofitClient.clearCookie()
                         loginStatusInvalid.value = true
                     }
-                    -1 -> {
-                        // 其他api错误
-                        App.instance.showToast(e.message)
-                    }
-                    else -> {
-                        // 其他错误
-                        App.instance.showToast(e.message)
-                    }
+                    // 其他api错误
+                    -1 -> if (showErrorToast) App.instance.showToast(e.message)
+                    // 其他错误
+                    else -> if (showErrorToast) App.instance.showToast(e.message)
                 }
             }
-            is ConnectException -> {
-                // 连接失败
-                App.instance.showToast(App.instance.getString(R.string.network_connection_failed))
-            }
-            is SocketTimeoutException -> {
-                // 请求超时
-                App.instance.showToast(App.instance.getString(R.string.network_request_timeout))
-            }
-            is JsonParseException -> {
-                // 数据解析错误
-                App.instance.showToast(App.instance.getString(R.string.api_data_parse_error))
-            }
-            else -> {
-                // 其他错误
-                e.message?.let { App.instance.showToast(it) }
-            }
+            // 网络请求失败
+            is ConnectException, is SocketTimeoutException, is UnknownHostException, is HttpException ->
+                if (showErrorToast) App.instance.showToast(R.string.network_request_failed)
+            // 数据解析错误
+            is JsonParseException ->
+                if (showErrorToast) App.instance.showToast(R.string.api_data_parse_error)
+            // 其他错误
+            else ->
+                if (showErrorToast) App.instance.showToast(e.message ?: return)
         }
     }
-
-    /**
-     * 登录状态
-     */
-    fun loginStatus() = userRepository.isLogin()
-
 }
