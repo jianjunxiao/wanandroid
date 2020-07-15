@@ -3,8 +3,8 @@ package com.xiaojianjun.wanandroid.model.store
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.xiaojianjun.wanandroid.App
-import com.xiaojianjun.wanandroid.util.core.getSpValue
-import com.xiaojianjun.wanandroid.util.core.putSpValue
+import com.xiaojianjun.wanandroid.common.core.getSpValue
+import com.xiaojianjun.wanandroid.common.core.putSpValue
 
 
 /**

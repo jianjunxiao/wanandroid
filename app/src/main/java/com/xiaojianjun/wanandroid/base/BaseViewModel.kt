@@ -1,4 +1,4 @@
-package com.xiaojianjun.wanandroid.ui.base
+package com.xiaojianjun.wanandroid.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,8 +24,6 @@ typealias Cancel = suspend (e: Exception) -> Unit
  * Created by xiaojianjun on 2019-09-20.
  */
 open class BaseViewModel : ViewModel() {
-
-//    protected val userRepository by lazy { UserRepository() }
 
     val loginStatusInvalid: MutableLiveData<Boolean> = MutableLiveData()
 

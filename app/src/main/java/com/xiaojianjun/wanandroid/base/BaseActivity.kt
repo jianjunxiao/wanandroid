@@ -1,9 +1,9 @@
-package com.xiaojianjun.wanandroid.ui.base
+package com.xiaojianjun.wanandroid.base
 
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import com.xiaojianjun.wanandroid.common.ProgressDialogFragment
+import com.xiaojianjun.wanandroid.common.dialog.ProgressDialogFragment
 
 abstract class BaseActivity : AppCompatActivity() {
 

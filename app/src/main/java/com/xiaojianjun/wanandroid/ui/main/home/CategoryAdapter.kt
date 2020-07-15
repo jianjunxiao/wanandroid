@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.ext.htmlToSpanned
-import com.xiaojianjun.wanandroid.ext.toIntPx
+import com.xiaojianjun.wanandroid.ext.dpToPxInt
 import com.xiaojianjun.wanandroid.model.bean.Category
 import kotlinx.android.synthetic.main.item_category_sub.view.*
 
@@ -29,7 +29,7 @@ class CategoryAdapter(layoutResId: Int = R.layout.item_category_sub) :
                 onCheckedListener?.invoke(position)
             }
             updateLayoutParams<MarginLayoutParams> {
-                marginStart = if (helper.adapterPosition == 0) 8f.toIntPx() else 0f.toIntPx()
+                marginStart = if (helper.adapterPosition == 0) 8f.dpToPxInt() else 0f.dpToPxInt()
             }
         }
     }

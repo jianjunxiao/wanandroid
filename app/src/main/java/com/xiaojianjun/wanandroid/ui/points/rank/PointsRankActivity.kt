@@ -5,8 +5,8 @@ import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
 import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
-import com.xiaojianjun.wanandroid.ui.base.BaseVmActivity
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.base.BaseVmActivity
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.activity_points_rank.*
 import kotlinx.android.synthetic.main.include_reload.*
 
@@ -29,7 +29,7 @@ class PointsRankActivity : BaseVmActivity<PointsRankViewModel>() {
             setProgressBackgroundColorSchemeResource(R.color.bgColorPrimary)
             setOnRefreshListener { mViewModel.refreshData() }
         }
-        ivBack.setOnClickListener { ActivityManager.finish(PointsRankActivity::class.java) }
+        ivBack.setOnClickListener { ActivityHelper.finish(PointsRankActivity::class.java) }
         tvTitle.setOnClickListener { recyclerView.smoothScrollToPosition(0) }
         btnReload.setOnClickListener { mViewModel.refreshData() }
     }

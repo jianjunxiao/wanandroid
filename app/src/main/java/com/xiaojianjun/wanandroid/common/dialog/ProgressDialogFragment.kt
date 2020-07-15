@@ -1,4 +1,4 @@
-package com.xiaojianjun.wanandroid.common
+package com.xiaojianjun.wanandroid.common.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +18,8 @@ class ProgressDialogFragment : DialogFragment() {
     private var messageResId: Int? = null
 
     companion object {
-        fun newInstance() = ProgressDialogFragment()
+        fun newInstance() =
+            ProgressDialogFragment()
     }
 
     override fun onCreateView(

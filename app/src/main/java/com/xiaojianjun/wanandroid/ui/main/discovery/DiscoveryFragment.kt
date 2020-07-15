@@ -7,13 +7,13 @@ import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.common.ScrollToTop
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.bean.Banner
-import com.xiaojianjun.wanandroid.ui.base.BaseVmFragment
+import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity.Companion.PARAM_ARTICLE
 import com.xiaojianjun.wanandroid.ui.main.MainActivity
 import com.xiaojianjun.wanandroid.ui.search.SearchActivity
 import com.xiaojianjun.wanandroid.ui.share.ShareActivity
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
 import kotlinx.android.synthetic.main.fragment_discovery.*
@@ -33,10 +33,10 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
 
     override fun initView() {
         ivAdd.setOnClickListener {
-            checkLogin { ActivityManager.start(ShareActivity::class.java) }
+            checkLogin { ActivityHelper.start(ShareActivity::class.java) }
         }
         ivSearch.setOnClickListener {
-            ActivityManager.start(SearchActivity::class.java)
+            ActivityHelper.start(SearchActivity::class.java)
         }
         swipeRefreshLayout.run {
             setColorSchemeResources(R.color.textColorPrimary)
@@ -72,7 +72,7 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
                 tagFlowLayout.adapter = TagAdapter(it)
                 tagFlowLayout.setOnTagClickListener { _, position, _ ->
                     val frequently = it[position]
-                    ActivityManager.start(
+                    ActivityHelper.start(
                         DetailActivity::class.java,
                         mapOf(
                             PARAM_ARTICLE to Article(
@@ -103,7 +103,7 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
             start()
             setOnBannerListener {
                 val banner = banners[it]
-                ActivityManager.start(
+                ActivityHelper.start(
                     DetailActivity::class.java,
                     mapOf(PARAM_ARTICLE to Article(title = banner.title, link = banner.url))
                 )

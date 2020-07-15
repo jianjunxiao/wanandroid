@@ -1,4 +1,4 @@
-package com.xiaojianjun.wanandroid.common
+package com.xiaojianjun.wanandroid.common.simple
 
 import android.app.Activity
 import android.app.Application

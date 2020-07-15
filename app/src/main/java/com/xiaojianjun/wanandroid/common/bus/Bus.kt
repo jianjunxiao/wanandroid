@@ -1,4 +1,4 @@
-package com.xiaojianjun.wanandroid.util.core.bus
+package com.xiaojianjun.wanandroid.common.bus
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer

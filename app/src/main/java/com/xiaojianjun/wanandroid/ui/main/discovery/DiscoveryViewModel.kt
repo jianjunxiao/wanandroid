@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.xiaojianjun.wanandroid.model.bean.Banner
 import com.xiaojianjun.wanandroid.model.bean.Frequently
 import com.xiaojianjun.wanandroid.model.bean.HotWord
-import com.xiaojianjun.wanandroid.ui.base.BaseViewModel
+import com.xiaojianjun.wanandroid.base.BaseViewModel
 
 class DiscoveryViewModel : BaseViewModel() {
 

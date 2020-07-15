@@ -4,21 +4,20 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.BuildConfig
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.common.SeekBarChangeListenerAdapter
+import com.xiaojianjun.wanandroid.common.simple.SeekBarChangeListenerAdapter
 import com.xiaojianjun.wanandroid.ext.setNavigationBarColor
 import com.xiaojianjun.wanandroid.ext.showToast
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.store.SettingsStore
 import com.xiaojianjun.wanandroid.model.store.isLogin
-import com.xiaojianjun.wanandroid.ui.base.BaseVmActivity
+import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity.Companion.PARAM_ARTICLE
 import com.xiaojianjun.wanandroid.ui.login.LoginActivity
 import com.xiaojianjun.wanandroid.util.clearCache
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.util.getCacheSize
 import com.xiaojianjun.wanandroid.util.isNightMode
 import com.xiaojianjun.wanandroid.util.setNightMode
@@ -41,7 +40,7 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
         tvClearCache.text = getCacheSize(this)
         tvAboutUs.text = getString(R.string.current_version, BuildConfig.VERSION_NAME)
 
-        ivBack.setOnClickListener { ActivityManager.finish(SettingsActivity::class.java) }
+        ivBack.setOnClickListener { ActivityHelper.finish(SettingsActivity::class.java) }
         scDayNight.setOnCheckedChangeListener { _, checked ->
             setNightMode(checked)
             SettingsStore.setNightMode(checked)
@@ -64,7 +63,7 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
             showToast(getString(R.string.stay_tuned))
         }
         llAboutUs.setOnClickListener {
-            ActivityManager.start(
+            ActivityHelper.start(
                 DetailActivity::class.java,
                 mapOf(
                     PARAM_ARTICLE to Article(
@@ -79,8 +78,8 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
                 .setMessage(R.string.confirm_logout)
                 .setPositiveButton(R.string.confirm) { _, _ ->
                     mViewModel.logout()
-                    ActivityManager.start(LoginActivity::class.java)
-                    ActivityManager.finish(SettingsActivity::class.java)
+                    ActivityHelper.start(LoginActivity::class.java)
+                    ActivityHelper.finish(SettingsActivity::class.java)
                 }
                 .setNegativeButton(R.string.cancel) { _, _ -> }
                 .show()

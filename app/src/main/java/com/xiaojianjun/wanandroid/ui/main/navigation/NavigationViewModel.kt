@@ -2,7 +2,7 @@ package com.xiaojianjun.wanandroid.ui.main.navigation
 
 import androidx.lifecycle.MutableLiveData
 import com.xiaojianjun.wanandroid.model.bean.Navigation
-import com.xiaojianjun.wanandroid.ui.base.BaseViewModel
+import com.xiaojianjun.wanandroid.base.BaseViewModel
 
 class NavigationViewModel : BaseViewModel() {
 

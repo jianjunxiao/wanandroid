@@ -6,7 +6,7 @@ import androidx.core.view.isGone
 import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.model.bean.HotWord
-import com.xiaojianjun.wanandroid.ui.base.BaseVmFragment
+import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.ui.search.SearchActivity
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter

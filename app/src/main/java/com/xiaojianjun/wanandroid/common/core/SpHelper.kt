@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package com.xiaojianjun.wanandroid.util.core
+package com.xiaojianjun.wanandroid.common.core
 
 import android.content.Context
 

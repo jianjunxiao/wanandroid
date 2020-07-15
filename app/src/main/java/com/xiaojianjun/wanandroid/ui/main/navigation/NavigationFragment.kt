@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.common.ScrollToTop
 import com.xiaojianjun.wanandroid.model.bean.Article
-import com.xiaojianjun.wanandroid.ui.base.BaseVmFragment
+import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.main.MainActivity
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.fragment_navigation.*
 import kotlinx.android.synthetic.main.include_reload.*
 
@@ -36,7 +36,7 @@ class NavigationFragment : BaseVmFragment<NavigationViewModel>(), ScrollToTop {
         mAdapter = NavigationAdapter(R.layout.item_navigation).apply {
             bindToRecyclerView(recyclerView)
             onItemTagClickListener = {
-                ActivityManager.start(
+                ActivityHelper.start(
                     DetailActivity::class.java,
                     mapOf(DetailActivity.PARAM_ARTICLE to Article(title = it.title, link = it.link))
                 )

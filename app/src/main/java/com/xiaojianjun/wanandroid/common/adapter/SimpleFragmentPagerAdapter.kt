@@ -1,4 +1,4 @@
-package com.xiaojianjun.wanandroid.common
+package com.xiaojianjun.wanandroid.common.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

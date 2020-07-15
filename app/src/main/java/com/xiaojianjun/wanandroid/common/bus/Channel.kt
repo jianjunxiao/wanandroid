@@ -1,4 +1,4 @@
-package com.xiaojianjun.wanandroid.util.core.bus
+package com.xiaojianjun.wanandroid.common.bus
 
 /**
  * Created by xiaojianjun on 2019-11-27.

@@ -1,4 +1,4 @@
-package com.xiaojianjun.wanandroid.util.core
+package com.xiaojianjun.wanandroid.common.core
 
 /**
  * Created by xiaojianjun on 2019-11-20.

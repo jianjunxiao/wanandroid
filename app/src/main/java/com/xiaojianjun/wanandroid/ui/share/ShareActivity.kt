@@ -5,8 +5,8 @@ import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.ext.hideSoftInput
 import com.xiaojianjun.wanandroid.ext.showToast
-import com.xiaojianjun.wanandroid.ui.base.BaseVmActivity
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.base.BaseVmActivity
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.activity_share.*
 
 class ShareActivity : BaseVmActivity<ShareViewModel>() {
@@ -15,7 +15,7 @@ class ShareActivity : BaseVmActivity<ShareViewModel>() {
     override fun viewModelClass() = ShareViewModel::class.java
 
     override fun initView() {
-        ivBack.setOnClickListener { ActivityManager.finish(ShareActivity::class.java) }
+        ivBack.setOnClickListener { ActivityHelper.finish(ShareActivity::class.java) }
         acetlink.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 tvSubmit.performClick()

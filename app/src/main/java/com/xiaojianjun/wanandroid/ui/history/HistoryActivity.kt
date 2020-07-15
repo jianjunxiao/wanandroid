@@ -4,13 +4,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.ui.base.BaseVmActivity
+import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.main.home.ArticleAdapter
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
-import com.xiaojianjun.wanandroid.util.core.bus.Bus
-import com.xiaojianjun.wanandroid.util.core.bus.USER_COLLECT_UPDATED
-import com.xiaojianjun.wanandroid.util.core.bus.USER_LOGIN_STATE_CHANGED
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.bus.Bus
+import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
+import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
 import kotlinx.android.synthetic.main.activity_history.*
 
 /**
@@ -35,7 +35,7 @@ class HistoryActivity : BaseVmActivity<HistoryViewModel>() {
             bindToRecyclerView(recyclerView)
             setOnItemClickListener { _, _, position ->
                 val article = data[position]
-                ActivityManager.start(
+                ActivityHelper.start(
                     DetailActivity::class.java,
                     mapOf(DetailActivity.PARAM_ARTICLE to article)
                 )
@@ -63,7 +63,7 @@ class HistoryActivity : BaseVmActivity<HistoryViewModel>() {
                 true
             }
         }
-        ivBack.setOnClickListener { ActivityManager.finish(HistoryActivity::class.java) }
+        ivBack.setOnClickListener { ActivityHelper.finish(HistoryActivity::class.java) }
     }
 
 //    override fun initData() {

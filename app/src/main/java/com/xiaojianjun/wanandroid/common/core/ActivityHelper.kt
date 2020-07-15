@@ -1,14 +1,26 @@
-package com.xiaojianjun.wanandroid.util.core
+package com.xiaojianjun.wanandroid.common.core
 
 import android.app.Activity
+import android.app.Application
 import android.content.Intent
+import com.xiaojianjun.wanandroid.common.simple.ActivityLifecycleCallbacksAdapter
 import com.xiaojianjun.wanandroid.ext.putExtras
-import com.xiaojianjun.wanandroid.ext.setBrightness
 
 /**
  * Created by xiaojianjun on 2019-10-17.
  */
-object ActivityManager {
+object ActivityHelper {
+
+    fun init(application: Application) {
+        application.registerActivityLifecycleCallbacks(ActivityLifecycleCallbacksAdapter(
+            onActivityCreated = { activity, _ ->
+                activities.add(activity)
+            },
+            onActivityDestroyed = { activity ->
+                activities.remove(activity)
+            }
+        ))
+    }
 
     val activities = mutableListOf<Activity>()
 

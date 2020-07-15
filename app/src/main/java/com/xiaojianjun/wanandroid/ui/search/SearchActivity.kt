@@ -6,10 +6,10 @@ import androidx.core.view.isGone
 import androidx.core.widget.addTextChangedListener
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.ext.hideSoftInput
-import com.xiaojianjun.wanandroid.ui.base.BaseActivity
+import com.xiaojianjun.wanandroid.base.BaseActivity
 import com.xiaojianjun.wanandroid.ui.search.history.SearchHistoryFragment
 import com.xiaojianjun.wanandroid.ui.search.result.SearchResultFragment
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : BaseActivity() {
@@ -39,7 +39,7 @@ class SearchActivity : BaseActivity() {
                     .hide(resultFragment)
                     .commit()
             } else {
-                ActivityManager.finish(SearchActivity::class.java)
+                ActivityHelper.finish(SearchActivity::class.java)
             }
         }
         ivDone.setOnClickListener {

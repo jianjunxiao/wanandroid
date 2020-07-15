@@ -1,9 +1,8 @@
 package com.xiaojianjun.wanandroid
 
 import android.app.Application
-import com.xiaojianjun.wanandroid.common.ActivityLifecycleCallbacksAdapter
 import com.xiaojianjun.wanandroid.model.store.SettingsStore
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.util.isMainProcess
 import com.xiaojianjun.wanandroid.util.setNightMode
 
@@ -26,22 +25,11 @@ class App : Application() {
     }
 
     private fun init() {
-        rigesterActivityCallbacks()
+        ActivityHelper.init(this)
         setDayNightMode()
     }
 
     private fun setDayNightMode() {
         setNightMode(SettingsStore.getNightMode())
-    }
-
-    private fun rigesterActivityCallbacks() {
-        registerActivityLifecycleCallbacks(ActivityLifecycleCallbacksAdapter(
-            onActivityCreated = { activity, _ ->
-                ActivityManager.activities.add(activity)
-            },
-            onActivityDestroyed = { activity ->
-                ActivityManager.activities.remove(activity)
-            }
-        ))
     }
 }

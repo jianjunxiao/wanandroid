@@ -3,7 +3,7 @@ package com.xiaojianjun.wanandroid.ui.points.rank
 import androidx.lifecycle.MutableLiveData
 import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
 import com.xiaojianjun.wanandroid.model.bean.PointRank
-import com.xiaojianjun.wanandroid.ui.base.BaseViewModel
+import com.xiaojianjun.wanandroid.base.BaseViewModel
 
 /**
  * Created by xiaojianjun on 2019-12-02.

@@ -6,9 +6,9 @@ import androidx.lifecycle.Observer
 import com.google.android.material.appbar.AppBarLayout
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.common.ScrollToTop
-import com.xiaojianjun.wanandroid.common.SimpleFragmentPagerAdapter
+import com.xiaojianjun.wanandroid.common.adapter.SimpleFragmentPagerAdapter
 import com.xiaojianjun.wanandroid.model.bean.Category
-import com.xiaojianjun.wanandroid.ui.base.BaseVmFragment
+import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.ui.main.MainActivity
 import com.xiaojianjun.wanandroid.ui.main.system.category.SystemCategoryFragment
 import com.xiaojianjun.wanandroid.ui.main.system.pager.SystemPagerFragment
@@ -78,7 +78,12 @@ class SystemFragment : BaseVmFragment<SystemViewModel>(), ScrollToTop {
             titles.add(it.name)
             fragments.add(SystemPagerFragment.newInstance(it.children))
         }
-        viewPager.adapter = SimpleFragmentPagerAdapter(childFragmentManager, fragments, titles)
+        viewPager.adapter =
+            SimpleFragmentPagerAdapter(
+                childFragmentManager,
+                fragments,
+                titles
+            )
         viewPager.offscreenPageLimit = titles.size
         tabLayout.setupWithViewPager(viewPager)
     }

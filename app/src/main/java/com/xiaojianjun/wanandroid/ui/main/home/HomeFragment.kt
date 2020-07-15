@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.AppBarLayout
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.common.ScrollToTop
-import com.xiaojianjun.wanandroid.common.SimpleFragmentPagerAdapter
-import com.xiaojianjun.wanandroid.ui.base.BaseFragment
+import com.xiaojianjun.wanandroid.common.adapter.SimpleFragmentPagerAdapter
+import com.xiaojianjun.wanandroid.base.BaseFragment
 import com.xiaojianjun.wanandroid.ui.main.MainActivity
 import com.xiaojianjun.wanandroid.ui.main.home.latest.LatestFragment
 import com.xiaojianjun.wanandroid.ui.main.home.plaza.PlazaFragment
@@ -15,7 +15,7 @@ import com.xiaojianjun.wanandroid.ui.main.home.popular.PopularFragment
 import com.xiaojianjun.wanandroid.ui.main.home.project.ProjectFragment
 import com.xiaojianjun.wanandroid.ui.main.home.wechat.WechatFragment
 import com.xiaojianjun.wanandroid.ui.search.SearchActivity
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment(), ScrollToTop {
@@ -48,7 +48,12 @@ class HomeFragment : BaseFragment(), ScrollToTop {
             getString(R.string.project_category),
             getString(R.string.wechat_public)
         )
-        viewPager.adapter = SimpleFragmentPagerAdapter(childFragmentManager, fragments, titles)
+        viewPager.adapter =
+            SimpleFragmentPagerAdapter(
+                childFragmentManager,
+                fragments,
+                titles
+            )
         viewPager.offscreenPageLimit = fragments.size
         tabLayout.setupWithViewPager(viewPager)
 
@@ -58,7 +63,7 @@ class HomeFragment : BaseFragment(), ScrollToTop {
                 currentOffset = offset
             }
         })
-        llSearch.setOnClickListener { ActivityManager.start(SearchActivity::class.java) }
+        llSearch.setOnClickListener { ActivityHelper.start(SearchActivity::class.java) }
     }
 
     override fun scrollToTop() {

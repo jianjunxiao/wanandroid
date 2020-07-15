@@ -3,10 +3,10 @@ package com.xiaojianjun.wanandroid.ui.opensource
 import android.os.Bundle
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.model.bean.Article
-import com.xiaojianjun.wanandroid.ui.base.BaseActivity
+import com.xiaojianjun.wanandroid.base.BaseActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity.Companion.PARAM_ARTICLE
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.activity_open_source.*
 
 class OpenSourceActivity : BaseActivity() {
@@ -64,10 +64,10 @@ class OpenSourceActivity : BaseActivity() {
             setNewData(openSourceData)
             setOnItemClickListener { _, _, position ->
                 val article = data[position]
-                ActivityManager.start(DetailActivity::class.java, mapOf(PARAM_ARTICLE to article))
+                ActivityHelper.start(DetailActivity::class.java, mapOf(PARAM_ARTICLE to article))
             }
         }
 
-        ivBack.setOnClickListener { ActivityManager.finish(OpenSourceActivity::class.java) }
+        ivBack.setOnClickListener { ActivityHelper.finish(OpenSourceActivity::class.java) }
     }
 }

@@ -7,7 +7,7 @@ import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.store.UserInfoStore
 import com.xiaojianjun.wanandroid.model.store.isLogin
-import com.xiaojianjun.wanandroid.ui.base.BaseVmFragment
+import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.ui.collection.CollectionActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity.Companion.PARAM_ARTICLE
@@ -17,9 +17,9 @@ import com.xiaojianjun.wanandroid.ui.points.mine.MinePointsActivity
 import com.xiaojianjun.wanandroid.ui.points.rank.PointsRankActivity
 import com.xiaojianjun.wanandroid.ui.settings.SettingsActivity
 import com.xiaojianjun.wanandroid.ui.shared.SharedActivity
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
-import com.xiaojianjun.wanandroid.util.core.bus.Bus
-import com.xiaojianjun.wanandroid.util.core.bus.USER_LOGIN_STATE_CHANGED
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.bus.Bus
+import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
 import kotlinx.android.synthetic.main.fragment_mine.*
 
 class MineFragment : BaseVmFragment<MineViewModel>() {
@@ -37,22 +37,22 @@ class MineFragment : BaseVmFragment<MineViewModel>() {
             checkLogin { /*上传头像，暂不支持*/ }
         }
         llMyPoints.setOnClickListener {
-            checkLogin { ActivityManager.start(MinePointsActivity::class.java) }
+            checkLogin { ActivityHelper.start(MinePointsActivity::class.java) }
         }
         llPointsRank.setOnClickListener {
-            ActivityManager.start(PointsRankActivity::class.java)
+            ActivityHelper.start(PointsRankActivity::class.java)
         }
         llMyShare.setOnClickListener {
-            checkLogin { ActivityManager.start(SharedActivity::class.java) }
+            checkLogin { ActivityHelper.start(SharedActivity::class.java) }
         }
         llMyCollect.setOnClickListener {
-            checkLogin { ActivityManager.start(CollectionActivity::class.java) }
+            checkLogin { ActivityHelper.start(CollectionActivity::class.java) }
         }
         llHistory.setOnClickListener {
-            ActivityManager.start(HistoryActivity::class.java)
+            ActivityHelper.start(HistoryActivity::class.java)
         }
         llAboutAuthor.setOnClickListener {
-            ActivityManager.start(
+            ActivityHelper.start(
                 DetailActivity::class.java,
                 mapOf(
                     PARAM_ARTICLE to Article(
@@ -63,10 +63,10 @@ class MineFragment : BaseVmFragment<MineViewModel>() {
             )
         }
         llOpenSource.setOnClickListener {
-            ActivityManager.start(OpenSourceActivity::class.java)
+            ActivityHelper.start(OpenSourceActivity::class.java)
         }
         llSetting.setOnClickListener {
-            ActivityManager.start(SettingsActivity::class.java)
+            ActivityHelper.start(SettingsActivity::class.java)
         }
 
         updateUi()

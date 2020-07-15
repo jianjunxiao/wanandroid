@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.store.UserInfoStore
 import com.xiaojianjun.wanandroid.model.store.isLogin
-import com.xiaojianjun.wanandroid.ui.base.BaseViewModel
+import com.xiaojianjun.wanandroid.base.BaseViewModel
 import com.xiaojianjun.wanandroid.ui.common.CollectRepository
-import com.xiaojianjun.wanandroid.util.core.bus.Bus
-import com.xiaojianjun.wanandroid.util.core.bus.USER_COLLECT_UPDATED
+import com.xiaojianjun.wanandroid.common.bus.Bus
+import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
 
 /**
  * Created by xiaojianjun on 2019-11-29.

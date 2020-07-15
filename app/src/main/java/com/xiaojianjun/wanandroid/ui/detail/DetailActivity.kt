@@ -17,12 +17,12 @@ import com.xiaojianjun.wanandroid.ext.htmlToSpanned
 import com.xiaojianjun.wanandroid.ext.setBrightness
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.store.SettingsStore
-import com.xiaojianjun.wanandroid.ui.base.BaseVmActivity
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
-import com.xiaojianjun.wanandroid.util.core.bus.Bus
-import com.xiaojianjun.wanandroid.util.core.bus.USER_COLLECT_UPDATED
-import com.xiaojianjun.wanandroid.util.core.bus.USER_LOGIN_STATE_CHANGED
-import com.xiaojianjun.wanandroid.util.core.whiteHostList
+import com.xiaojianjun.wanandroid.base.BaseVmActivity
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.bus.Bus
+import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
+import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
+import com.xiaojianjun.wanandroid.common.core.whiteHostList
 import com.xiaojianjun.wanandroid.util.isNightMode
 import kotlinx.android.synthetic.main.activity_detail.*
 
@@ -46,7 +46,7 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
         article = intent?.getParcelableExtra(PARAM_ARTICLE) ?: return
 
         tvTitle.text = article.title.htmlToSpanned()
-        ivBack.setOnClickListener { ActivityManager.finish(DetailActivity::class.java) }
+        ivBack.setOnClickListener { ActivityHelper.finish(DetailActivity::class.java) }
         ivMore.setOnClickListener {
             ActionFragment.newInstance(article).show(supportFragmentManager)
         }

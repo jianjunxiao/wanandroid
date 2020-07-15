@@ -5,12 +5,12 @@ import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
 import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
-import com.xiaojianjun.wanandroid.ui.base.BaseVmActivity
+import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.main.home.ArticleAdapter
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
-import com.xiaojianjun.wanandroid.util.core.bus.Bus
-import com.xiaojianjun.wanandroid.util.core.bus.USER_COLLECT_UPDATED
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.bus.Bus
+import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
 import kotlinx.android.synthetic.main.activity_collection.*
 import kotlinx.android.synthetic.main.include_reload.*
 
@@ -28,7 +28,7 @@ class CollectionActivity : BaseVmActivity<CollectionViewModel>() {
             bindToRecyclerView(recyclerView)
             setOnItemClickListener { _, _, position ->
                 val article = data[position]
-                ActivityManager.start(
+                ActivityHelper.start(
                     DetailActivity::class.java, mapOf(DetailActivity.PARAM_ARTICLE to article)
                 )
             }
@@ -49,7 +49,7 @@ class CollectionActivity : BaseVmActivity<CollectionViewModel>() {
         btnReload.setOnClickListener {
             mViewModel.refresh()
         }
-        ivBack.setOnClickListener { ActivityManager.finish(CollectionActivity::class.java) }
+        ivBack.setOnClickListener { ActivityHelper.finish(CollectionActivity::class.java) }
     }
 
     override fun initData() {

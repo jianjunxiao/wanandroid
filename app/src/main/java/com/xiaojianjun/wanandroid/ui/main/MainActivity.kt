@@ -9,7 +9,7 @@ import com.google.android.material.animation.AnimationUtils
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.common.ScrollToTop
 import com.xiaojianjun.wanandroid.ext.showToast
-import com.xiaojianjun.wanandroid.ui.base.BaseActivity
+import com.xiaojianjun.wanandroid.base.BaseActivity
 import com.xiaojianjun.wanandroid.ui.main.discovery.DiscoveryFragment
 import com.xiaojianjun.wanandroid.ui.main.home.HomeFragment
 import com.xiaojianjun.wanandroid.ui.main.mine.MineFragment

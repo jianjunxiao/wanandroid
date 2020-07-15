@@ -7,9 +7,9 @@ import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
 import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
-import com.xiaojianjun.wanandroid.ui.base.BaseVmActivity
+import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.ui.points.rank.PointsRankActivity
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.activity_mine_points.*
 import kotlinx.android.synthetic.main.header_mine_points.view.*
 import kotlinx.android.synthetic.main.include_reload.*
@@ -35,8 +35,8 @@ class MinePointsActivity : BaseVmActivity<MinePointsViewModel>() {
             setProgressBackgroundColorSchemeResource(R.color.bgColorPrimary)
             setOnRefreshListener { mViewModel.refresh() }
         }
-        ivBack.setOnClickListener { ActivityManager.finish(MinePointsActivity::class.java) }
-        ivRank.setOnClickListener { ActivityManager.start(PointsRankActivity::class.java) }
+        ivBack.setOnClickListener { ActivityHelper.finish(MinePointsActivity::class.java) }
+        ivRank.setOnClickListener { ActivityHelper.start(PointsRankActivity::class.java) }
         btnReload.setOnClickListener { mViewModel.refresh() }
     }
 

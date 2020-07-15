@@ -1,35 +1,24 @@
-package com.xiaojianjun.wanandroid.ui.base
+package com.xiaojianjun.wanandroid.base
 
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.xiaojianjun.wanandroid.model.store.isLogin
 import com.xiaojianjun.wanandroid.ui.login.LoginActivity
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
-import com.xiaojianjun.wanandroid.util.core.bus.Bus
-import com.xiaojianjun.wanandroid.util.core.bus.USER_LOGIN_STATE_CHANGED
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.bus.Bus
+import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
 
-abstract class BaseVmFragment<VM : BaseViewModel> : BaseFragment() {
+abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
 
-    protected lateinit var mViewModel: VM
-    private var lazyLoaded = false
+    protected open lateinit var mViewModel: VM
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         initViewModel()
         observe()
         initView()
         initData()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // 实现懒加载
-        if (!lazyLoaded) {
-            lazyLoadData()
-            lazyLoaded = true
-        }
     }
 
     /**
@@ -39,42 +28,36 @@ abstract class BaseVmFragment<VM : BaseViewModel> : BaseFragment() {
         mViewModel = ViewModelProvider(this).get(viewModelClass())
     }
 
+
     /**
      * 获取ViewModel的class
      */
-    abstract fun viewModelClass(): Class<VM>
+    protected abstract fun viewModelClass(): Class<VM>
 
     /**
      * 订阅，LiveData、Bus
      */
     open fun observe() {
         // 登录失效，跳转登录页
-        mViewModel.loginStatusInvalid.observe(viewLifecycleOwner, Observer {
+        mViewModel.loginStatusInvalid.observe(this, Observer {
             if (it) {
                 Bus.post(USER_LOGIN_STATE_CHANGED, false)
-                ActivityManager.start(LoginActivity::class.java)
+                ActivityHelper.start(LoginActivity::class.java)
             }
         })
     }
 
     /**
-     * View初始化相关
+     * 数据初始化相关
      */
     open fun initView() {
         // Override if need
     }
 
     /**
-     * 数据初始化相关
-     */
-    open fun initData() {
-        // Override if need
-    }
-
-    /**
      * 懒加载数据
      */
-    open fun lazyLoadData() {
+    open fun initData() {
         // Override if need
     }
 
@@ -87,7 +70,7 @@ abstract class BaseVmFragment<VM : BaseViewModel> : BaseFragment() {
             then?.invoke()
             true
         } else {
-            ActivityManager.start(LoginActivity::class.java)
+            ActivityHelper.start(LoginActivity::class.java)
             false
         }
     }

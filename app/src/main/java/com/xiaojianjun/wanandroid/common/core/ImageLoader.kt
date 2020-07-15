@@ -1,4 +1,4 @@
-package com.xiaojianjun.wanandroid.util.core
+package com.xiaojianjun.wanandroid.common.core
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

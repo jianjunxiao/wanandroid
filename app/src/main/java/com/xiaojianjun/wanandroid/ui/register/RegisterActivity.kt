@@ -3,9 +3,9 @@ package com.xiaojianjun.wanandroid.ui.register
 import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.ui.base.BaseVmActivity
+import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.ui.login.LoginActivity
-import com.xiaojianjun.wanandroid.util.core.ActivityManager
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : BaseVmActivity<RegisterViewModel>() {
@@ -15,7 +15,7 @@ class RegisterActivity : BaseVmActivity<RegisterViewModel>() {
     override fun viewModelClass() = RegisterViewModel::class.java
 
     override fun initView() {
-        ivBack.setOnClickListener { ActivityManager.finish(RegisterActivity::class.java) }
+        ivBack.setOnClickListener { ActivityHelper.finish(RegisterActivity::class.java) }
         tietConfirmPssword.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 btnRegister.performClick()
@@ -58,7 +58,7 @@ class RegisterActivity : BaseVmActivity<RegisterViewModel>() {
             })
             registerResult.observe(this@RegisterActivity, Observer {
                 if (it) {
-                    ActivityManager.finish(LoginActivity::class.java, RegisterActivity::class.java)
+                    ActivityHelper.finish(LoginActivity::class.java, RegisterActivity::class.java)
                 }
             })
         }
