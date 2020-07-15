@@ -3,11 +3,15 @@ package com.xiaojianjun.wanandroid.ui.main.mine
 import android.annotation.SuppressLint
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
+import com.xiaojianjun.wanandroid.base.BaseVmFragment
+import com.xiaojianjun.wanandroid.common.bus.Bus
+import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.store.UserInfoStore
 import com.xiaojianjun.wanandroid.model.store.isLogin
-import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.ui.collection.CollectionActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity.Companion.PARAM_ARTICLE
@@ -17,9 +21,6 @@ import com.xiaojianjun.wanandroid.ui.points.mine.MinePointsActivity
 import com.xiaojianjun.wanandroid.ui.points.rank.PointsRankActivity
 import com.xiaojianjun.wanandroid.ui.settings.SettingsActivity
 import com.xiaojianjun.wanandroid.ui.shared.SharedActivity
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
-import com.xiaojianjun.wanandroid.common.bus.Bus
-import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
 import kotlinx.android.synthetic.main.fragment_mine.*
 
 class MineFragment : BaseVmFragment<MineViewModel>() {
@@ -74,9 +75,9 @@ class MineFragment : BaseVmFragment<MineViewModel>() {
 
     override fun observe() {
         super.observe()
-        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner) {
-           updateUi()
-        }
+        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, Observer {
+            updateUi()
+        })
     }
 
 

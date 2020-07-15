@@ -3,15 +3,15 @@ package com.xiaojianjun.wanandroid.ui.search.result
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
-import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
 import com.xiaojianjun.wanandroid.base.BaseVmFragment
-import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
-import com.xiaojianjun.wanandroid.ui.main.home.ArticleAdapter
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.common.bus.Bus
 import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
 import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
+import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
+import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
+import com.xiaojianjun.wanandroid.ui.main.home.ArticleAdapter
 import kotlinx.android.synthetic.main.fragment_search_result.*
 import kotlinx.android.synthetic.main.include_reload.*
 
@@ -90,12 +90,12 @@ class SearchResultFragment : BaseVmFragment<SearchResultViewModel>() {
                 reloadView.isVisible = it
             })
         }
-        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner) {
+        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, Observer {
             mViewModel.updateListCollectState()
-        }
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, viewLifecycleOwner) {
+        })
+        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, viewLifecycleOwner, Observer {
             mViewModel.updateItemCollectState(it)
-        }
+        })
     }
 
     fun doSearch(searchWords: String) {

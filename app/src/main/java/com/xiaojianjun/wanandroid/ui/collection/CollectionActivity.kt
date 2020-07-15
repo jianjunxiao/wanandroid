@@ -3,14 +3,14 @@ package com.xiaojianjun.wanandroid.ui.collection
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
-import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
 import com.xiaojianjun.wanandroid.base.BaseVmActivity
-import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
-import com.xiaojianjun.wanandroid.ui.main.home.ArticleAdapter
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.common.bus.Bus
 import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
+import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
+import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
+import com.xiaojianjun.wanandroid.ui.main.home.ArticleAdapter
 import kotlinx.android.synthetic.main.activity_collection.*
 import kotlinx.android.synthetic.main.include_reload.*
 
@@ -80,7 +80,7 @@ class CollectionActivity : BaseVmActivity<CollectionViewModel>() {
                 reloadView.isVisible = it
             })
         }
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this) { (id, collect) ->
+        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this, Observer { (id, collect) ->
             if (collect) {
                 mViewModel.refresh()
             } else {
@@ -89,7 +89,7 @@ class CollectionActivity : BaseVmActivity<CollectionViewModel>() {
                     removeItem(position)
                 }
             }
-        }
+        })
     }
 
     private fun removeItem(position: Int) {

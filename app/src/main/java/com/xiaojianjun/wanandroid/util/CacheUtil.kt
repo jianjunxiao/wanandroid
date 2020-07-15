@@ -10,6 +10,10 @@ import java.math.BigDecimal.ROUND_HALF_UP
 /**
  * Created by xiaojianjun on 2019-12-09.
  */
+
+/**
+ * 获取缓存大小，包含内部内部缓存和外部缓存
+ */
 fun getCacheSize(context: Context): String {
     var cacheSize = getFolderSize(context.cacheDir)
     if (getExternalStorageState() == MEDIA_MOUNTED) {
@@ -46,6 +50,9 @@ private fun getFolderSize(file: File?): Long {
     return size
 }
 
+/**
+ * 清除缓存
+ */
 fun clearCache(context: Context) {
     deleteDir(context.cacheDir)
     if (getExternalStorageState() == MEDIA_MOUNTED) {

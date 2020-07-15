@@ -13,16 +13,16 @@ import com.just.agentweb.DefaultWebClient
 import com.just.agentweb.WebChromeClient
 import com.just.agentweb.WebViewClient
 import com.xiaojianjun.wanandroid.R
+import com.xiaojianjun.wanandroid.base.BaseVmActivity
+import com.xiaojianjun.wanandroid.common.bus.Bus
+import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
+import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.core.whiteHostList
 import com.xiaojianjun.wanandroid.ext.htmlToSpanned
 import com.xiaojianjun.wanandroid.ext.setBrightness
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.store.SettingsStore
-import com.xiaojianjun.wanandroid.base.BaseVmActivity
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
-import com.xiaojianjun.wanandroid.common.bus.Bus
-import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
-import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
-import com.xiaojianjun.wanandroid.common.core.whiteHostList
 import com.xiaojianjun.wanandroid.util.isNightMode
 import kotlinx.android.synthetic.main.activity_detail.*
 
@@ -202,8 +202,8 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
                 Bus.post(USER_COLLECT_UPDATED, article.id to it)
             }
         })
-        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this) {
+        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, Observer {
             mViewModel.updateCollectStatus(article.id)
-        }
+        })
     }
 }

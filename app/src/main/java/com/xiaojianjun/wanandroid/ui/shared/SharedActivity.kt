@@ -4,16 +4,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
-import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
 import com.xiaojianjun.wanandroid.base.BaseVmActivity
-import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
-import com.xiaojianjun.wanandroid.ui.main.home.ArticleAdapter
-import com.xiaojianjun.wanandroid.ui.share.ShareActivity
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.common.bus.Bus
 import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
 import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
+import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
+import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
+import com.xiaojianjun.wanandroid.ui.main.home.ArticleAdapter
+import com.xiaojianjun.wanandroid.ui.share.ShareActivity
 import kotlinx.android.synthetic.main.activity_shared.*
 import kotlinx.android.synthetic.main.include_reload.*
 
@@ -99,11 +99,11 @@ class SharedActivity : BaseVmActivity<SharedViewModel>() {
                 reloadView.isVisible = it
             })
         }
-        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this) {
+        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, Observer {
             mViewModel.updateListCollectState()
-        }
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this) {
+        })
+        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this, Observer {
             mViewModel.updateItemCollectState(it)
-        }
+        })
     }
 }

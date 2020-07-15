@@ -43,7 +43,7 @@ class MainActivity : BaseActivity() {
                 true
             }
             setOnNavigationItemReselectedListener { menuItem ->
-                val fragment = fragments.entries.find { it.key == menuItem.itemId }?.value
+                val fragment = fragments[menuItem.itemId]
                 if (fragment is ScrollToTop) {
                     fragment.scrollToTop()
                 }
@@ -76,7 +76,7 @@ class MainActivity : BaseActivity() {
         val currentFragment = supportFragmentManager.fragments.find {
             it.isVisible && it in fragments.values
         }
-        val targetFragment = fragments.entries.find { it.key == menuItemId }?.value
+        val targetFragment = fragments[menuItemId]
         supportFragmentManager.beginTransaction().apply {
             currentFragment?.let { if (it.isVisible) hide(it) }
             targetFragment?.let {
