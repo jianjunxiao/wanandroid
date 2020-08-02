@@ -1,10 +1,10 @@
 package com.xiaojianjun.wanandroid.ui.main.discovery
 
 import androidx.lifecycle.MutableLiveData
+import com.xiaojianjun.wanandroid.base.BaseViewModel
 import com.xiaojianjun.wanandroid.model.bean.Banner
 import com.xiaojianjun.wanandroid.model.bean.Frequently
 import com.xiaojianjun.wanandroid.model.bean.HotWord
-import com.xiaojianjun.wanandroid.base.BaseViewModel
 
 class DiscoveryViewModel : BaseViewModel() {
 
@@ -16,18 +16,22 @@ class DiscoveryViewModel : BaseViewModel() {
     val reloadStatus = MutableLiveData<Boolean>()
 
     fun getData() {
-        refreshStatus.value = true
-        reloadStatus.value = false
         launch(
             block = {
+                refreshStatus.value = true
+                reloadStatus.value = false
+
                 banners.value = dicoveryRepository.getBanners()
                 hotWords.value = dicoveryRepository.getHotWords()
                 frequentlyList.value = dicoveryRepository.getFrequentlyWebsites()
+
                 refreshStatus.value = false
             },
             error = {
                 refreshStatus.value = false
-                reloadStatus.value = true
+                reloadStatus.value = banners.value.isNullOrEmpty()
+                        && hotWords.value.isNullOrEmpty()
+                        && frequentlyList.value.isNullOrEmpty()
             }
         )
     }
