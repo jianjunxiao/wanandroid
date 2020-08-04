@@ -97,7 +97,7 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
     private fun setupBanner(banners: List<Banner>) {
         bannerView.run {
             setBannerStyle(BannerConfig.NOT_INDICATOR)
-            setImageLoader(BannerImageLoader())
+            setImageLoader(BannerImageLoader(this@DiscoveryFragment))
             setImages(banners)
             setBannerAnimation(Transformer.BackgroundToForeground)
             start()

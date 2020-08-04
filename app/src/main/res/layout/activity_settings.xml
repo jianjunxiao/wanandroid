@@ -32,6 +32,18 @@
                 android:text="@string/system_settings"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="16sp" />
+
+        <ImageView
+                android:id="@+id/ivTest"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="?actionBarItemBackground"
+                android:padding="12dp"
+                android:src="@drawable/ic_baseline_swap_calls_24"
+                android:tint="@color/textColorPrimary" />
     </FrameLayout>
 
     <ScrollView

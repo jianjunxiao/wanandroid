@@ -1,15 +1,25 @@
 package com.xiaojianjun.wanandroid.common.core
 
+import android.app.Activity
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
-fun ImageView.loadImage(url: String?, imageOptions: ImageOptions? = null) {
-    Glide.with(context)
-        .load(url)
+fun ImageView.loadImage(
+    fragment: Fragment? = null,
+    activity: Activity? = null,
+    url: String? = null,
+    imageOptions: ImageOptions? = null
+) {
+    when {
+        fragment != null -> Glide.with(fragment)
+        activity != null -> Glide.with(activity)
+        else -> Glide.with(this)
+    }.load(url)
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(

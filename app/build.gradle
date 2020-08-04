@@ -4,13 +4,17 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+
     compileSdkVersion 29
+
+    buildToolsVersion '30.0.1'
+
     defaultConfig {
         applicationId "com.xiaojianjun.wanandroid"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 20200804
+        versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -21,6 +25,7 @@ android {
             }
         }
     }
+
     signingConfigs {
         config {
             storeFile file("wanandroid.jks")
@@ -31,23 +36,37 @@ android {
             v2SigningEnabled true
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
             signingConfig signingConfigs.config
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            applicationVariants.all { variant ->
-                variant.outputs.all { output ->
-                    outputFileName = "wandroid_v${defaultConfig.versionName}.apk"
-                }
-            }
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.config
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "wandroid_v${defaultConfig.versionName}_${defaultConfig.versionCode}.apk"
+        }
+    }
+
     androidExtensions {
         experimental = true
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -74,9 +93,9 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'com.squareup.okhttp3:okhttp:4.7.2'
-    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
 
     implementation 'com.hyman:flowlayout-lib:1.1.2'
