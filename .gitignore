@@ -12,4 +12,4 @@
 /build
 /captures
 .externalNativeBuild
-.bash_profile
+/.bash_profile
