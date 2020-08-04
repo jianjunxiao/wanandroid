@@ -15,7 +15,7 @@
                 android:id="@+id/rvCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ripple_item_select"
+                android:background="@color/bgColorPrimary"
                 android:elevation="1dp"
                 android:orientation="horizontal"
                 android:paddingTop="10dp"
