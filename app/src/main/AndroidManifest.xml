@@ -81,6 +81,11 @@
                 android:name=".ui.opensource.OpenSourceActivity"
                 android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
                 android:launchMode="singleTask" />
+
+        <activity
+                android:name=".ui.test.TestActivity"
+                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
+                android:launchMode="singleTask" />
     </application>
 
 </manifest>

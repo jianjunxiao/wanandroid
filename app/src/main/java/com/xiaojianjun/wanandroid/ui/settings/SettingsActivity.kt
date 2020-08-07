@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.xiaojianjun.wanandroid.BuildConfig
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.common.simple.SeekBarChangeListenerAdapter
@@ -18,11 +19,13 @@ import com.xiaojianjun.wanandroid.ui.detail.DetailActivity.Companion.PARAM_ARTIC
 import com.xiaojianjun.wanandroid.ui.login.LoginActivity
 import com.xiaojianjun.wanandroid.util.clearCache
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.ui.test.TestActivity
 import com.xiaojianjun.wanandroid.util.getCacheSize
 import com.xiaojianjun.wanandroid.util.isNightMode
 import com.xiaojianjun.wanandroid.util.setNightMode
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.view_change_text_zoom.view.*
+import kotlinx.coroutines.launch
 
 @SuppressLint("SetTextI18n")
 class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
@@ -85,6 +88,7 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
                 .show()
         }
         tvLogout.isVisible = isLogin()
+        ivTest.setOnClickListener { ActivityHelper.start(TestActivity::class.java) }
     }
 
     private fun setFontSize() {
