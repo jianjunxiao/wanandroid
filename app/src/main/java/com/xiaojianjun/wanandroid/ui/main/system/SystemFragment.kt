@@ -51,12 +51,15 @@ class SystemFragment : BaseVmFragment<SystemViewModel>(), ScrollToTop {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            categories.observe(viewLifecycleOwner, Observer {
+            categories.observe(viewLifecycleOwner, Observer { categories->
                 ivFilter.visibility = View.VISIBLE
                 tabLayout.visibility = View.VISIBLE
                 viewPager.visibility = View.VISIBLE
-                setup(it)
-                categoryFragment = SystemCategoryFragment.newInstance(ArrayList(it))
+                val newCategories = categories.filter {
+                    it.children.isNotEmpty()
+                }.toMutableList()
+                setup(newCategories)
+                categoryFragment = SystemCategoryFragment.newInstance(ArrayList(newCategories))
             })
             loadingStatus.observe(viewLifecycleOwner, Observer {
                 progressBar.isVisible = it
