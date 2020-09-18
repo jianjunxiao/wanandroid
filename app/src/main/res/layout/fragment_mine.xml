@@ -49,10 +49,10 @@
                         android:id="@+id/civAratar"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:tint="@color/textColorThird"
                         android:src="@drawable/ic_avatar_black_96dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/textColorThird" />
 
                 <TextView
                         android:id="@+id/tvLoginRegister"
@@ -97,10 +97,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_chevron_right_black_24dp"
-                        android:tint="@color/textColorThird"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/textColorThird" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -125,7 +125,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_my_integral"
-                            android:tint="@color/textColorPrimary" />
+                            app:tint="@color/textColorPrimary" />
 
                     <TextView
                             android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_graphic_eq_black_24dp"
-                            android:tint="@color/textColorPrimary" />
+                            app:tint="@color/textColorPrimary" />
 
                     <TextView
                             android:layout_width="wrap_content"
@@ -190,7 +190,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_add_circle_outline_black_24dp"
-                            android:tint="@color/textColorPrimary" />
+                            app:tint="@color/textColorPrimary" />
 
                     <TextView
                             android:layout_width="wrap_content"
@@ -220,7 +220,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_star_border_black_24dp"
-                            android:tint="@color/textColorPrimary" />
+                            app:tint="@color/textColorPrimary" />
 
                     <TextView
                             android:layout_width="wrap_content"
@@ -250,7 +250,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_history_black_24dp"
-                            android:tint="@color/textColorPrimary" />
+                            app:tint="@color/textColorPrimary" />
 
                     <TextView
                             android:layout_width="wrap_content"
@@ -284,7 +284,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_github"
-                            android:tint="@color/textColorPrimary" />
+                            app:tint="@color/textColorPrimary" />
 
                     <TextView
                             android:layout_width="wrap_content"
@@ -314,7 +314,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_info_outline_black_24dp"
-                            android:tint="@color/textColorPrimary" />
+                            app:tint="@color/textColorPrimary" />
 
                     <TextView
                             android:layout_width="wrap_content"
@@ -344,7 +344,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_settings_black_24dp"
-                            android:tint="@color/textColorPrimary" />
+                            app:tint="@color/textColorPrimary" />
 
                     <TextView
                             android:layout_width="wrap_content"

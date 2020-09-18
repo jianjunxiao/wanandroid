@@ -21,8 +21,8 @@
                 android:layout_marginStart="4dp"
                 android:background="?actionBarItemBackground"
                 android:padding="12dp"
-                android:tint="@color/textColorPrimary"
-                android:src="@drawable/ic_arrow_back_black_24dp" />
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                app:tint="@color/textColorPrimary" />
 
         <TextView
                 android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
                 android:layout_height="72dp"
                 android:layout_marginTop="48dp"
                 android:src="@drawable/ic_android"
-                android:tint="@color/textColorPrimary" />
+                app:tint="@color/textColorPrimary" />
 
         <TextView
                 android:layout_width="wrap_content"

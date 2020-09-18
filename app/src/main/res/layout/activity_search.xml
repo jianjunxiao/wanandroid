@@ -25,9 +25,9 @@
                 android:focusable="true"
                 android:padding="12dp"
                 android:src="@drawable/ic_arrow_back_black_24dp"
-                android:tint="@color/textColorPrimary"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/textColorPrimary" />
 
         <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/acetInput"
@@ -62,12 +62,12 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="13dp"
-                android:tint="@color/textColorPrimary"
                 android:src="@drawable/ic_search_black_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/acetInput"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/textColorPrimary" />
 
         <ImageView
                 android:id="@+id/ivClearSearch"
@@ -77,13 +77,13 @@
                 android:background="?actionBarItemBackground"
                 android:padding="8dp"
                 android:src="@drawable/ic_close_black_24dp"
-                android:tint="@color/textColorPrimary"
                 android:translationZ="1dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/acetInput"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                app:tint="@color/textColorPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout

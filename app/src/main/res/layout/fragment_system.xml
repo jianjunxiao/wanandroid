@@ -41,7 +41,7 @@
                     tools:visibility="visible"
                     android:visibility="gone"
                     android:src="@drawable/ic_filter"
-                    android:tint="@color/textColorPrimary" />
+                    app:tint="@color/textColorPrimary" />
 
         </androidx.appcompat.widget.Toolbar>
 
