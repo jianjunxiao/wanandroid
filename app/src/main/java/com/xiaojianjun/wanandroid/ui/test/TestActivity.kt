@@ -17,6 +17,10 @@ class TestActivity : BaseVmActivity<TestViewModel>() {
     override fun viewModelClass() = TestViewModel::class.java
 
     override fun initView() {
+        startStep()
+    }
+
+    private fun startStep() {
         lifecycleScope.launch {
             load()
             if (!showStep1()) return@launch

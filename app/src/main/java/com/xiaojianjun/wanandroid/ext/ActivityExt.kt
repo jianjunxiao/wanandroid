@@ -1,23 +1,78 @@
 package com.xiaojianjun.wanandroid.ext
 
+import android.annotation.TargetApi
 import android.app.Activity
 import android.graphics.Color
+import android.os.Build
 import android.view.View.*
+import android.view.WindowInsetsController
+import android.view.WindowManager
+
 
 /**
- * Created by xiaojianjun on 2019-11-21.
- */
-/**
- * 沉浸式系统UI，将系统UI(状态栏和导航栏)设为透明，并且主布局沉浸到系统UI下面。
+ * 沉浸式系统UI，将系统状态栏设为透明，并且主布局沉浸到系统状态栏下面。
  * @param [light] true-状态栏字体和图标为黑色，false-状态栏图标为白色
  */
-fun Activity.immersiveSystemUi(light: Boolean = true) {
-    window.run {
-        val mode = if (light) SYSTEM_UI_FLAG_LIGHT_STATUS_BAR else SYSTEM_UI_FLAG_LAYOUT_STABLE
-        decorView.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or mode
-        statusBarColor = Color.TRANSPARENT
-        navigationBarColor = Color.TRANSPARENT
+fun Activity.immersiveStatusBar(light: Boolean = true) {
+    if (Build.VERSION.SDK_INT >= 30) {
+        setDecorFitsSystemWindows(false)
+        setStatusBarAppearance(light)
+        setStatusBarColor(Color.TRANSPARENT)
+    } else {
+        window.run {
+            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            decorView.systemUiVisibility =
+                if (light) {
+                    SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                            SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                } else {
+                    SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or SYSTEM_UI_FLAG_LAYOUT_STABLE
+                }
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            statusBarColor = Color.TRANSPARENT
+        }
     }
+}
+
+/**
+ * 设置浅色状态栏
+ */
+@TargetApi(Build.VERSION_CODES.R)
+fun Activity.setLightStatusBar() {
+    setStatusBarAppearance(true)
+}
+
+/**
+ * 设置深色状态栏
+ */
+@TargetApi(Build.VERSION_CODES.R)
+fun Activity.setDarkStatusBar() {
+    setStatusBarAppearance(false)
+}
+
+/**
+ * 设置状态栏外观
+ * @param light 是否是浅色模式 true-浅色模式，false-深色模式
+ */
+@TargetApi(Build.VERSION_CODES.R)
+fun Activity.setStatusBarAppearance(light: Boolean) {
+    window.decorView.windowInsetsController?.setSystemBarsAppearance(
+        if (light) {
+            0
+        } else {
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+        },
+        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+    )
+}
+
+/**
+ * 设置decor设置状态栏是否不盖住内容
+ * @param decorFitsSystemWindows true-不盖住内容，false-盖住内容
+ */
+@TargetApi(Build.VERSION_CODES.R)
+fun Activity.setDecorFitsSystemWindows(decorFitsSystemWindows: Boolean) {
+    window.setDecorFitsSystemWindows(decorFitsSystemWindows)
 }
 
 /**

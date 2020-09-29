@@ -38,7 +38,7 @@ object SearchHistoryStore {
         return if (listStr.isEmpty()) {
             mutableListOf()
         } else {
-            mGson.fromJson<MutableList<String>>(
+            mGson.fromJson(
                 listStr,
                 object : TypeToken<MutableList<String>>() {}.type
             )
