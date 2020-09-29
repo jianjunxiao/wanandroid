@@ -71,15 +71,15 @@ class NavigationFragment : BaseVmFragment<NavigationViewModel>(), ScrollToTop {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            navigations.observe(viewLifecycleOwner, Observer {
+            navigations.observe(viewLifecycleOwner, {
                 tvFloatTitle.isGone = it.isEmpty()
                 tvFloatTitle.text = it[0].name
                 mAdapter.setNewData(it)
             })
-            refreshStatus.observe(viewLifecycleOwner, Observer {
+            refreshStatus.observe(viewLifecycleOwner, {
                 swipeRefreshLayout.isRefreshing = it
             })
-            reloadStatus.observe(viewLifecycleOwner, Observer {
+            reloadStatus.observe(viewLifecycleOwner, {
                 reloadView.isVisible = it
             })
         }

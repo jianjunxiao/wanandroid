@@ -47,7 +47,7 @@ class MinePointsActivity : BaseVmActivity<MinePointsViewModel>() {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            totalPoints.observe(this@MinePointsActivity, Observer {
+            totalPoints.observe(this@MinePointsActivity, {
                 if (mAdapter.headerLayoutCount == 0) {
                     mAdapter.setHeaderView(mHeaderView)
                 }
@@ -55,10 +55,10 @@ class MinePointsActivity : BaseVmActivity<MinePointsViewModel>() {
                 mHeaderView.tvLevelRank.text = getString(R.string.level_rank, it.level, it.rank)
 
             })
-            pointsList.observe(this@MinePointsActivity, Observer {
+            pointsList.observe(this@MinePointsActivity, {
                 mAdapter.setNewData(it)
             })
-            refreshStatus.observe(this@MinePointsActivity, Observer {
+            refreshStatus.observe(this@MinePointsActivity, {
                 swipeRefreshLayout.isRefreshing = it
             })
             loadMoreStatus.observe(this@MinePointsActivity, Observer {
@@ -69,7 +69,7 @@ class MinePointsActivity : BaseVmActivity<MinePointsViewModel>() {
                     else -> return@Observer
                 }
             })
-            reloadStatus.observe(this@MinePointsActivity, Observer {
+            reloadStatus.observe(this@MinePointsActivity, {
                 reloadView.isVisible = it
             })
         }

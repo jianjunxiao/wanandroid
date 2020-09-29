@@ -78,13 +78,13 @@ class SharedActivity : BaseVmActivity<SharedViewModel>() {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            articleList.observe(this@SharedActivity, Observer {
+            articleList.observe(this@SharedActivity, {
                 mAdapter.setNewData(it)
             })
-            refreshStatus.observe(this@SharedActivity, Observer {
+            refreshStatus.observe(this@SharedActivity, {
                 swipeRefreshLayout.isRefreshing = it
             })
-            emptyStatus.observe(this@SharedActivity, Observer {
+            emptyStatus.observe(this@SharedActivity, {
                 emptyView.isVisible = it
             })
             loadMoreStatus.observe(this@SharedActivity, Observer {
@@ -95,14 +95,14 @@ class SharedActivity : BaseVmActivity<SharedViewModel>() {
                     else -> return@Observer
                 }
             })
-            reloadStatus.observe(this@SharedActivity, Observer {
+            reloadStatus.observe(this@SharedActivity, {
                 reloadView.isVisible = it
             })
         }
-        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, Observer {
+        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, {
             mViewModel.updateListCollectState()
         })
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this, Observer {
+        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this, {
             mViewModel.updateItemCollectState(it)
         })
     }

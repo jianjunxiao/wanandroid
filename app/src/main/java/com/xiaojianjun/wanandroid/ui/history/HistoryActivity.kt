@@ -78,17 +78,17 @@ class HistoryActivity : BaseVmActivity<HistoryViewModel>() {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            articleList.observe(this@HistoryActivity, Observer {
+            articleList.observe(this@HistoryActivity, {
                 mAdapter.setNewData(it)
             })
-            emptyStatus.observe(this@HistoryActivity, Observer {
+            emptyStatus.observe(this@HistoryActivity, {
                 emptyView.isVisible = it
             })
         }
-        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, Observer {
+        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, {
             mViewModel.updateListCollectState()
         })
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this, Observer {
+        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this, {
             mViewModel.updateItemCollectState(it)
         })
     }

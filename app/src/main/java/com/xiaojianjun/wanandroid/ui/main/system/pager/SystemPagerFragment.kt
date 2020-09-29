@@ -101,10 +101,10 @@ class SystemPagerFragment : BaseVmFragment<SystemPagerViewModel>(), ScrollToTop 
     override fun observe() {
         super.observe()
         mViewModel.run {
-            articleList.observe(viewLifecycleOwner, Observer {
+            articleList.observe(viewLifecycleOwner, {
                 mAdapterSimple.setNewData(it)
             })
-            refreshStatus.observe(viewLifecycleOwner, Observer {
+            refreshStatus.observe(viewLifecycleOwner, {
                 swipeRefreshLayout.isRefreshing = it
             })
             loadMoreStatus.observe(viewLifecycleOwner, Observer {
@@ -115,14 +115,14 @@ class SystemPagerFragment : BaseVmFragment<SystemPagerViewModel>(), ScrollToTop 
                     else -> return@Observer
                 }
             })
-            reloadStatus.observe(viewLifecycleOwner, Observer {
+            reloadStatus.observe(viewLifecycleOwner, {
                 reloadView.isVisible = it
             })
         }
-        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, Observer {
+        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, {
             mViewModel.updateListCollectState()
         })
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, viewLifecycleOwner, Observer {
+        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, viewLifecycleOwner, {
             mViewModel.updateItemCollectState(it)
         })
     }

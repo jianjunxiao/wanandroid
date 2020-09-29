@@ -39,7 +39,7 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
      */
     open fun observe() {
         // 登录失效，跳转登录页
-        mViewModel.loginStatusInvalid.observe(this, Observer {
+        mViewModel.loginStatusInvalid.observe(this, {
             if (it) {
                 Bus.post(USER_LOGIN_STATE_CHANGED, false)
                 ActivityHelper.start(LoginActivity::class.java)

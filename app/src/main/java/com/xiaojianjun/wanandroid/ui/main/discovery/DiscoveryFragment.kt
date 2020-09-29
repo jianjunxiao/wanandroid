@@ -61,14 +61,14 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            banners.observe(viewLifecycleOwner, Observer {
+            banners.observe(viewLifecycleOwner, {
                 setupBanner(it)
             })
-            hotWords.observe(viewLifecycleOwner, Observer {
+            hotWords.observe(viewLifecycleOwner, {
                 hotWordsAdapter.setNewData(it)
                 tvHotWordTitle.isVisible = it.isNotEmpty()
             })
-            frequentlyList.observe(viewLifecycleOwner, Observer {
+            frequentlyList.observe(viewLifecycleOwner, {
                 tagFlowLayout.adapter = TagAdapter(it)
                 tagFlowLayout.setOnTagClickListener { _, position, _ ->
                     val frequently = it[position]
@@ -85,10 +85,10 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
                 }
                 tvFrquently.isGone = it.isEmpty()
             })
-            refreshStatus.observe(viewLifecycleOwner, Observer {
+            refreshStatus.observe(viewLifecycleOwner, {
                 swipeRefreshLayout.isRefreshing = it
             })
-            reloadStatus.observe(viewLifecycleOwner, Observer {
+            reloadStatus.observe(viewLifecycleOwner, {
                 reloadView.isVisible = it
             })
         }

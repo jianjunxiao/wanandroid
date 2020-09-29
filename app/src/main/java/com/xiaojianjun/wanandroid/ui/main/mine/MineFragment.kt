@@ -58,7 +58,7 @@ class MineFragment : BaseVmFragment<MineViewModel>() {
                 mapOf(
                     PARAM_ARTICLE to Article(
                         title = getString(R.string.my_about_author),
-                        link = "https://github.com/xiaoyanger0825"
+                        link = "https://github.com/jianjunxiao"
                     )
                 )
             )
@@ -75,7 +75,7 @@ class MineFragment : BaseVmFragment<MineViewModel>() {
 
     override fun observe() {
         super.observe()
-        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, Observer {
+        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, {
             updateUi()
         })
     }

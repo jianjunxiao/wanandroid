@@ -46,10 +46,10 @@ class LoginActivity : BaseVmActivity<LoginViewModel>() {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            submitting.observe(this@LoginActivity, Observer {
+            submitting.observe(this@LoginActivity, {
                 if (it) showProgressDialog(R.string.logging_in) else dismissProgressDialog()
             })
-            loginResult.observe(this@LoginActivity, Observer {
+            loginResult.observe(this@LoginActivity, {
                 if (it) {
                     ActivityHelper.finish(LoginActivity::class.java)
                 }

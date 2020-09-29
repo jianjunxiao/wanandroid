@@ -47,14 +47,14 @@ class ShareActivity : BaseVmActivity<ShareViewModel>() {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            userInfo.observe(this@ShareActivity, Observer {
+            userInfo.observe(this@ShareActivity, {
                 val sharePeople = if (it.nickname.isEmpty()) it.username else it.nickname
                 acetSharePeople.setText(sharePeople)
             })
-            submitting.observe(this@ShareActivity, Observer {
+            submitting.observe(this@ShareActivity, {
                 if (it) showProgressDialog(R.string.sharing_article) else dismissProgressDialog()
             })
-            shareResult.observe(this@ShareActivity, Observer {
+            shareResult.observe(this@ShareActivity, {
                 if (it) {
                     showToast(R.string.share_article_success)
                 }

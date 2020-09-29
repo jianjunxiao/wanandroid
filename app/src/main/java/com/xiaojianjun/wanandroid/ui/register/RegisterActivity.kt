@@ -53,10 +53,10 @@ class RegisterActivity : BaseVmActivity<RegisterViewModel>() {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            submitting.observe(this@RegisterActivity, Observer {
+            submitting.observe(this@RegisterActivity, {
                 if (it) showProgressDialog(R.string.registerring) else dismissProgressDialog()
             })
-            registerResult.observe(this@RegisterActivity, Observer {
+            registerResult.observe(this@RegisterActivity, {
                 if (it) {
                     ActivityHelper.finish(LoginActivity::class.java, RegisterActivity::class.java)
                 }

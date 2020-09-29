@@ -80,17 +80,17 @@ class WechatFragment : BaseVmFragment<WechatViewModel>(),
     override fun observe() {
         super.observe()
         mViewModel.run {
-            categories.observe(viewLifecycleOwner, Observer {
+            categories.observe(viewLifecycleOwner, {
                 rvCategory.isGone = it.isEmpty()
                 mCategoryAdapter.setNewData(it)
             })
-            checkedCategory.observe(viewLifecycleOwner, Observer {
+            checkedCategory.observe(viewLifecycleOwner, {
                 mCategoryAdapter.check(it)
             })
-            articleList.observe(viewLifecycleOwner, Observer {
+            articleList.observe(viewLifecycleOwner, {
                 mAdapterSimple.setNewData(it)
             })
-            refreshStatus.observe(viewLifecycleOwner, Observer {
+            refreshStatus.observe(viewLifecycleOwner, {
                 swipeRefreshLayout.isRefreshing = it
             })
             loadMoreStatus.observe(viewLifecycleOwner, Observer {
@@ -101,17 +101,17 @@ class WechatFragment : BaseVmFragment<WechatViewModel>(),
                     else -> return@Observer
                 }
             })
-            reloadStatus.observe(viewLifecycleOwner, Observer {
+            reloadStatus.observe(viewLifecycleOwner, {
                 reloadView.isVisible = it
             })
-            reloadListStatus.observe(viewLifecycleOwner, Observer {
+            reloadListStatus.observe(viewLifecycleOwner, {
                 reloadListView.isVisible = it
             })
         }
-        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, Observer {
+        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, {
             mViewModel.updateListCollectState()
         })
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, viewLifecycleOwner, Observer {
+        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, viewLifecycleOwner, {
             mViewModel.updateItemCollectState(it)
         })
     }

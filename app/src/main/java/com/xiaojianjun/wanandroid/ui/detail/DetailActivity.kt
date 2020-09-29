@@ -195,14 +195,14 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
 
     override fun observe() {
         super.observe()
-        mViewModel.collect.observe(this, Observer {
+        mViewModel.collect.observe(this, {
             if (article.collect != it) {
                 article.collect = it
                 // 收藏状态变化，通知其他更新
                 Bus.post(USER_COLLECT_UPDATED, article.id to it)
             }
         })
-        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, Observer {
+        Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, {
             mViewModel.updateCollectStatus(article.id)
         })
     }

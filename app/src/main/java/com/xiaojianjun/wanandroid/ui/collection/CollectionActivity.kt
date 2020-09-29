@@ -59,13 +59,13 @@ class CollectionActivity : BaseVmActivity<CollectionViewModel>() {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            articleList.observe(this@CollectionActivity, Observer {
+            articleList.observe(this@CollectionActivity, {
                 mAdater.setNewData(it)
             })
-            refreshStatus.observe(this@CollectionActivity, Observer {
+            refreshStatus.observe(this@CollectionActivity, {
                 swipeRefreshLayout.isRefreshing = it
             })
-            emptyStatus.observe(this@CollectionActivity, Observer {
+            emptyStatus.observe(this@CollectionActivity, {
                 emptyView.isVisible = it
             })
             loadMoreStatus.observe(this@CollectionActivity, Observer {
@@ -76,11 +76,11 @@ class CollectionActivity : BaseVmActivity<CollectionViewModel>() {
                     else -> return@Observer
                 }
             })
-            reloadStatus.observe(this@CollectionActivity, Observer {
+            reloadStatus.observe(this@CollectionActivity, {
                 reloadView.isVisible = it
             })
         }
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this, Observer { (id, collect) ->
+        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this, { (id, collect) ->
             if (collect) {
                 mViewModel.refresh()
             } else {

@@ -41,10 +41,10 @@ class PointsRankActivity : BaseVmActivity<PointsRankViewModel>() {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            pointsRank.observe(this@PointsRankActivity, Observer {
+            pointsRank.observe(this@PointsRankActivity, {
                 mAdapter.setNewData(it)
             })
-            refreshStatus.observe(this@PointsRankActivity, Observer {
+            refreshStatus.observe(this@PointsRankActivity, {
                 swipeRefreshLayout.isRefreshing = it
             })
             loadMoreStatus.observe(this@PointsRankActivity, Observer {
@@ -55,7 +55,7 @@ class PointsRankActivity : BaseVmActivity<PointsRankViewModel>() {
                     else -> return@Observer
                 }
             })
-            reloadStatus.observe(this@PointsRankActivity, Observer {
+            reloadStatus.observe(this@PointsRankActivity, {
                 reloadView.isVisible = it
             })
         }

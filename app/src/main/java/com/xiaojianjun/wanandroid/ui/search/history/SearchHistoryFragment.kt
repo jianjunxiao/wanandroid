@@ -45,11 +45,11 @@ class SearchHistoryFragment : BaseVmFragment<SearchHistoryViewModel>() {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            hotWords.observe(viewLifecycleOwner, Observer {
+            hotWords.observe(viewLifecycleOwner, {
                 tvHotSearch.visibility = View.VISIBLE
                 setHotwords(it)
             })
-            searchHistory.observe(viewLifecycleOwner, Observer {
+            searchHistory.observe(viewLifecycleOwner, {
                 tvSearchHistory.isGone = it.isEmpty()
                 searchHistoryAdapter.submitList(it)
             })

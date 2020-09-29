@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import com.xiaojianjun.wanandroid.BuildConfig
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.common.simple.SeekBarChangeListenerAdapter
@@ -25,7 +24,6 @@ import com.xiaojianjun.wanandroid.util.isNightMode
 import com.xiaojianjun.wanandroid.util.setNightMode
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.view_change_text_zoom.view.*
-import kotlinx.coroutines.launch
 
 @SuppressLint("SetTextI18n")
 class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
@@ -71,7 +69,7 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
                 mapOf(
                     PARAM_ARTICLE to Article(
                         title = getString(R.string.abount_us),
-                        link = "https://github.com/xiaoyanger0825/wanandroid"
+                        link = "https://github.com/jianjunxiao/wanandroid"
                     )
                 )
             )
