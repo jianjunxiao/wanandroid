@@ -1,28 +1,19 @@
 package com.xiaojianjun.wanandroid.util
 
-import android.content.Context
 import android.content.res.Resources
 
 /**
- * Created by xiaojianjun on 2019-11-13.
+ * 像素密度
  */
+internal val density: Float
+    get() {
+        return Resources.getSystem().displayMetrics.density
+    }
+
 /**
- * Created by xiaojianjun on 2019-11-13.
+ * 字体比例像素密度
  */
-fun dpToPx(dp: Float): Float {
-    return dp * Resources.getSystem().displayMetrics.density
-}
-
-fun pxToDp(px: Float): Float {
-    return px / Resources.getSystem().displayMetrics.density
-}
-
-fun spToPx(sp: Float): Float {
-    return sp * Resources.getSystem().displayMetrics.scaledDensity
-}
-
-fun pxToSp(px: Float): Float {
-    return px / Resources.getSystem().displayMetrics.scaledDensity
-}
-
-fun getDensity(): Float = Resources.getSystem().displayMetrics.density
+internal val scaledDensity: Float
+    get() {
+        return Resources.getSystem().displayMetrics.scaledDensity
+    }

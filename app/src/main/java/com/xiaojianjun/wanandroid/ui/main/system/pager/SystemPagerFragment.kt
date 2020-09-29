@@ -13,7 +13,7 @@ import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
 import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
-import com.xiaojianjun.wanandroid.ext.dpToPxInt
+import com.xiaojianjun.wanandroid.ext.dpToPx
 import com.xiaojianjun.wanandroid.model.bean.Category
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.main.home.CategoryAdapter
@@ -140,7 +140,7 @@ class SystemPagerFragment : BaseVmFragment<SystemPagerViewModel>(), ScrollToTop 
             checkedPosition = position
             categoryAdapter.check(position)
             (rvCategory.layoutManager as? LinearLayoutManager)
-                ?.scrollToPositionWithOffset(position, 8f.dpToPxInt())
+                ?.scrollToPositionWithOffset(position, 8.dpToPx().toInt())
             mViewModel.refreshArticleList(categoryList[checkedPosition].id)
         }
     }
