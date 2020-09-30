@@ -1,6 +1,7 @@
 package com.xiaojianjun.wanandroid.model.bean
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -9,6 +10,7 @@ import kotlinx.android.parcel.Parcelize
 /**
  * Created by xiaojianjun on 2019-09-18.
  */
+@Keep
 @Parcelize
 @Entity
 data class Article(

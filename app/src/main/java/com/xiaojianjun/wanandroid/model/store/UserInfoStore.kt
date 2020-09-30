@@ -2,10 +2,10 @@ package com.xiaojianjun.wanandroid.model.store
 
 import com.google.gson.Gson
 import com.xiaojianjun.wanandroid.App
-import com.xiaojianjun.wanandroid.model.bean.UserInfo
 import com.xiaojianjun.wanandroid.common.core.clearSpValue
 import com.xiaojianjun.wanandroid.common.core.getSpValue
 import com.xiaojianjun.wanandroid.common.core.putSpValue
+import com.xiaojianjun.wanandroid.model.bean.UserInfo
 
 /**
  * Created by xiaojianjun on 2019-11-24.

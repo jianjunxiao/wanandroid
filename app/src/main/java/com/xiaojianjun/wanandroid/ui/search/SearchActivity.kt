@@ -5,11 +5,11 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.view.isGone
 import androidx.core.widget.addTextChangedListener
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.ext.hideSoftInput
 import com.xiaojianjun.wanandroid.base.BaseActivity
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.ext.hideSoftInput
 import com.xiaojianjun.wanandroid.ui.search.history.SearchHistoryFragment
 import com.xiaojianjun.wanandroid.ui.search.result.SearchResultFragment
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : BaseActivity() {

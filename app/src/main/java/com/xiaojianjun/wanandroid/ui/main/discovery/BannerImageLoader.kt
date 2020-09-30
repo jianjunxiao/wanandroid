@@ -4,9 +4,9 @@ import android.content.Context
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.model.bean.Banner
 import com.xiaojianjun.wanandroid.common.core.ImageOptions
 import com.xiaojianjun.wanandroid.common.core.loadImage
+import com.xiaojianjun.wanandroid.model.bean.Banner
 import com.youth.banner.loader.ImageLoader
 
 /**

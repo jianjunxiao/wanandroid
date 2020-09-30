@@ -2,18 +2,17 @@ package com.xiaojianjun.wanandroid.ui.main.discovery
 
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
+import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.common.ScrollToTop
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.bean.Banner
-import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity.Companion.PARAM_ARTICLE
 import com.xiaojianjun.wanandroid.ui.main.MainActivity
 import com.xiaojianjun.wanandroid.ui.search.SearchActivity
 import com.xiaojianjun.wanandroid.ui.share.ShareActivity
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
 import kotlinx.android.synthetic.main.fragment_discovery.*

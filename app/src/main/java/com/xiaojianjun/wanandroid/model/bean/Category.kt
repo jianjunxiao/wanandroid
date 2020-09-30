@@ -1,11 +1,13 @@
 package com.xiaojianjun.wanandroid.model.bean
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by xiaojianjun on 2019-11-12.
  */
+@Keep
 @Parcelize
 data class Category(
     val courseId: Int,

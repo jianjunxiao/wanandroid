@@ -7,7 +7,6 @@ import android.view.ViewGroup.LayoutParams
 import android.webkit.ConsoleMessage
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
-import androidx.lifecycle.Observer
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.DefaultWebClient
 import com.just.agentweb.WebChromeClient

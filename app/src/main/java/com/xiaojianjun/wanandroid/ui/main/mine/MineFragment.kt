@@ -3,7 +3,6 @@ package com.xiaojianjun.wanandroid.ui.main.mine
 import android.annotation.SuppressLint
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.common.bus.Bus

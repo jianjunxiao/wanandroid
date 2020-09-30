@@ -1,11 +1,10 @@
 package com.xiaojianjun.wanandroid.ui.login
 
 import android.view.inputmethod.EditorInfo.IME_ACTION_GO
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.base.BaseVmActivity
-import com.xiaojianjun.wanandroid.ui.register.RegisterActivity
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.ui.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseVmActivity<LoginViewModel>() {

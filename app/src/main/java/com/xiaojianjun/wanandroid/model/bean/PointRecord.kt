@@ -1,8 +1,11 @@
 package com.xiaojianjun.wanandroid.model.bean
 
+import androidx.annotation.Keep
+
 /**
  * Created by xiaojianjun on 2019-12-02.
  */
+@Keep
 data class PointRecord(
     val coinCount: Int,
     val date: Long,

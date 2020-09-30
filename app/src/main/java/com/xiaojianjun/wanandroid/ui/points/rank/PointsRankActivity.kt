@@ -3,10 +3,10 @@ package com.xiaojianjun.wanandroid.ui.points.rank
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
-import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
 import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
+import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
 import kotlinx.android.synthetic.main.activity_points_rank.*
 import kotlinx.android.synthetic.main.include_reload.*
 

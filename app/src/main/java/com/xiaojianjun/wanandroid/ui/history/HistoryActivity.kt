@@ -2,7 +2,6 @@ package com.xiaojianjun.wanandroid.ui.history
 
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.common.bus.Bus

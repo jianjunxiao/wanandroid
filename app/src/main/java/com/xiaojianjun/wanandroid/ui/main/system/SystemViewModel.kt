@@ -1,8 +1,8 @@
 package com.xiaojianjun.wanandroid.ui.main.system
 
 import androidx.lifecycle.MutableLiveData
-import com.xiaojianjun.wanandroid.model.bean.Category
 import com.xiaojianjun.wanandroid.base.BaseViewModel
+import com.xiaojianjun.wanandroid.model.bean.Category
 
 class SystemViewModel : BaseViewModel() {
     private val systemRepository by lazy { SystemRepository() }

@@ -1,12 +1,11 @@
 package com.xiaojianjun.wanandroid.ui.share
 
 import android.view.inputmethod.EditorInfo
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.ext.hideSoftInput
-import com.xiaojianjun.wanandroid.ext.showToast
 import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.ext.hideSoftInput
+import com.xiaojianjun.wanandroid.ext.showToast
 import kotlinx.android.synthetic.main.activity_share.*
 
 class ShareActivity : BaseVmActivity<ShareViewModel>() {

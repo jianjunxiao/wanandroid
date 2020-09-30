@@ -1,10 +1,10 @@
 package com.xiaojianjun.wanandroid.ui.detail
 
 import androidx.lifecycle.MutableLiveData
+import com.xiaojianjun.wanandroid.base.BaseViewModel
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.store.UserInfoStore
 import com.xiaojianjun.wanandroid.model.store.isLogin
-import com.xiaojianjun.wanandroid.base.BaseViewModel
 import com.xiaojianjun.wanandroid.ui.common.CollectRepository
 
 /**

@@ -3,8 +3,8 @@ package com.xiaojianjun.wanandroid.ui.splash
 import android.os.Bundle
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.base.BaseActivity
-import com.xiaojianjun.wanandroid.ui.main.MainActivity
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.ui.main.MainActivity
 
 class SplashActivity : BaseActivity() {
 

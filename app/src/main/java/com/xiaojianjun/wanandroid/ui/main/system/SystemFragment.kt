@@ -2,13 +2,12 @@ package com.xiaojianjun.wanandroid.ui.main.system
 
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.google.android.material.appbar.AppBarLayout
 import com.xiaojianjun.wanandroid.R
+import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.common.ScrollToTop
 import com.xiaojianjun.wanandroid.common.adapter.SimpleFragmentPagerAdapter
 import com.xiaojianjun.wanandroid.model.bean.Category
-import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.ui.main.MainActivity
 import com.xiaojianjun.wanandroid.ui.main.system.category.SystemCategoryFragment
 import com.xiaojianjun.wanandroid.ui.main.system.pager.SystemPagerFragment
@@ -51,7 +50,7 @@ class SystemFragment : BaseVmFragment<SystemViewModel>(), ScrollToTop {
     override fun observe() {
         super.observe()
         mViewModel.run {
-            categories.observe(viewLifecycleOwner, { categories->
+            categories.observe(viewLifecycleOwner, { categories ->
                 ivFilter.visibility = View.VISIBLE
                 tabLayout.visibility = View.VISIBLE
                 viewPager.visibility = View.VISIBLE

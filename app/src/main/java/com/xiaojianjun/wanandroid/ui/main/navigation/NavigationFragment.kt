@@ -2,15 +2,14 @@ package com.xiaojianjun.wanandroid.ui.main.navigation
 
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.common.ScrollToTop
-import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.base.BaseVmFragment
+import com.xiaojianjun.wanandroid.common.ScrollToTop
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.main.MainActivity
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.fragment_navigation.*
 import kotlinx.android.synthetic.main.include_reload.*
 

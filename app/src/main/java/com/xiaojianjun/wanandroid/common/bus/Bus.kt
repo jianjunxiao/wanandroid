@@ -30,7 +30,7 @@ object Bus {
      * 应用进程生命周期内订阅LiveDataEventBus消息
      * @param channel 渠道
      * @param observer 观察者
-    */
+     */
     inline fun <reified T> observeForever(channel: String, observer: Observer<T>) {
         LiveEventBus.get(channel, T::class.java).observeForever(observer)
     }

@@ -5,11 +5,11 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
+import com.xiaojianjun.wanandroid.base.BaseVmActivity
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
 import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
-import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.ui.points.rank.PointsRankActivity
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.activity_mine_points.*
 import kotlinx.android.synthetic.main.header_mine_points.view.*
 import kotlinx.android.synthetic.main.include_reload.*

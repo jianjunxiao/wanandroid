@@ -1,8 +1,11 @@
 package com.xiaojianjun.wanandroid.model.bean
 
+import androidx.annotation.Keep
+
 /**
  * Created by xiaojianjun on 2019-11-22.
  */
+@Keep
 data class UserInfo(
     val admin: Boolean,
     val email: String,

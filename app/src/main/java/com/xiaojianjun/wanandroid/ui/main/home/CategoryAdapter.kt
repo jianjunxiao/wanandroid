@@ -29,7 +29,8 @@ class CategoryAdapter(layoutResId: Int = R.layout.item_category_sub) :
                 onCheckedListener?.invoke(position)
             }
             updateLayoutParams<MarginLayoutParams> {
-                marginStart = if (helper.adapterPosition == 0) 8.dpToPx().toInt() else 0.dpToPx().toInt()
+                marginStart =
+                    if (helper.adapterPosition == 0) 8.dpToPx().toInt() else 0.dpToPx().toInt()
             }
         }
     }

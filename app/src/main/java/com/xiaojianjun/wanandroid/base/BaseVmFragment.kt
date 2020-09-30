@@ -2,13 +2,12 @@ package com.xiaojianjun.wanandroid.base
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.xiaojianjun.wanandroid.model.store.isLogin
-import com.xiaojianjun.wanandroid.ui.login.LoginActivity
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.common.bus.Bus
 import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.model.store.isLogin
+import com.xiaojianjun.wanandroid.ui.login.LoginActivity
 
 abstract class BaseVmFragment<VM : BaseViewModel> : BaseFragment() {
 

@@ -2,11 +2,11 @@ package com.xiaojianjun.wanandroid.ui.opensource
 
 import android.os.Bundle
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.base.BaseActivity
+import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity.Companion.PARAM_ARTICLE
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import kotlinx.android.synthetic.main.activity_open_source.*
 
 class OpenSourceActivity : BaseActivity() {

@@ -28,3 +28,7 @@
 
 # Banner
 -keep class com.youth.banner.** { *; }
+
+#agentWeb
+-dontwarn com.just.agentweb.**
+-keep class com.just.agentweb.** {*;}
