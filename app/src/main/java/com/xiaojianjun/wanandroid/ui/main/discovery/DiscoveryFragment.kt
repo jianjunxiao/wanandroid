@@ -46,7 +46,13 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
 
         hotWordsAdapter = HotWordsAdapter(R.layout.item_hot_word).apply {
             bindToRecyclerView(rvHotWord)
-            setOnItemClickListener { _, _, _ -> }
+            setOnItemClickListener { _, _, position ->
+                ActivityHelper.start(
+                    SearchActivity::class.java, mapOf(
+                        SearchActivity.SEARCH_WORDS to data[position].name
+                    )
+                )
+            }
         }
         btnReload.setOnClickListener {
             mViewModel.getData()

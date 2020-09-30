@@ -14,6 +14,10 @@ import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : BaseActivity() {
 
+    companion object {
+        const val SEARCH_WORDS = "search_words"
+    }
+
     override fun layoutRes() = R.layout.activity_search
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,11 +71,15 @@ class SearchActivity : BaseActivity() {
             }
         }
         ivClearSearch.setOnClickListener { acetInput.setText("") }
+
+        // 跳转搜索
+        intent.getStringExtra(SEARCH_WORDS)?.let { window.decorView.post { fillSearchInput(it) } }
     }
 
     fun fillSearchInput(keywords: String) {
         acetInput.setText(keywords)
         acetInput.setSelection(keywords.length)
+        ivDone.performClick()
     }
 
     override fun onBackPressed() {

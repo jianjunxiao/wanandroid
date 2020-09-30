@@ -3,6 +3,7 @@ package com.xiaojianjun.wanandroid.ui.main.system.category
 import android.view.LayoutInflater
 import android.view.View
 import com.xiaojianjun.wanandroid.R
+import com.xiaojianjun.wanandroid.ext.htmlToSpanned
 import com.xiaojianjun.wanandroid.model.bean.Category
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
@@ -14,11 +15,7 @@ class ItemTagAdapter(private val categoryList: List<Category>) :
         return LayoutInflater.from(parent?.context)
             .inflate(R.layout.item_system_category_tag, parent, false)
             .apply {
-                tvTag.text = categoryList[position].name
+                tvTag.text = categoryList[position].name.htmlToSpanned()
             }
-    }
-
-    override fun setSelected(position: Int, t: Category?): Boolean {
-        return super.setSelected(position, t)
     }
 }
