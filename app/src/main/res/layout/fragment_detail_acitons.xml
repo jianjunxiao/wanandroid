@@ -13,9 +13,9 @@
             android:background="?selectableItemBackground"
             android:gravity="center_vertical"
             android:paddingStart="16dp"
-            android:paddingTop="12dp"
+            android:paddingTop="14dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="12dp">
+            android:paddingBottom="14dp">
 
         <ImageView
                 android:id="@+id/ivCollect"
@@ -45,9 +45,9 @@
             android:background="?selectableItemBackground"
             android:gravity="center_vertical"
             android:paddingStart="16dp"
-            android:paddingTop="12dp"
+            android:paddingTop="14dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="12dp">
+            android:paddingBottom="14dp">
 
         <ImageView
                 android:layout_width="20dp"
@@ -75,9 +75,9 @@
             android:background="?selectableItemBackground"
             android:gravity="center_vertical"
             android:paddingStart="16dp"
-            android:paddingTop="12dp"
+            android:paddingTop="14dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="12dp">
+            android:paddingBottom="14dp">
 
         <ImageView
                 android:layout_width="20dp"
@@ -105,9 +105,9 @@
             android:background="?selectableItemBackground"
             android:gravity="center_vertical"
             android:paddingStart="16dp"
-            android:paddingTop="12dp"
+            android:paddingTop="14dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="12dp">
+            android:paddingBottom="14dp">
 
         <ImageView
                 android:layout_width="20dp"
@@ -135,9 +135,9 @@
             android:background="?selectableItemBackground"
             android:gravity="center_vertical"
             android:paddingStart="16dp"
-            android:paddingTop="12dp"
+            android:paddingTop="14dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="12dp">
+            android:paddingBottom="14dp">
 
         <ImageView
                 android:layout_width="20dp"
