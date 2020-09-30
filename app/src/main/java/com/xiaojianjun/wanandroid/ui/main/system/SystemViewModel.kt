@@ -12,10 +12,10 @@ class SystemViewModel : BaseViewModel() {
 
 
     fun getArticleCategory() {
-        loadingStatus.value = true
-        reloadStatus.value = false
         launch(
             block = {
+                loadingStatus.value = true
+                reloadStatus.value = false
                 categories.value = systemRepository.getArticleCategories()
                 loadingStatus.value = false
             },

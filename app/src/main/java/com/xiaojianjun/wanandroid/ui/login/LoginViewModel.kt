@@ -17,9 +17,9 @@ class LoginViewModel : BaseViewModel() {
 
 
     fun login(account: String, password: String) {
-        submitting.value = true
         launch(
             block = {
+                submitting.value = true
                 val userInfo = loginRepository.login(account, password)
                 UserInfoStore.setUserInfo(userInfo)
                 Bus.post(USER_LOGIN_STATE_CHANGED, true)

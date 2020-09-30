@@ -19,18 +19,21 @@ class CollectionViewModel : BaseViewModel() {
     private val collectRepository by lazy { CollectRepository() }
 
     val articleList = MutableLiveData<MutableList<Article>>()
+
     val refreshStatus = MutableLiveData<Boolean>()
     val loadMoreStatus = MutableLiveData<LoadMoreStatus>()
     val reloadStatus = MutableLiveData<Boolean>()
     val emptyStatus = MutableLiveData<Boolean>()
+
     private var page = INITIAL_PAGE
 
     fun refresh() {
-        refreshStatus.value = true
-        emptyStatus.value = false
-        reloadStatus.value = false
         launch(
             block = {
+                refreshStatus.value = true
+                emptyStatus.value = false
+                reloadStatus.value = false
+
                 val pagination = collectionRepository.getCollectionList(INITIAL_PAGE)
                 pagination.datas.forEach { it.collect = true }
                 page = pagination.curPage
@@ -46,9 +49,10 @@ class CollectionViewModel : BaseViewModel() {
     }
 
     fun loadMore() {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
+
                 val pagination = collectionRepository.getCollectionList(page)
                 pagination.datas.forEach { it.collect = true }
                 page = pagination.curPage

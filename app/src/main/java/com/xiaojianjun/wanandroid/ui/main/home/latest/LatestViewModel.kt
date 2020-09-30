@@ -28,10 +28,11 @@ class LatestViewModel : BaseViewModel() {
     private var page = INITIAL_PAGE
 
     fun refreshProjectList() {
-        refreshStatus.value = true
-        reloadStatus.value = false
         launch(
             block = {
+                refreshStatus.value = true
+                reloadStatus.value = false
+
                 val pagination = latestRepository.getProjectList(INITIAL_PAGE)
                 page = pagination.curPage
                 articleList.value = pagination.datas.toMutableList()
@@ -45,9 +46,10 @@ class LatestViewModel : BaseViewModel() {
     }
 
     fun loadMoreProjectList() {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
+
                 val pagination = latestRepository.getProjectList(page)
                 page = pagination.curPage
 

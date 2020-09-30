@@ -20,6 +20,7 @@ class PlazaViewModel : BaseViewModel() {
     private val collectRepository by lazy { CollectRepository() }
 
     val articleList: MutableLiveData<MutableList<Article>> = MutableLiveData()
+
     val loadMoreStatus = MutableLiveData<LoadMoreStatus>()
     val refreshStatus = MutableLiveData<Boolean>()
     val reloadStatus = MutableLiveData<Boolean>()
@@ -27,13 +28,15 @@ class PlazaViewModel : BaseViewModel() {
     private var page = INITIAL_PAGE
 
     fun refreshArticleList() {
-        refreshStatus.value = true
-        reloadStatus.value = false
         launch(
             block = {
+                refreshStatus.value = true
+                reloadStatus.value = false
+
                 val pagination = plazaRepository.getUserArticleList(INITIAL_PAGE)
                 page = pagination.curPage
                 articleList.value = pagination.datas.toMutableList()
+
                 refreshStatus.value = false
             },
             error = {
@@ -44,9 +47,10 @@ class PlazaViewModel : BaseViewModel() {
     }
 
     fun loadMoreArticleList() {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
+
                 val pagination = plazaRepository.getUserArticleList(page)
                 page = pagination.curPage
 

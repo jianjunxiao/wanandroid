@@ -41,10 +41,7 @@ class PopularViewModel : BaseViewModel() {
                     .apply { forEach { it.top = true } }
                 val pagination = paginationDefferd.await()
                 page = pagination.curPage
-                articleList.value = mutableListOf<Article>().apply {
-                    addAll(topArticleList)
-                    addAll(pagination.datas)
-                }
+                articleList.value = (topArticleList + pagination.datas).toMutableList()
                 refreshStatus.value = false
             },
             error = {
@@ -55,9 +52,9 @@ class PopularViewModel : BaseViewModel() {
     }
 
     fun loadMoreArticleList() {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
                 val pagination = popularRepository.getArticleList(page)
                 page = pagination.curPage
                 val currentList = articleList.value ?: mutableListOf()

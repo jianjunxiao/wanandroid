@@ -16,6 +16,7 @@ class PointsRankViewModel : BaseViewModel() {
     private val pointsRankRespository by lazy { PointsRankRespository() }
 
     val pointsRank = MutableLiveData<MutableList<PointRank>>()
+
     val loadMoreStatus = MutableLiveData<LoadMoreStatus>()
     val refreshStatus = MutableLiveData<Boolean>()
     val reloadStatus = MutableLiveData<Boolean>()
@@ -23,10 +24,10 @@ class PointsRankViewModel : BaseViewModel() {
     private var page = INITIAL_PAGE
 
     fun refreshData() {
-        refreshStatus.value = true
-        reloadStatus.value = false
         launch(
             block = {
+                refreshStatus.value = true
+                reloadStatus.value = false
                 val pagination = pointsRankRespository.getPointsRank(INITIAL_PAGE)
                 page = pagination.curPage
                 pointsRank.value = pagination.datas.toMutableList()
@@ -39,9 +40,9 @@ class PointsRankViewModel : BaseViewModel() {
     }
 
     fun loadMoreData() {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
                 val pagination = pointsRankRespository.getPointsRank(page + 1)
                 page = pagination.curPage
                 pointsRank.value?.addAll(pagination.datas)

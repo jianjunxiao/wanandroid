@@ -38,10 +38,10 @@ class SystemPagerViewModel : BaseViewModel() {
             id = cid
             articleList.value = mutableListOf()
         }
-        refreshStatus.value = true
-        reloadStatus.value = false
         refreshJob = launch(
             block = {
+                refreshStatus.value = true
+                reloadStatus.value = false
                 val pagination = systemPagerRepository.getArticleListByCid(INITIAL_PAGE, cid)
                 page = pagination.curPage
                 articleList.value = pagination.datas.toMutableList()
@@ -55,9 +55,9 @@ class SystemPagerViewModel : BaseViewModel() {
     }
 
     fun loadMoreArticleList(cid: Int) {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
                 val pagination = systemPagerRepository.getArticleListByCid(page, cid)
                 page = pagination.curPage
 

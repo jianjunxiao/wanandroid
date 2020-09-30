@@ -19,13 +19,15 @@ class HistoryViewModel : BaseViewModel() {
     private val collectRepository by lazy { CollectRepository() }
 
     val articleList = MutableLiveData<MutableList<Article>>()
+
     val emptyStatus = MutableLiveData<Boolean>()
 
 
     fun getData() {
-        emptyStatus.value = false
         launch(
             block = {
+                emptyStatus.value = false
+
                 val readHistory = historyRepository.getReadHistory()
                 val collectIds = UserInfoStore.getUserInfo()?.collectIds ?: emptyList<Int>()
                 readHistory.forEach { it.collect = collectIds.contains(it.id) }

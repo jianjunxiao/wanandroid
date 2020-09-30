@@ -15,9 +15,9 @@ class RegisterViewModel : BaseViewModel() {
     val registerResult = MutableLiveData<Boolean>()
 
     fun register(account: String, password: String, confirmPassword: String) {
-        submitting.value = true
         launch(
             block = {
+                submitting.value = true
                 val userInfo = registerRepository.register(account, password, confirmPassword)
                 UserInfoStore.setUserInfo(userInfo)
                 Bus.post(USER_LOGIN_STATE_CHANGED, true)

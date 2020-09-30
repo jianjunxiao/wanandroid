@@ -20,9 +20,9 @@ class ShareViewModel : BaseViewModel() {
     }
 
     fun shareArticle(title: String, link: String) {
-        submitting.value = true
         launch(
             block = {
+                submitting.value = true
                 shareRepository.shareArticle(title, link)
                 shareResult.value = true
                 submitting.value = false

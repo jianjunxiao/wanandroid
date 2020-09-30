@@ -25,15 +25,17 @@ class MinePointsViewModel : BaseViewModel() {
     var page = INITIAL_PAGE
 
     fun refresh() {
-        refreshStatus.value = true
-        reloadStatus.value = false
         launch(
             block = {
+                refreshStatus.value = true
+                reloadStatus.value = false
+
                 val points = minePointsRespository.getMyPoints()
                 val pagination = minePointsRespository.getPointsRecord(INITIAL_PAGE)
                 page = pagination.curPage
                 totalPoints.value = points
                 pointsList.value = pagination.datas.toMutableList()
+
                 refreshStatus.value = false
             },
             error = {
@@ -44,12 +46,14 @@ class MinePointsViewModel : BaseViewModel() {
     }
 
     fun loadMoreRecord() {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
+
                 val pagination = minePointsRespository.getPointsRecord(page + 1)
                 page = pagination.curPage
                 pointsList.value?.addAll(pagination.datas)
+
                 loadMoreStatus.value = if (pagination.offset >= pagination.total) {
                     LoadMoreStatus.END
                 } else {

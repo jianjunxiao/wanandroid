@@ -24,6 +24,7 @@ class WechatViewModel : BaseViewModel() {
     val categories: MutableLiveData<MutableList<Category>> = MutableLiveData()
     val checkedCategory: MutableLiveData<Int> = MutableLiveData()
     val articleList: MutableLiveData<MutableList<Article>> = MutableLiveData()
+
     val loadMoreStatus = MutableLiveData<LoadMoreStatus>()
     val refreshStatus = MutableLiveData<Boolean>()
     val reloadStatus = MutableLiveData<Boolean>()
@@ -33,10 +34,11 @@ class WechatViewModel : BaseViewModel() {
 
 
     fun getWechatCategory() {
-        refreshStatus.value = true
-        reloadStatus.value = false
         launch(
             block = {
+                refreshStatus.value = true
+                reloadStatus.value = false
+
                 val categoryList = wechatRepository.getWechatCategories()
                 val checkedPosition = INITIAL_CHECKED
                 val id = categoryList[checkedPosition].id
@@ -56,14 +58,16 @@ class WechatViewModel : BaseViewModel() {
     }
 
     fun refreshWechatArticleList(checkedPosition: Int = checkedCategory.value ?: INITIAL_CHECKED) {
-        refreshStatus.value = true
-        reloadListStatus.value = false
-        if (checkedPosition != checkedCategory.value) {
-            articleList.value = mutableListOf()
-            checkedCategory.value = checkedPosition
-        }
         launch(
             block = {
+                refreshStatus.value = true
+                reloadListStatus.value = false
+
+                if (checkedPosition != checkedCategory.value) {
+                    articleList.value = mutableListOf()
+                    checkedCategory.value = checkedPosition
+                }
+
                 val categoryList = categories.value ?: return@launch
                 val id = categoryList[checkedPosition].id
                 val pagination = wechatRepository.getWechatArticleList(INITIAL_PAGE, id)
@@ -80,9 +84,10 @@ class WechatViewModel : BaseViewModel() {
     }
 
     fun loadMoreWechatArticleList() {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
+
                 val categoryList = categories.value ?: return@launch
                 val checkedPosition = checkedCategory.value ?: return@launch
                 val id = categoryList[checkedPosition].id

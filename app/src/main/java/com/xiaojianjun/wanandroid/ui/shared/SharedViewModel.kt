@@ -31,10 +31,10 @@ class SharedViewModel : BaseViewModel() {
     private var page = INITIAL_PAGE
 
     fun refreshArticleList() {
-        refreshStatus.value = true
-        reloadStatus.value = false
         launch(
             block = {
+                refreshStatus.value = true
+                reloadStatus.value = false
                 val pagination = sharedRepository.getSharedArticleList(INITIAL_PAGE).shareArticles
                 page = pagination.curPage
                 articleList.value = pagination.datas.toMutableList()
@@ -49,9 +49,9 @@ class SharedViewModel : BaseViewModel() {
     }
 
     fun loadMoreArticleList() {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
                 val pagination = sharedRepository.getSharedArticleList(page + 1).shareArticles
                 page = pagination.curPage
 

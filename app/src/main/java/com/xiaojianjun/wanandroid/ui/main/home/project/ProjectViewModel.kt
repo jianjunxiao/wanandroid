@@ -24,6 +24,7 @@ class ProjectViewModel : BaseViewModel() {
     val categories: MutableLiveData<MutableList<Category>> = MutableLiveData()
     val checkedCategory: MutableLiveData<Int> = MutableLiveData()
     val articleList: MutableLiveData<MutableList<Article>> = MutableLiveData()
+
     val loadMoreStatus = MutableLiveData<LoadMoreStatus>()
     val refreshStatus = MutableLiveData<Boolean>()
     val reloadStatus = MutableLiveData<Boolean>()
@@ -33,19 +34,20 @@ class ProjectViewModel : BaseViewModel() {
 
 
     fun getProjectCategory() {
-        refreshStatus.value = true
-        reloadStatus.value = false
         launch(
             block = {
+                refreshStatus.value = true
+                reloadStatus.value = false
+
                 val categoryList = projectRepository.getProjectCategories()
                 val checkedPosition = INITIAL_CHECKED
                 val cid = categoryList[checkedPosition].id
                 val pagination = projectRepository.getProjectListByCid(INITIAL_PAGE, cid)
                 page = pagination.curPage
-
                 categories.value = categoryList
                 checkedCategory.value = checkedPosition
                 articleList.value = pagination.datas.toMutableList()
+
                 refreshStatus.value = false
             },
             error = {
@@ -56,20 +58,22 @@ class ProjectViewModel : BaseViewModel() {
     }
 
     fun refreshProjectList(checkedPosition: Int = checkedCategory.value ?: INITIAL_CHECKED) {
-        refreshStatus.value = true
-        reloadListStatus.value = false
-        if (checkedPosition != checkedCategory.value) {
-            articleList.value = mutableListOf()
-            checkedCategory.value = checkedPosition
-        }
         launch(
             block = {
+                refreshStatus.value = true
+                reloadListStatus.value = false
+
+                if (checkedPosition != checkedCategory.value) {
+                    articleList.value = mutableListOf()
+                    checkedCategory.value = checkedPosition
+                }
+
                 val categoryList = categories.value ?: return@launch
                 val cid = categoryList[checkedPosition].id
                 val pagination = projectRepository.getProjectListByCid(INITIAL_PAGE, cid)
                 page = pagination.curPage
-
                 articleList.value = pagination.datas.toMutableList()
+
                 refreshStatus.value = false
             },
             error = {
@@ -80,9 +84,10 @@ class ProjectViewModel : BaseViewModel() {
     }
 
     fun loadMoreProjectList() {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
+
                 val categoryList = categories.value ?: return@launch
                 val checkedPosition = checkedCategory.value ?: return@launch
                 val cid = categoryList[checkedPosition].id

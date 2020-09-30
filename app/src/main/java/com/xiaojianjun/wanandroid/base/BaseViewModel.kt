@@ -16,9 +16,9 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-typealias Block<T> = suspend () -> T
-typealias Error = suspend (e: Exception) -> Unit
-typealias Cancel = suspend (e: Exception) -> Unit
+typealias Block<T> = suspend (CoroutineScope) -> T
+typealias Error = suspend (Exception) -> Unit
+typealias Cancel = suspend (Exception) -> Unit
 
 /**
  * Created by xiaojianjun on 2019-09-20.
@@ -43,7 +43,7 @@ open class BaseViewModel : ViewModel() {
     ): Job {
         return viewModelScope.launch {
             try {
-                block.invoke()
+                block.invoke(this)
             } catch (e: Exception) {
                 when (e) {
                     is CancellationException -> {
@@ -64,7 +64,7 @@ open class BaseViewModel : ViewModel() {
      * @return Deferred<T>
      */
     protected fun <T> async(block: Block<T>): Deferred<T> {
-        return viewModelScope.async { block.invoke() }
+        return viewModelScope.async { block.invoke(this) }
     }
 
     /**

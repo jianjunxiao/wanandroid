@@ -23,23 +23,27 @@ class SearchResultViewModel : BaseViewModel() {
     private val collectRepository by lazy { CollectRepository() }
 
     val articleList = MutableLiveData<MutableList<Article>>()
+
     val refreshStatus = MutableLiveData<Boolean>()
     val loadMoreStatus = MutableLiveData<LoadMoreStatus>()
     val reloadStatus = MutableLiveData<Boolean>()
     val emptyStatus = MutableLiveData<Boolean>()
+
     private var currentKeywords = ""
     private var page = INITIAL_PAGE
 
     fun search(keywords: String = currentKeywords) {
-        if (currentKeywords != keywords) {
-            currentKeywords = keywords
-            articleList.value = emptyList<Article>().toMutableList()
-        }
-        refreshStatus.value = true
-        emptyStatus.value = false
-        reloadStatus.value = false
         launch(
             block = {
+                if (currentKeywords != keywords) {
+                    currentKeywords = keywords
+                    articleList.value = emptyList<Article>().toMutableList()
+                }
+
+                refreshStatus.value = true
+                emptyStatus.value = false
+                reloadStatus.value = false
+
                 val pagination = searchResultRepository.search(keywords, INITIAL_PAGE)
                 page = pagination.curPage
                 articleList.value = pagination.datas.toMutableList()
@@ -54,9 +58,9 @@ class SearchResultViewModel : BaseViewModel() {
     }
 
     fun loadMore() {
-        loadMoreStatus.value = LoadMoreStatus.LOADING
         launch(
             block = {
+                loadMoreStatus.value = LoadMoreStatus.LOADING
                 val pagination = searchResultRepository.search(currentKeywords, page)
                 page = pagination.curPage
                 val currentList = articleList.value ?: mutableListOf()

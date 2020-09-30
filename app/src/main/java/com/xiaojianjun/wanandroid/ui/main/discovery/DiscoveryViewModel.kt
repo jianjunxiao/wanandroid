@@ -9,9 +9,11 @@ import com.xiaojianjun.wanandroid.model.bean.HotWord
 class DiscoveryViewModel : BaseViewModel() {
 
     private val dicoveryRepository by lazy { DiscoveryRepository() }
+
     val banners = MutableLiveData<List<Banner>>()
     val hotWords = MutableLiveData<List<HotWord>>()
     val frequentlyList = MutableLiveData<List<Frequently>>()
+
     val refreshStatus = MutableLiveData<Boolean>()
     val reloadStatus = MutableLiveData<Boolean>()
 

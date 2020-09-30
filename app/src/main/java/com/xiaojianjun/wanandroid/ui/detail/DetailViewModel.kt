@@ -14,6 +14,7 @@ class DetailViewModel : BaseViewModel() {
 
     private val detailRepository by lazy { DetailRepository() }
     private val collectRepository by lazy { CollectRepository() }
+
     val collect = MutableLiveData<Boolean>()
 
     fun collect(id: Int) {
