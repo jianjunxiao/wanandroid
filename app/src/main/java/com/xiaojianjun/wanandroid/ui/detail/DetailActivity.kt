@@ -134,10 +134,11 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
                 js.append("if(fubiaoList&&fubiaoList.length){fubiaoList[0].parentNode.removeChild(fubiaoList[0])}")
                 js.append("var ads = document.getElementsByClassName('note-comment-above-ad-wrap');")
                 js.append("if(ads&&ads.length){ads[0].parentNode.removeChild(ads[0])}")
-
                 js.append("var lazyShimList = document.getElementsByClassName('v-lazy-shim');")
                 js.append("if(lazyShimList&&lazyShimList.length&&lazyShimList[0]){lazyShimList[0].parentNode.removeChild(lazyShimList[0])}")
                 js.append("if(lazyShimList&&lazyShimList.length&&lazyShimList[1]){lazyShimList[1].parentNode.removeChild(lazyShimList[1])}")
+                js.append("var callAppBtnList = document.getElementsByClassName('call-app-btn');")
+                js.append("if(callAppBtnList&&callAppBtnList.length){callAppBtnList[0].parentNode.removeChild(callAppBtnList[0])}")
             }
             "blog.csdn.net" -> {
                 js.append("var csdnToolBar = document.getElementById('csdn-toolbar');")
@@ -146,6 +147,8 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
                 js.append("if(csdnMain){csdnMain.style.margin='0px'}")
                 js.append("var operate = document.getElementById('operate');")
                 js.append("if(operate){operate.parentNode.removeChild(operate)}")
+                js.append("var feedSignSpanList = document.getElementsByClassName('feed-Sign-span');")
+                js.append("if(feedSignSpanList&&feedSignSpanList.length){feedSignSpanList[0].parentNode.removeChild(feedSignSpanList[0])}")
             }
         }
         js.append("})()")
