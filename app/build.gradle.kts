@@ -75,10 +75,37 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    val channel = "channel"
+    val channelList = listOf("huawei", "xiaomi", "oneplus", "oppo", "vivo", "meizu")
+    val environment = "environment"
+    val environmentList = listOf("alpha", "beta", "production")
+
+    flavorDimensions(channel, environment)
+
+    productFlavors {
+        channelList.forEach {
+            create(it) {
+                dimension = channel
+                buildConfigField("String", channel, "\"$it\"")
+            }
+        }
+        environmentList.forEach {
+            create(it) {
+                dimension = environment
+                buildConfigField("String", environment, "\"$it\"")
+            }
+        }
+    }
+
     applicationVariants.all {
+        val variantName = this.productFlavors.fold("") { acc, productFlavor ->
+            "${acc}_${productFlavor.name}".trim('_')
+        }
+        val variantVesionName = "v${defaultConfig.versionName}"
+        val variantVersionCode = defaultConfig.versionCode
         outputs.all {
             if (this is ApkVariantOutputImpl) {
-                outputFileName = "wandroid_v${defaultConfig.versionName}_${defaultConfig.versionCode}.apk"
+                outputFileName = "wandroid_${variantName}_${variantVesionName}_${variantVersionCode}.apk"
             }
         }
     }
