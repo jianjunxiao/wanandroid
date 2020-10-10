@@ -75,24 +75,33 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    val channel = "channel"
-    val channelList = listOf("huawei", "xiaomi", "oneplus", "oppo", "vivo", "meizu")
-    val environment = "environment"
-    val environmentList = listOf("alpha", "beta", "production")
+    val dimensionsFlavors = mapOf(
+        "channel" to listOf(
+            "enterprise",
+            "huawei",
+            "xiaomi",
+            "oneplus",
+            "oppo",
+            "vivo",
+            "meizu",
+            "googleplay"
+        ),
+        "environment" to listOf(
+            "alpha",
+            "beta",
+            "production"
+        )
+    )
 
-    flavorDimensions(channel, environment)
+    flavorDimensions(*dimensionsFlavors.keys.toTypedArray())
 
     productFlavors {
-        channelList.forEach {
-            create(it) {
-                dimension = channel
-                buildConfigField("String", channel, "\"$it\"")
-            }
-        }
-        environmentList.forEach {
-            create(it) {
-                dimension = environment
-                buildConfigField("String", environment, "\"$it\"")
+        dimensionsFlavors.forEach { (dimension, flavors) ->
+            flavors.forEach { flavor ->
+                create(flavor) {
+                    this.dimension = dimension
+                    this.buildConfigField("String", dimension, "\"$flavor\"")
+                }
             }
         }
     }
