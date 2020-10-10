@@ -8,7 +8,6 @@ plugins {
 }
 
 android {
-
     compileSdkVersion(Config.compileSdkVersion)
     buildToolsVersion(Config.buildToolsVersion)
 
@@ -32,7 +31,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = (file("wanandroid.jks"))
+            storeFile = file("wanandroid.jks")
             storePassword = "1qaz2wsx"
             keyAlias = "wanandroid"
             keyPassword = "1qaz2wsx"
@@ -45,7 +44,7 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = this@android.signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -54,7 +53,7 @@ android {
         getByName("debug") {
             isMinifyEnabled = false
             isShrinkResources = false
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = this@android.signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -110,20 +109,19 @@ android {
         val variantName = this.productFlavors.fold("") { acc, productFlavor ->
             "${acc}_${productFlavor.name}".trim('_')
         }
-        val variantVesionName = "v${defaultConfig.versionName}"
-        val variantVersionCode = defaultConfig.versionCode
+        val variantVesionName = "v${this.versionName}"
+        val variantVersionCode = this.versionCode
         outputs.all {
             if (this is ApkVariantOutputImpl) {
-                outputFileName = "wandroid_${variantName}_${variantVesionName}_${variantVersionCode}.apk"
+                this.outputFileName =
+                    "wandroid_${variantName}_${variantVesionName}_${variantVersionCode}.apk"
             }
         }
     }
 }
 
 dependencies {
-    implementation(
-        fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar")))
-    )
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Config.kotlinVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Config.coroutinesVersion}")
 
@@ -156,8 +154,10 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:${Config.retrofitVersion}")
     implementation("com.squareup.retrofit2:converter-gson:${Config.gsonVersion}")
 
-    implementation("com.github.bumptech.glide:glide:${Config.glideVersion}")
-    implementation("jp.wasabeef:glide-transformations:${Config.glideTransformations}")
+    implementation("io.coil-kt:coil:${Config.coilVersion}")
+    implementation("io.coil-kt:coil-gif:${Config.coilVersion}")
+    implementation("io.coil-kt:coil-svg:${Config.coilVersion}")
+    implementation("io.coil-kt:coil-video:${Config.coilVersion}")
 
     implementation("com.github.CymChad:BaseRecyclerViewAdapterHelper:${Config.brvhaVersion}")
 
