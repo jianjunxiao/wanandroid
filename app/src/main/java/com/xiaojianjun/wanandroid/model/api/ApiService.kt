@@ -79,10 +79,10 @@ interface ApiService {
     ): ApiResult<UserInfo>
 
     @POST("lg/collect/{id}/json")
-    suspend fun collect(@Path("id") id: Int): ApiResult<Any?>
+    suspend fun collect(@Path("id") id: Long): ApiResult<Any>
 
     @POST("lg/uncollect_originId/{id}/json")
-    suspend fun uncollect(@Path("id") id: Int): ApiResult<Any?>
+    suspend fun uncollect(@Path("id") id: Long): ApiResult<Any>
 
     @FormUrlEncoded
     @POST("article/query/{page}/json")
@@ -114,5 +114,5 @@ interface ApiService {
     suspend fun getSharedArticleList(@Path("page") page: Int): ApiResult<Shared>
 
     @POST("lg/user_article/delete/{id}/json")
-    suspend fun deleteShare(@Path("id") id: Int): ApiResult<Any>
+    suspend fun deleteShare(@Path("id") id: Long): ApiResult<Any>
 }

@@ -46,7 +46,7 @@ class ActionFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.run {
             val article = getParcelable<Article>(PARAM_ARTICLE) ?: return@run
-            llCollect.visibility = if (article.id != 0) View.VISIBLE else View.GONE
+            llCollect.visibility = if (article.id != 0L) View.VISIBLE else View.GONE
             ivCollect.isSelected = article.collect
             tvCollect.text =
                 getString(if (article.collect) R.string.cancel_collect else R.string.add_collect)
@@ -63,7 +63,10 @@ class ActionFragment : BottomSheetDialogFragment() {
             }
             llShare.setOnClickListener {
                 behavior?.state = BottomSheetBehavior.STATE_HIDDEN
-                share(activity!!, content = article.title + article.link)
+                share(
+                    activity = activity ?: return@setOnClickListener,
+                    content = article.title + article.link
+                )
             }
             llExplorer.setOnClickListener {
                 openInExplorer(article.link)

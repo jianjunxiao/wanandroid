@@ -88,7 +88,7 @@ class PlazaFragment : BaseVmFragment<PlazaViewModel>(), ScrollToTop {
         Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, {
             mViewModel.updateListCollectState()
         })
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, viewLifecycleOwner, {
+        Bus.observe<Pair<Long, Boolean>>(USER_COLLECT_UPDATED, viewLifecycleOwner, {
             mViewModel.updateItemCollectState(it)
         })
     }

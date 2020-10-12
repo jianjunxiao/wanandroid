@@ -151,8 +151,12 @@ dependencies {
     kapt("androidx.room:room-compiler:${Config.roomVersion}")
 
     implementation("com.squareup.okhttp3:okhttp:${Config.okHttpVersion}")
+    implementation("com.squareup.okhttp3:logging-interceptor:${Config.okHttpVersion}")
     implementation("com.squareup.retrofit2:retrofit:${Config.retrofitVersion}")
-    implementation("com.squareup.retrofit2:converter-gson:${Config.gsonVersion}")
+    implementation("com.squareup.retrofit2:converter-moshi:${Config.retrofitVersion}")
+
+    implementation("com.squareup.moshi:moshi:${Config.moshiVersion}")
+    implementation("com.squareup.moshi:moshi-kotlin:${Config.moshiVersion}")
 
     implementation("io.coil-kt:coil:${Config.coilVersion}")
     implementation("io.coil-kt:coil-gif:${Config.coilVersion}")

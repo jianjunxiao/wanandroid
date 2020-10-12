@@ -34,7 +34,7 @@ class MinePointsViewModel : BaseViewModel() {
                 val pagination = minePointsRespository.getPointsRecord(INITIAL_PAGE)
                 page = pagination.curPage
                 totalPoints.value = points
-                pointsList.value = pagination.datas.toMutableList()
+                pointsList.value = pagination.datas
 
                 refreshStatus.value = false
             },

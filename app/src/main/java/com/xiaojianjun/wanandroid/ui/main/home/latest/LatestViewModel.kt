@@ -35,7 +35,7 @@ class LatestViewModel : BaseViewModel() {
 
                 val pagination = latestRepository.getProjectList(INITIAL_PAGE)
                 page = pagination.curPage
-                articleList.value = pagination.datas.toMutableList()
+                articleList.value = pagination.datas
                 refreshStatus.value = false
             },
             error = {
@@ -69,7 +69,7 @@ class LatestViewModel : BaseViewModel() {
         )
     }
 
-    fun collect(id: Int) {
+    fun collect(id: Long) {
         launch(
             block = {
                 collectRepository.collect(id)
@@ -83,7 +83,7 @@ class LatestViewModel : BaseViewModel() {
         )
     }
 
-    fun uncollect(id: Int) {
+    fun uncollect(id: Long) {
         launch(
             block = {
                 collectRepository.uncollect(id)
@@ -115,7 +115,7 @@ class LatestViewModel : BaseViewModel() {
     /**
      * 更新Item的收藏状态
      */
-    fun updateItemCollectState(target: Pair<Int, Boolean>) {
+    fun updateItemCollectState(target: Pair<Long, Boolean>) {
         val list = articleList.value
         val item = list?.find { it.id == target.first } ?: return
         item.collect = target.second

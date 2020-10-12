@@ -30,6 +30,7 @@ object Config {
     const val retrofitVersion = "2.9.0"
     const val okHttpVersion = "4.9.0"
     const val gsonVersion = "2.9.0"
+    const val moshiVersion = "1.11.0"
     const val PersistentCookieJarVersion = "v1.0.1"
 
     const val coilVersion = "1.0.0-rc3"

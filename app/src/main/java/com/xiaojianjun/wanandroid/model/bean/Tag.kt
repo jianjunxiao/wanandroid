@@ -15,9 +15,8 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 data class Tag(
     @PrimaryKey(autoGenerate = true)
-    var id: Long,
-    @ColumnInfo(name = "article_id")
-    var articleId: Long,
+    var id: Long?,
+    var articleId: Long = 0,
     var name: String?,
     var url: String?
 ) : Parcelable

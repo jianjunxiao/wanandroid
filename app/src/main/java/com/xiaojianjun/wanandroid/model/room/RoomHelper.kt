@@ -3,7 +3,6 @@ package com.xiaojianjun.wanandroid.model.room
 import androidx.room.Room
 import com.xiaojianjun.wanandroid.App
 import com.xiaojianjun.wanandroid.model.bean.Article
-import com.xiaojianjun.wanandroid.model.bean.Tag
 
 /**
  * Created by xiaojianjun on 2019-12-05.
@@ -16,20 +15,24 @@ object RoomHelper {
 
     private val readHistoryDao by lazy { appDatabase.readHistoryDao() }
 
-    suspend fun queryAllReadHistory() = readHistoryDao.queryAll()
-        .map { it.article.apply { tags = it.tags } }.reversed()
-
-    suspend fun addReadHistory(article: Article) {
-        readHistoryDao.queryArticle(article.id)?.let {
-            readHistoryDao.deleteArticle(it)
-        }
-        readHistoryDao.insert(article.apply { primaryKeyId = 0 })
-        article.tags.forEach {
-            readHistoryDao.insertArticleTag(
-                Tag(id = 0, articleId = article.id.toLong(), name = it.name, url = it.url)
-            )
+    suspend fun queryAllReadHistory(): List<Article> {
+        return readHistoryDao.queryAllReadHistory().map {
+            it.article.apply { tags = it.tags }
         }
     }
 
-    suspend fun deleteReadHistory(article: Article) = readHistoryDao.deleteArticle(article)
+    suspend fun addReadHistory(article: Article) {
+        article.readTime = System.currentTimeMillis()
+        readHistoryDao.insertArticle(article)
+        article.tags.forEach {
+            readHistoryDao.insertTag(it.apply { it.articleId = article.id })
+        }
+    }
+
+    suspend fun deleteReadHistory(article: Article) {
+        readHistoryDao.queryReadHistory(article.id)?.let { readHistory ->
+            readHistoryDao.deleteArticle(readHistory.article)
+            readHistory.tags.forEach { readHistoryDao.deleteTag(it) }
+        }
+    }
 }

@@ -80,7 +80,7 @@ class CollectionActivity : BaseVmActivity<CollectionViewModel>() {
                 reloadView.isVisible = it
             })
         }
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this, { (id, collect) ->
+        Bus.observe<Pair<Long, Boolean>>(USER_COLLECT_UPDATED, this, { (id, collect) ->
             if (collect) {
                 mViewModel.refresh()
             } else {

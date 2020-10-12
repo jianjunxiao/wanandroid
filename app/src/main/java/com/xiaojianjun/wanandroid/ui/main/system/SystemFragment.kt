@@ -7,6 +7,7 @@ import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.common.ScrollToTop
 import com.xiaojianjun.wanandroid.common.adapter.SimpleFragmentPagerAdapter
+import com.xiaojianjun.wanandroid.ext.toArrayList
 import com.xiaojianjun.wanandroid.model.bean.Category
 import com.xiaojianjun.wanandroid.ui.main.MainActivity
 import com.xiaojianjun.wanandroid.ui.main.system.category.SystemCategoryFragment
@@ -58,7 +59,7 @@ class SystemFragment : BaseVmFragment<SystemViewModel>(), ScrollToTop {
                     it.children.isNotEmpty()
                 }.toMutableList()
                 setup(newCategories)
-                categoryFragment = SystemCategoryFragment.newInstance(ArrayList(newCategories))
+                categoryFragment = SystemCategoryFragment.newInstance(newCategories.toArrayList())
             })
             loadingStatus.observe(viewLifecycleOwner, {
                 progressBar.isVisible = it
@@ -78,7 +79,7 @@ class SystemFragment : BaseVmFragment<SystemViewModel>(), ScrollToTop {
         fragments.clear()
         categories.forEach {
             titles.add(it.name)
-            fragments.add(SystemPagerFragment.newInstance(it.children))
+            fragments.add(SystemPagerFragment.newInstance(it.children.toArrayList()))
         }
         viewPager.adapter =
             SimpleFragmentPagerAdapter(

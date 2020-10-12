@@ -37,7 +37,7 @@ class SharedViewModel : BaseViewModel() {
                 reloadStatus.value = false
                 val pagination = sharedRepository.getSharedArticleList(INITIAL_PAGE).shareArticles
                 page = pagination.curPage
-                articleList.value = pagination.datas.toMutableList()
+                articleList.value = pagination.datas
                 emptyStatus.value = pagination.datas.isEmpty()
                 refreshStatus.value = false
             },
@@ -71,7 +71,7 @@ class SharedViewModel : BaseViewModel() {
         )
     }
 
-    fun collect(id: Int) {
+    fun collect(id: Long) {
         launch(
             block = {
                 collectRepository.collect(id)
@@ -85,7 +85,7 @@ class SharedViewModel : BaseViewModel() {
         )
     }
 
-    fun uncollect(id: Int) {
+    fun uncollect(id: Long) {
         launch(
             block = {
                 collectRepository.uncollect(id)
@@ -117,7 +117,7 @@ class SharedViewModel : BaseViewModel() {
     /**
      * 更新Item的收藏状态
      */
-    fun updateItemCollectState(target: Pair<Int, Boolean>) {
+    fun updateItemCollectState(target: Pair<Long, Boolean>) {
         val list = articleList.value
         val item = list?.find { it.id == target.first } ?: return
         item.collect = target.second
@@ -127,7 +127,7 @@ class SharedViewModel : BaseViewModel() {
     /**
      * 删除分享
      */
-    fun deleteShared(id: Int) {
+    fun deleteShared(id: Long) {
         launch(block = { sharedRepository.deleteShared(id) })
     }
 }

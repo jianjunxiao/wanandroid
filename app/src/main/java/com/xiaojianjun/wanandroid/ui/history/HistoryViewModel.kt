@@ -38,7 +38,7 @@ class HistoryViewModel : BaseViewModel() {
         )
     }
 
-    fun collect(id: Int) {
+    fun collect(id: Long) {
         launch(
             block = {
                 collectRepository.collect(id)
@@ -52,7 +52,7 @@ class HistoryViewModel : BaseViewModel() {
         )
     }
 
-    fun uncollect(id: Int) {
+    fun uncollect(id: Long) {
         launch(
             block = {
                 collectRepository.uncollect(id)
@@ -78,7 +78,7 @@ class HistoryViewModel : BaseViewModel() {
         articleList.value = list
     }
 
-    fun updateItemCollectState(target: Pair<Int, Boolean>) {
+    fun updateItemCollectState(target: Pair<Long, Boolean>) {
         val list = articleList.value
         val item = list?.find { it.id == target.first } ?: return
         item.collect = target.second

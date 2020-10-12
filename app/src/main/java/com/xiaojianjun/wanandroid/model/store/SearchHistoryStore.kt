@@ -1,8 +1,7 @@
 package com.xiaojianjun.wanandroid.model.store
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.xiaojianjun.wanandroid.App
+import com.xiaojianjun.wanandroid.common.core.MoshiHelper
 import com.xiaojianjun.wanandroid.common.core.getSpValue
 import com.xiaojianjun.wanandroid.common.core.putSpValue
 
@@ -14,7 +13,6 @@ object SearchHistoryStore {
 
     private const val SP_SEARCH_HISTORY = "sp_search_history"
     private const val KEY_SEARCH_HISTORY = "searchHistory"
-    private val mGson by lazy { Gson() }
 
     fun saveSearchHistory(words: String) {
         val history = getSearchHistory()
@@ -22,14 +20,14 @@ object SearchHistoryStore {
             history.remove(words)
         }
         history.add(0, words)
-        val listStr = mGson.toJson(history)
+        val listStr = MoshiHelper.toJson(history)
         putSpValue(SP_SEARCH_HISTORY, App.instance, KEY_SEARCH_HISTORY, listStr)
     }
 
     fun deleteSearchHistory(words: String) {
         val history = getSearchHistory()
         history.remove(words)
-        val listStr = mGson.toJson(history)
+        val listStr = MoshiHelper.toJson(history)
         putSpValue(SP_SEARCH_HISTORY, App.instance, KEY_SEARCH_HISTORY, listStr)
     }
 
@@ -38,10 +36,7 @@ object SearchHistoryStore {
         return if (listStr.isEmpty()) {
             mutableListOf()
         } else {
-            mGson.fromJson(
-                listStr,
-                object : TypeToken<MutableList<String>>() {}.type
-            )
+            MoshiHelper.listfromJson<String>(listStr).toMutableList()
         }
     }
 }

@@ -47,7 +47,7 @@ class WechatViewModel : BaseViewModel() {
 
                 categories.value = categoryList
                 checkedCategory.value = checkedPosition
-                articleList.value = pagination.datas.toMutableList()
+                articleList.value = pagination.datas
                 refreshStatus.value = false
             },
             error = {
@@ -73,7 +73,7 @@ class WechatViewModel : BaseViewModel() {
                 val pagination = wechatRepository.getWechatArticleList(INITIAL_PAGE, id)
                 page = pagination.curPage
 
-                articleList.value = pagination.datas.toMutableList()
+                articleList.value = pagination.datas
                 refreshStatus.value = false
             },
             error = {
@@ -111,7 +111,7 @@ class WechatViewModel : BaseViewModel() {
     }
 
 
-    fun collect(id: Int) {
+    fun collect(id: Long) {
         launch(
             block = {
                 collectRepository.collect(id)
@@ -125,7 +125,7 @@ class WechatViewModel : BaseViewModel() {
         )
     }
 
-    fun uncollect(id: Int) {
+    fun uncollect(id: Long) {
         launch(
             block = {
                 collectRepository.uncollect(id)
@@ -157,7 +157,7 @@ class WechatViewModel : BaseViewModel() {
     /**
      * 更新Item的收藏状态
      */
-    fun updateItemCollectState(target: Pair<Int, Boolean>) {
+    fun updateItemCollectState(target: Pair<Long, Boolean>) {
         val list = articleList.value
         val item = list?.find { it.id == target.first } ?: return
         item.collect = target.second

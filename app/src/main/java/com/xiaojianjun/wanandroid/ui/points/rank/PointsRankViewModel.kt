@@ -30,7 +30,7 @@ class PointsRankViewModel : BaseViewModel() {
                 reloadStatus.value = false
                 val pagination = pointsRankRespository.getPointsRank(INITIAL_PAGE)
                 page = pagination.curPage
-                pointsRank.value = pagination.datas.toMutableList()
+                pointsRank.value = pagination.datas
                 refreshStatus.value = false
             },
             error = {

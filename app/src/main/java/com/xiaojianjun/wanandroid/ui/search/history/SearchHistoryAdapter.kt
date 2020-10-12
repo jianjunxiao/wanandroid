@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.xiaojianjun.wanandroid.R
+import com.xiaojianjun.wanandroid.ext.toArrayList
 import kotlinx.android.synthetic.main.item_search_history.view.*
 
 
@@ -55,7 +56,7 @@ class SearchHistoryAdapter(
         data = if (list.isNullOrEmpty()) {
             mutableListOf()
         } else {
-            ArrayList(list)
+            list.toArrayList()
         }
         super.submitList(data)
     }

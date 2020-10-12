@@ -17,6 +17,6 @@ data class UserInfo(
     val token: String,
     val type: Int,
     val username: String,
-    val collectIds: MutableList<Int>,
-    val chapterTops: List<Any>
+    val collectIds: MutableList<Long>,
+    val chapterTops: MutableList<Any>
 )

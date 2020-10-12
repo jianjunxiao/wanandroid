@@ -102,7 +102,7 @@ class SharedActivity : BaseVmActivity<SharedViewModel>() {
         Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, {
             mViewModel.updateListCollectState()
         })
-        Bus.observe<Pair<Int, Boolean>>(USER_COLLECT_UPDATED, this, {
+        Bus.observe<Pair<Long, Boolean>>(USER_COLLECT_UPDATED, this, {
             mViewModel.updateItemCollectState(it)
         })
     }

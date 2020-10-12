@@ -1,12 +1,15 @@
 package com.xiaojianjun.wanandroid.model.api
 
+import android.util.Log
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.xiaojianjun.wanandroid.App
+import com.xiaojianjun.wanandroid.common.core.MoshiHelper
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
@@ -14,21 +17,31 @@ import java.util.concurrent.TimeUnit
  * Retrofit网络请求工具
  */
 object RetrofitClient {
+
     /**Cookie*/
     private val cookiePersistor = SharedPrefsCookiePersistor(App.instance)
     private val cookieJar = PersistentCookieJar(SetCookieCache(), cookiePersistor)
+
+    /**log**/
+    private val logger = HttpLoggingInterceptor.Logger {
+        Log.d("RetrofitClient", it)
+    }
+    private val logInterceptor = HttpLoggingInterceptor(logger).apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
 
     /**OkhttpClient*/
     private val okHttpClient = OkHttpClient.Builder()
         .callTimeout(10, TimeUnit.SECONDS)
         .cookieJar(cookieJar)
+        .addNetworkInterceptor(logInterceptor)
         .build()
 
     /**Retrofit*/
     private val retrofit = Retrofit.Builder()
         .client(okHttpClient)
         .baseUrl(ApiService.BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(MoshiHelper.moshi))
         .build()
 
     /**ApiService*/

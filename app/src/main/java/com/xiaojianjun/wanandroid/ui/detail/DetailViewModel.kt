@@ -17,7 +17,7 @@ class DetailViewModel : BaseViewModel() {
 
     val collect = MutableLiveData<Boolean>()
 
-    fun collect(id: Int) {
+    fun collect(id: Long) {
         launch(
             block = {
                 collectRepository.collect(id)
@@ -31,7 +31,7 @@ class DetailViewModel : BaseViewModel() {
         )
     }
 
-    fun uncollect(id: Int) {
+    fun uncollect(id: Long) {
         launch(
             block = {
                 collectRepository.uncollect(id)
@@ -45,7 +45,7 @@ class DetailViewModel : BaseViewModel() {
         )
     }
 
-    fun updateCollectStatus(id: Int) {
+    fun updateCollectStatus(id: Long) {
         collect.value = if (isLogin()) {
             UserInfoStore.getUserInfo()?.collectIds?.contains(id)
         } else {

@@ -37,7 +37,7 @@ class CollectionViewModel : BaseViewModel() {
                 val pagination = collectionRepository.getCollectionList(INITIAL_PAGE)
                 pagination.datas.forEach { it.collect = true }
                 page = pagination.curPage
-                articleList.value = pagination.datas.toMutableList()
+                articleList.value = pagination.datas
                 emptyStatus.value = pagination.datas.isEmpty()
                 refreshStatus.value = false
             },
@@ -73,7 +73,7 @@ class CollectionViewModel : BaseViewModel() {
         )
     }
 
-    fun uncollect(id: Int) {
+    fun uncollect(id: Long) {
         launch(
             block = {
                 collectRepository.uncollect(id)

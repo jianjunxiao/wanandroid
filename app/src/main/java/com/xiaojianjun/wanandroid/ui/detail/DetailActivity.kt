@@ -56,7 +56,7 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
     }
 
     override fun initData() {
-        if (article.id != 0) {
+        if (article.id != 0L) {
             mViewModel.saveReadHistory(article)
         }
         agentWeb = AgentWeb.with(this)

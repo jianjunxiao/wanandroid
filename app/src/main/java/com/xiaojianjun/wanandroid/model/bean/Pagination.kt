@@ -13,5 +13,5 @@ data class Pagination<T>(
     val pageCount: Int,
     val curPage: Int,
     val over: Boolean,
-    val datas: List<T>
+    val datas: MutableList<T>
 )

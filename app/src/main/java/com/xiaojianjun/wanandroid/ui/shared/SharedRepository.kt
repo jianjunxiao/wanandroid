@@ -9,5 +9,5 @@ class SharedRepository {
     suspend fun getSharedArticleList(page: Int) =
         RetrofitClient.apiService.getSharedArticleList(page).apiData()
 
-    suspend fun deleteShared(id: Int) = RetrofitClient.apiService.deleteShare(id).apiData()
+    suspend fun deleteShared(id: Long) = RetrofitClient.apiService.deleteShare(id).apiData()
 }

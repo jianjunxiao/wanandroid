@@ -3,7 +3,8 @@ package com.xiaojianjun.wanandroid.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.JsonParseException
+import com.squareup.moshi.JsonDataException
+import com.squareup.moshi.JsonEncodingException
 import com.xiaojianjun.wanandroid.App
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.ext.showToast
@@ -102,7 +103,7 @@ open class BaseViewModel : ViewModel() {
             is ConnectException, is SocketTimeoutException, is UnknownHostException, is HttpException ->
                 if (showErrorToast) App.instance.showToast(R.string.network_request_failed)
             // 数据解析错误
-            is JsonParseException ->
+            is JsonDataException, is JsonEncodingException ->
                 if (showErrorToast) App.instance.showToast(R.string.api_data_parse_error)
             // 其他错误
             else ->

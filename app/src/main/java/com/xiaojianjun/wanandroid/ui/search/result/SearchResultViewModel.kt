@@ -46,7 +46,7 @@ class SearchResultViewModel : BaseViewModel() {
 
                 val pagination = searchResultRepository.search(keywords, INITIAL_PAGE)
                 page = pagination.curPage
-                articleList.value = pagination.datas.toMutableList()
+                articleList.value = pagination.datas
                 refreshStatus.value = false
                 emptyStatus.value = pagination.datas.isEmpty()
             },
@@ -78,7 +78,7 @@ class SearchResultViewModel : BaseViewModel() {
         )
     }
 
-    fun collect(id: Int) {
+    fun collect(id: Long) {
         launch(
             block = {
                 collectRepository.collect(id)
@@ -92,7 +92,7 @@ class SearchResultViewModel : BaseViewModel() {
         )
     }
 
-    fun uncollect(id: Int) {
+    fun uncollect(id: Long) {
         launch(
             block = {
                 collectRepository.uncollect(id)
@@ -118,7 +118,7 @@ class SearchResultViewModel : BaseViewModel() {
         articleList.value = list
     }
 
-    fun updateItemCollectState(target: Pair<Int, Boolean>) {
+    fun updateItemCollectState(target: Pair<Long, Boolean>) {
         val list = articleList.value
         val item = list?.find { it.id == target.first } ?: return
         item.collect = target.second

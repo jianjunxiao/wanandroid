@@ -72,7 +72,7 @@ class PopularViewModel : BaseViewModel() {
         )
     }
 
-    fun collect(id: Int) {
+    fun collect(id: Long) {
         launch(
             block = {
                 collectRepository.collect(id)
@@ -86,7 +86,7 @@ class PopularViewModel : BaseViewModel() {
         )
     }
 
-    fun uncollect(id: Int) {
+    fun uncollect(id: Long) {
         launch(
             block = {
                 collectRepository.uncollect(id)
@@ -118,7 +118,7 @@ class PopularViewModel : BaseViewModel() {
     /**
      * 更新Item的收藏状态
      */
-    fun updateItemCollectState(target: Pair<Int, Boolean>) {
+    fun updateItemCollectState(target: Pair<Long, Boolean>) {
         val list = articleList.value
         val item = list?.find { it.id == target.first } ?: return
         item.collect = target.second
