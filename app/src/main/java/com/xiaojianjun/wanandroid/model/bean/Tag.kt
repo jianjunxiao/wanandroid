@@ -14,7 +14,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity
 data class Tag(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     var id: Long?,
     var articleId: Long = 0,
     var name: String?,

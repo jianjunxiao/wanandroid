@@ -26,6 +26,10 @@ interface ReadHistoryDao {
     suspend fun queryReadHistory(id: Long): ReadHistory?
 
     @Transaction
+    @Query("SELECT * FROM tag WHERE articleId = (:articleId)")
+    suspend fun queryAllTags(articleId: Long): List<Tag>
+
+    @Transaction
     @Delete(entity = Article::class)
     suspend fun deleteArticle(article: Article)
 

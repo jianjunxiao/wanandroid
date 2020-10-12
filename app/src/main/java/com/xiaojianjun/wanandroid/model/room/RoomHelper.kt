@@ -25,7 +25,10 @@ object RoomHelper {
         article.readTime = System.currentTimeMillis()
         readHistoryDao.insertArticle(article)
         article.tags.forEach {
-            readHistoryDao.insertTag(it.apply { it.articleId = article.id })
+            readHistoryDao.insertTag(it.apply {
+                it.articleId = article.id
+                it.id = (name.hashCode() + url.hashCode() + articleId.hashCode()).toLong()
+            })
         }
     }
 
