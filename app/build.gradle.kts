@@ -141,6 +141,7 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:${Config.fragmentVersion}")
 
     implementation("androidx.constraintlayout:constraintlayout:${Config.constraintLayoutVersion}")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:${Config.coordinatorLayoutVersion}")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:${Config.swipeRefreshLayoutVersion}")
     implementation("androidx.recyclerview:recyclerview:${Config.recyclerViewVersion}")
 

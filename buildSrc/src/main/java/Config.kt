@@ -21,6 +21,7 @@ object Config {
     const val appCompatVersion = "1.2.0"
 
     const val constraintLayoutVersion = "2.0.2"
+    const val coordinatorLayoutVersion = "1.1.0"
     const val swipeRefreshLayoutVersion = "1.1.0"
     const val recyclerViewVersion = "1.1.0"
 
