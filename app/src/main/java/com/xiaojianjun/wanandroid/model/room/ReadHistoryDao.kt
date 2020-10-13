@@ -22,11 +22,11 @@ interface ReadHistoryDao {
     suspend fun queryAllReadHistory(): List<ReadHistory>
 
     @Transaction
-    @Query("SELECT * FROM article WHERE id = (:id)")
+    @Query("SELECT * FROM article WHERE id = :id")
     suspend fun queryReadHistory(id: Long): ReadHistory?
 
     @Transaction
-    @Query("SELECT * FROM tag WHERE articleId = (:articleId)")
+    @Query("SELECT * FROM tag WHERE articleId = :articleId")
     suspend fun queryAllTags(articleId: Long): List<Tag>
 
     @Transaction
