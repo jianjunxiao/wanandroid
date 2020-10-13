@@ -1,5 +1,5 @@
 object Config {
-    const val gradleVersion = "4.0.2"
+    const val gradleVersion = "4.1.0"
     const val kotlinVersion = "1.4.10"
 
     const val coroutinesVersion = "1.3.9"
@@ -29,7 +29,6 @@ object Config {
 
     const val retrofitVersion = "2.9.0"
     const val okHttpVersion = "4.9.0"
-    const val gsonVersion = "2.9.0"
     const val moshiVersion = "1.11.0"
     const val PersistentCookieJarVersion = "v1.0.1"
 

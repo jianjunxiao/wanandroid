@@ -20,10 +20,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = mapOf(
-                    "room.schemaLocation" to "$projectDir/build/schemas",
-                    "room.incremental" to "true",
-                    "room.expandProjection" to "true"
+                arguments(
+                    mapOf(
+                        "room.schemaLocation" to "$projectDir/build/schemas",
+                        "room.incremental" to "true",
+                        "room.expandProjection" to "true"
+                    )
                 )
             }
         }
@@ -100,6 +102,7 @@ android {
                 create(flavor) {
                     this.dimension = dimension
                     this.buildConfigField("String", dimension, "\"$flavor\"")
+                    this.addManifestPlaceholders(mapOf(dimension to flavor))
                 }
             }
         }
