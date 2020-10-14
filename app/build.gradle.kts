@@ -115,8 +115,7 @@ android {
         val variantVesionName = "v${this.versionName}"
         val variantVersionCode = this.versionCode
         this.outputs.filterIsInstance<ApkVariantOutputImpl>().forEach {
-            it.outputFileName =
-                "wandroid_${variantName}_${variantVesionName}_${variantVersionCode}.apk"
+            it.outputFileName = "wandroid_${variantName}_${variantVesionName}_${variantVersionCode}.apk"
         }
     }
 }
