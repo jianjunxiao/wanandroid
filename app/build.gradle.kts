@@ -46,6 +46,7 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+            isZipAlignEnabled = true
             signingConfig = this@android.signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -55,6 +56,7 @@ android {
         getByName("debug") {
             isMinifyEnabled = false
             isShrinkResources = false
+            isZipAlignEnabled = true
             signingConfig = this@android.signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
