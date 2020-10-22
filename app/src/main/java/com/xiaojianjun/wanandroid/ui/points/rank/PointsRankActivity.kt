@@ -39,7 +39,7 @@ class PointsRankActivity : BaseVmActivity<PointsRankViewModel>() {
         super.observe()
         mViewModel.run {
             pointsRank.observe(this@PointsRankActivity, {
-                mAdapter.setNewData(it)
+                mAdapter.setList(it)
             })
             refreshStatus.observe(this@PointsRankActivity, {
                 swipeRefreshLayout.isRefreshing = it

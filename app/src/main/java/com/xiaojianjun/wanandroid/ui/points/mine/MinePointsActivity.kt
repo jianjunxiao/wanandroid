@@ -53,7 +53,7 @@ class MinePointsActivity : BaseVmActivity<MinePointsViewModel>() {
 
             })
             pointsList.observe(this@MinePointsActivity, {
-                mAdapter.setNewData(it)
+                mAdapter.setList(it)
             })
             refreshStatus.observe(this@MinePointsActivity, {
                 swipeRefreshLayout.isRefreshing = it
