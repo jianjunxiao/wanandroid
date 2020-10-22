@@ -15,8 +15,8 @@ android {
         minSdkVersion(Config.minSdkVersion)
         targetSdkVersion(Config.targetSdkVersion)
         applicationId = "com.xiaojianjun.wanandroid"
-        versionCode = 20201010
-        versionName = "1.0.3"
+        versionCode = 20201022
+        versionName = "1.0.4"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
