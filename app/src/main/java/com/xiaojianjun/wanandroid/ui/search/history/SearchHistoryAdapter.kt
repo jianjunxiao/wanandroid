@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.xiaojianjun.wanandroid.R
-import com.xiaojianjun.wanandroid.ext.toArrayList
 import kotlinx.android.synthetic.main.item_search_history.view.*
 
 
@@ -25,6 +24,7 @@ class SearchHistoryAdapter(
     var onItemClickListener: ((position: Int) -> Unit)? = null
     var onDeleteClickListener: ((position: Int) -> Unit)? = null
     var data: MutableList<String> = mutableListOf()
+        private set
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchHistoryHolder {
         return SearchHistoryHolder(
@@ -56,7 +56,7 @@ class SearchHistoryAdapter(
         data = if (list.isNullOrEmpty()) {
             mutableListOf()
         } else {
-            list.toArrayList()
+            list.toMutableList()
         }
         super.submitList(data)
     }

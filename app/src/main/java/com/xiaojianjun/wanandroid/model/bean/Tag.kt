@@ -2,9 +2,7 @@ package com.xiaojianjun.wanandroid.model.bean
 
 import android.os.Parcelable
 import androidx.annotation.Keep
-import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 /**

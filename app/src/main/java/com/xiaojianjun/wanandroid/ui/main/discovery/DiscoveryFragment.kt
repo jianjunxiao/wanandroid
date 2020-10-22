@@ -44,7 +44,6 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
         }
 
         hotWordsAdapter = HotWordsAdapter(R.layout.item_hot_word).apply {
-            bindToRecyclerView(rvHotWord)
             setOnItemClickListener { _, _, position ->
                 ActivityHelper.start(
                     SearchActivity::class.java, mapOf(
@@ -52,6 +51,7 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
                     )
                 )
             }
+            rvHotWord.adapter = this
         }
         btnReload.setOnClickListener {
             mViewModel.getData()
@@ -70,7 +70,7 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
                 setupBanner(it)
             })
             hotWords.observe(viewLifecycleOwner, {
-                hotWordsAdapter.setNewData(it)
+                hotWordsAdapter.setList(it)
                 tvHotWordTitle.isVisible = it.isNotEmpty()
             })
             frequentlyList.observe(viewLifecycleOwner, {

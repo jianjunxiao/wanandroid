@@ -32,14 +32,14 @@ class NavigationFragment : BaseVmFragment<NavigationViewModel>(), ScrollToTop {
             setProgressBackgroundColorSchemeResource(R.color.bgColorPrimary)
             setOnRefreshListener { mViewModel.getNavigations() }
         }
-        mAdapter = NavigationAdapter(R.layout.item_navigation).apply {
-            bindToRecyclerView(recyclerView)
-            onItemTagClickListener = {
+        mAdapter = NavigationAdapter(R.layout.item_navigation).also {
+            it.onItemTagClickListener = { article ->
                 ActivityHelper.start(
                     DetailActivity::class.java,
-                    mapOf(DetailActivity.PARAM_ARTICLE to Article(title = it.title, link = it.link))
+                    mapOf(DetailActivity.PARAM_ARTICLE to article)
                 )
             }
+            recyclerView.adapter = it
         }
         btnReload.setOnClickListener {
             mViewModel.getNavigations()
@@ -73,7 +73,7 @@ class NavigationFragment : BaseVmFragment<NavigationViewModel>(), ScrollToTop {
             navigations.observe(viewLifecycleOwner, {
                 tvFloatTitle.isGone = it.isEmpty()
                 tvFloatTitle.text = it[0].name
-                mAdapter.setNewData(it)
+                mAdapter.setList(it)
             })
             refreshStatus.observe(viewLifecycleOwner, {
                 swipeRefreshLayout.isRefreshing = it

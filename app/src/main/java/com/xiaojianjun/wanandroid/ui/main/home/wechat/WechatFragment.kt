@@ -2,7 +2,6 @@ package com.xiaojianjun.wanandroid.ui.main.home.wechat
 
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.common.ScrollToTop
@@ -10,22 +9,21 @@ import com.xiaojianjun.wanandroid.common.bus.Bus
 import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
 import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
-import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
-import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
+import com.xiaojianjun.wanandroid.common.loadmore.setLoadMoreStatus
+import com.xiaojianjun.wanandroid.model.bean.Category
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.main.home.CategoryAdapter
 import com.xiaojianjun.wanandroid.ui.main.home.SimpleArticleAdapter
 import kotlinx.android.synthetic.main.fragment_wechat.*
 import kotlinx.android.synthetic.main.include_reload.view.*
 
-class WechatFragment : BaseVmFragment<WechatViewModel>(),
-    ScrollToTop {
+class WechatFragment : BaseVmFragment<WechatViewModel>(), ScrollToTop {
 
     companion object {
         fun newInstance() = WechatFragment()
     }
 
-    private lateinit var mAdapterSimple: SimpleArticleAdapter
+    private lateinit var mAdapter: SimpleArticleAdapter
     private lateinit var mCategoryAdapter: CategoryAdapter
 
     override fun layoutRes() = R.layout.fragment_wechat
@@ -33,32 +31,42 @@ class WechatFragment : BaseVmFragment<WechatViewModel>(),
     override fun viewModelClass() = WechatViewModel::class.java
 
     override fun initView() {
+        initRefresh()
+        initCategoryAdapter()
+        initArticleAdapter()
+        initListeners()
+    }
+
+    private fun initRefresh() {
         swipeRefreshLayout.run {
             setColorSchemeResources(R.color.textColorPrimary)
             setProgressBackgroundColorSchemeResource(R.color.bgColorPrimary)
             setOnRefreshListener { mViewModel.refreshWechatArticleList() }
         }
-        mCategoryAdapter = CategoryAdapter(R.layout.item_category_sub)
-            .apply {
-                bindToRecyclerView(rvCategory)
-                onCheckedListener = {
-                    mViewModel.refreshWechatArticleList(it)
-                }
+    }
+
+    private fun initCategoryAdapter() {
+        mCategoryAdapter = CategoryAdapter(R.layout.item_category_sub).also {
+            it.onCheckedListener = { position ->
+                mViewModel.refreshWechatArticleList(position)
             }
-        mAdapterSimple = SimpleArticleAdapter(R.layout.item_article_simple).apply {
-            setLoadMoreView(CommonLoadMoreView())
-            bindToRecyclerView(recyclerView)
-            setOnLoadMoreListener({
+            rvCategory.adapter = it
+        }
+    }
+
+    private fun initArticleAdapter() {
+        mAdapter = SimpleArticleAdapter(R.layout.item_article_simple).also {
+            it.loadMoreModule.setOnLoadMoreListener {
                 mViewModel.loadMoreWechatArticleList()
-            }, recyclerView)
-            setOnItemClickListener { _, _, position ->
-                val article = mAdapterSimple.data[position]
+            }
+            it.setOnItemClickListener { _, _, position ->
+                val article = it.data[position]
                 ActivityHelper.start(
                     DetailActivity::class.java, mapOf(DetailActivity.PARAM_ARTICLE to article)
                 )
             }
-            setOnItemChildClickListener { _, view, position ->
-                val article = mAdapterSimple.data[position]
+            it.setOnItemChildClickListener { _, view, position ->
+                val article = it.data[position]
                 if (view.id == R.id.iv_collect && checkLogin()) {
                     view.isSelected = !view.isSelected
                     if (article.collect) {
@@ -68,7 +76,11 @@ class WechatFragment : BaseVmFragment<WechatViewModel>(),
                     }
                 }
             }
+            recyclerView.adapter = it
         }
+    }
+
+    private fun initListeners() {
         reloadListView.btnReload.setOnClickListener {
             mViewModel.refreshWechatArticleList()
         }
@@ -79,41 +91,38 @@ class WechatFragment : BaseVmFragment<WechatViewModel>(),
 
     override fun observe() {
         super.observe()
-        mViewModel.run {
-            categories.observe(viewLifecycleOwner, {
-                rvCategory.isGone = it.isEmpty()
-                mCategoryAdapter.setNewData(it)
-            })
-            checkedCategory.observe(viewLifecycleOwner, {
-                mCategoryAdapter.check(it)
-            })
-            articleList.observe(viewLifecycleOwner, {
-                mAdapterSimple.setNewData(it)
-            })
-            refreshStatus.observe(viewLifecycleOwner, {
-                swipeRefreshLayout.isRefreshing = it
-            })
-            loadMoreStatus.observe(viewLifecycleOwner, Observer {
-                when (it) {
-                    LoadMoreStatus.COMPLETED -> mAdapterSimple.loadMoreComplete()
-                    LoadMoreStatus.ERROR -> mAdapterSimple.loadMoreFail()
-                    LoadMoreStatus.END -> mAdapterSimple.loadMoreEnd()
-                    else -> return@Observer
-                }
-            })
-            reloadStatus.observe(viewLifecycleOwner, {
-                reloadView.isVisible = it
-            })
-            reloadListStatus.observe(viewLifecycleOwner, {
-                reloadListView.isVisible = it
-            })
-        }
+        mViewModel.categories.observe(viewLifecycleOwner, {
+            updateCategory(it)
+        })
+        mViewModel.checkedCategory.observe(viewLifecycleOwner, {
+            mCategoryAdapter.check(it)
+        })
+        mViewModel.articleList.observe(viewLifecycleOwner, {
+            mAdapter.setList(it)
+        })
+        mViewModel.refreshStatus.observe(viewLifecycleOwner, {
+            swipeRefreshLayout.isRefreshing = it
+        })
+        mViewModel.loadMoreStatus.observe(viewLifecycleOwner, {
+            mAdapter.loadMoreModule.setLoadMoreStatus(it)
+        })
+        mViewModel.reloadStatus.observe(viewLifecycleOwner, {
+            reloadView.isVisible = it
+        })
+        mViewModel.reloadListStatus.observe(viewLifecycleOwner, {
+            reloadListView.isVisible = it
+        })
         Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, {
             mViewModel.updateListCollectState()
         })
         Bus.observe<Pair<Long, Boolean>>(USER_COLLECT_UPDATED, viewLifecycleOwner, {
             mViewModel.updateItemCollectState(it)
         })
+    }
+
+    private fun updateCategory(categoryList: MutableList<Category>) {
+        rvCategory.isGone = categoryList.isEmpty()
+        mCategoryAdapter.setList(categoryList)
     }
 
     override fun lazyLoadData() {

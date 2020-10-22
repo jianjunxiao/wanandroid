@@ -59,13 +59,13 @@ class OpenSourceActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        OpenSourceAdapter().apply {
-            bindToRecyclerView(recyclerView)
-            setNewData(openSourceData)
-            setOnItemClickListener { _, _, position ->
-                val article = data[position]
+        OpenSourceAdapter().also {
+            it.setList(openSourceData)
+            it.setOnItemClickListener { _, _, position ->
+                val article = it.data[position]
                 ActivityHelper.start(DetailActivity::class.java, mapOf(PARAM_ARTICLE to article))
             }
+            recyclerView.adapter = it
         }
 
         ivBack.setOnClickListener { ActivityHelper.finish(OpenSourceActivity::class.java) }

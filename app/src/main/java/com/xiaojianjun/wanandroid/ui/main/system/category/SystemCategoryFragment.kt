@@ -49,16 +49,16 @@ class SystemCategoryFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val categoryList: List<Category> = arguments?.getParcelableArrayList(CATEGORY_LIST)!!
+        val categoryList: ArrayList<Category> = arguments?.getParcelableArrayList(CATEGORY_LIST)!!
         val checked = (parentFragment as SystemFragment).getCurrentChecked()
-        SystemCategoryAdapter(R.layout.item_system_category, categoryList, checked).run {
-            bindToRecyclerView(recyclerView)
-            onCheckedListener = {
+        SystemCategoryAdapter(R.layout.item_system_category, categoryList, checked).also {
+            it.onCheckedListener = { position ->
                 behavior?.state = BottomSheetBehavior.STATE_HIDDEN
                 view.postDelayed({
-                    (parentFragment as SystemFragment).check(it)
+                    (parentFragment as SystemFragment).check(position)
                 }, 300)
             }
+            recyclerView.adapter = it
         }
         view.post {
             (recyclerView.layoutManager as LinearLayoutManager)

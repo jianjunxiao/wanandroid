@@ -1,7 +1,6 @@
 package com.xiaojianjun.wanandroid.ui.main.home.latest
 
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.common.ScrollToTop
@@ -9,15 +8,13 @@ import com.xiaojianjun.wanandroid.common.bus.Bus
 import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
 import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
-import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
-import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
+import com.xiaojianjun.wanandroid.common.loadmore.setLoadMoreStatus
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.main.home.ArticleAdapter
 import kotlinx.android.synthetic.main.fragment_latest.*
 import kotlinx.android.synthetic.main.include_reload.*
 
-class LatestFragment : BaseVmFragment<LatestViewModel>(),
-    ScrollToTop {
+class LatestFragment : BaseVmFragment<LatestViewModel>(), ScrollToTop {
 
     companion object {
         fun newInstance() = LatestFragment()
@@ -30,25 +27,32 @@ class LatestFragment : BaseVmFragment<LatestViewModel>(),
     override fun viewModelClass() = LatestViewModel::class.java
 
     override fun initView() {
+        initRefresh()
+        initAdapter()
+        initListeners()
+    }
+
+    private fun initRefresh() {
         swipeRefreshLayout.run {
             setColorSchemeResources(R.color.textColorPrimary)
             setProgressBackgroundColorSchemeResource(R.color.bgColorPrimary)
             setOnRefreshListener { mViewModel.refreshProjectList() }
         }
-        mAdapter = ArticleAdapter(R.layout.item_article).apply {
-            setLoadMoreView(CommonLoadMoreView())
-            bindToRecyclerView(recyclerView)
-            setOnLoadMoreListener({
+    }
+
+    private fun initAdapter() {
+        mAdapter = ArticleAdapter(R.layout.item_article).also {
+            it.loadMoreModule.setOnLoadMoreListener {
                 mViewModel.loadMoreProjectList()
-            }, recyclerView)
-            setOnItemClickListener { _, _, position ->
-                val article = mAdapter.data[position]
+            }
+            it.setOnItemClickListener { _, _, position ->
+                val article = it.data[position]
                 ActivityHelper.start(
                     DetailActivity::class.java, mapOf(DetailActivity.PARAM_ARTICLE to article)
                 )
             }
-            setOnItemChildClickListener { _, view, position ->
-                val article = mAdapter.data[position]
+            it.setOnItemChildClickListener { _, view, position ->
+                val article = it.data[position]
                 if (view.id == R.id.iv_collect && checkLogin()) {
                     view.isSelected = !view.isSelected
                     if (article.collect) {
@@ -58,7 +62,11 @@ class LatestFragment : BaseVmFragment<LatestViewModel>(),
                     }
                 }
             }
+            recyclerView.adapter = it
         }
+    }
+
+    private fun initListeners() {
         btnReload.setOnClickListener {
             mViewModel.refreshProjectList()
         }
@@ -66,25 +74,18 @@ class LatestFragment : BaseVmFragment<LatestViewModel>(),
 
     override fun observe() {
         super.observe()
-        mViewModel.run {
-            articleList.observe(viewLifecycleOwner, {
-                mAdapter.setNewData(it)
-            })
-            refreshStatus.observe(viewLifecycleOwner, {
-                swipeRefreshLayout.isRefreshing = it
-            })
-            loadMoreStatus.observe(viewLifecycleOwner, Observer {
-                when (it) {
-                    LoadMoreStatus.COMPLETED -> mAdapter.loadMoreComplete()
-                    LoadMoreStatus.ERROR -> mAdapter.loadMoreFail()
-                    LoadMoreStatus.END -> mAdapter.loadMoreEnd()
-                    else -> return@Observer
-                }
-            })
-            reloadStatus.observe(viewLifecycleOwner, {
-                reloadView.isVisible = it
-            })
-        }
+        mViewModel.articleList.observe(viewLifecycleOwner, {
+            mAdapter.setList(it)
+        })
+        mViewModel.refreshStatus.observe(viewLifecycleOwner, {
+            swipeRefreshLayout.isRefreshing = it
+        })
+        mViewModel.loadMoreStatus.observe(viewLifecycleOwner, {
+            mAdapter.loadMoreModule.setLoadMoreStatus(it)
+        })
+        mViewModel.reloadStatus.observe(viewLifecycleOwner, {
+            reloadView.isVisible = it
+        })
         Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, viewLifecycleOwner, {
             mViewModel.updateListCollectState()
         })

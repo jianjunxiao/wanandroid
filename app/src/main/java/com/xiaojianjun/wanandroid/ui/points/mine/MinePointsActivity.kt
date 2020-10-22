@@ -3,12 +3,10 @@ package com.xiaojianjun.wanandroid.ui.points.mine
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
-import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
-import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
+import com.xiaojianjun.wanandroid.common.loadmore.setLoadMoreStatus
 import com.xiaojianjun.wanandroid.ui.points.rank.PointsRankActivity
 import kotlinx.android.synthetic.main.activity_mine_points.*
 import kotlinx.android.synthetic.main.header_mine_points.view.*
@@ -25,10 +23,9 @@ class MinePointsActivity : BaseVmActivity<MinePointsViewModel>() {
 
     override fun initView() {
         mHeaderView = LayoutInflater.from(this).inflate(R.layout.header_mine_points, null)
-        mAdapter = MinePointsAdapter().apply {
-            setLoadMoreView(CommonLoadMoreView())
-            bindToRecyclerView(recyclerView)
-            setOnLoadMoreListener({ mViewModel.loadMoreRecord() }, recyclerView)
+        mAdapter = MinePointsAdapter().also {
+            it.loadMoreModule.setOnLoadMoreListener { mViewModel.loadMoreRecord() }
+            recyclerView.adapter = it
         }
         swipeRefreshLayout.run {
             setColorSchemeResources(R.color.textColorPrimary)
@@ -61,13 +58,8 @@ class MinePointsActivity : BaseVmActivity<MinePointsViewModel>() {
             refreshStatus.observe(this@MinePointsActivity, {
                 swipeRefreshLayout.isRefreshing = it
             })
-            loadMoreStatus.observe(this@MinePointsActivity, Observer {
-                when (it) {
-                    LoadMoreStatus.COMPLETED -> mAdapter.loadMoreComplete()
-                    LoadMoreStatus.ERROR -> mAdapter.loadMoreFail()
-                    LoadMoreStatus.END -> mAdapter.loadMoreEnd()
-                    else -> return@Observer
-                }
+            loadMoreStatus.observe(this@MinePointsActivity, {
+                mAdapter.loadMoreModule.setLoadMoreStatus(it)
             })
             reloadStatus.observe(this@MinePointsActivity, {
                 reloadView.isVisible = it

@@ -30,17 +30,21 @@ class HistoryActivity : BaseVmActivity<HistoryViewModel>() {
     override fun viewModelClass() = HistoryViewModel::class.java
 
     override fun initView() {
-        mAdapter = ArticleAdapter().apply {
-            bindToRecyclerView(recyclerView)
-            setOnItemClickListener { _, _, position ->
-                val article = data[position]
+        initAdapter()
+        initListeners()
+    }
+
+    private fun initAdapter() {
+        mAdapter = ArticleAdapter().also {
+            it.setOnItemClickListener { _, _, position ->
+                val article = it.data[position]
                 ActivityHelper.start(
                     DetailActivity::class.java,
                     mapOf(DetailActivity.PARAM_ARTICLE to article)
                 )
             }
-            setOnItemChildClickListener { _, view, position ->
-                val article = data[position]
+            it.setOnItemChildClickListener { _, view, position ->
+                val article = it.data[position]
                 if (view.id == R.id.iv_collect && checkLogin()) {
                     view.isSelected = !view.isSelected
                     if (article.collect) {
@@ -50,19 +54,25 @@ class HistoryActivity : BaseVmActivity<HistoryViewModel>() {
                     }
                 }
             }
-            setOnItemLongClickListener { _, _, position ->
+            it.setOnItemLongClickListener { _, _, position ->
                 AlertDialog.Builder(this@HistoryActivity)
                     .setMessage(R.string.confirm_delete_history)
                     .setNegativeButton(R.string.cancel) { _, _ -> }
                     .setPositiveButton(R.string.confirm) { _, _ ->
-                        mViewModel.deleteHistory(data[position])
-                        mAdapter.remove(position)
-                        this@HistoryActivity.emptyView.isVisible = data.isEmpty()
+                        mViewModel.deleteHistory(it.data[position])
+                        mAdapter.removeAt(position)
+                        this@HistoryActivity.emptyView.isVisible = it.data.isEmpty()
                     }.show()
                 true
             }
+            recyclerView.adapter = it
         }
-        ivBack.setOnClickListener { ActivityHelper.finish(HistoryActivity::class.java) }
+    }
+
+    private fun initListeners() {
+        ivBack.setOnClickListener {
+            ActivityHelper.finish(HistoryActivity::class.java)
+        }
     }
 
 //    override fun initData() {
@@ -76,14 +86,12 @@ class HistoryActivity : BaseVmActivity<HistoryViewModel>() {
 
     override fun observe() {
         super.observe()
-        mViewModel.run {
-            articleList.observe(this@HistoryActivity, {
-                mAdapter.setNewData(it)
-            })
-            emptyStatus.observe(this@HistoryActivity, {
-                emptyView.isVisible = it
-            })
-        }
+        mViewModel.articleList.observe(this, {
+            mAdapter.setList(it)
+        })
+        mViewModel.emptyStatus.observe(this, {
+            emptyView.isVisible = it
+        })
         Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, {
             mViewModel.updateListCollectState()
         })

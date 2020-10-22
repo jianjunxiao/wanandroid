@@ -25,14 +25,15 @@ class SearchHistoryFragment : BaseVmFragment<SearchHistoryViewModel>() {
     override fun viewModelClass() = SearchHistoryViewModel::class.java
 
     override fun initView() {
-        searchHistoryAdapter = SearchHistoryAdapter(activity!!).apply {
-            rvSearchHistory.adapter = this
-            onItemClickListener = {
-                (activity as? SearchActivity)?.fillSearchInput(data[it])
+        val fragmentActivity = activity as? SearchActivity ?: return
+        searchHistoryAdapter = SearchHistoryAdapter(fragmentActivity).also {
+            it.onItemClickListener = { position ->
+                fragmentActivity.fillSearchInput(it.data[position])
             }
-            onDeleteClickListener = {
-                mViewModel.deleteSearchHistory(searchHistoryAdapter.data[it])
+            it.onDeleteClickListener = { position ->
+                mViewModel.deleteSearchHistory(it.data[position])
             }
+            rvSearchHistory.adapter = it
         }
     }
 
@@ -43,16 +44,14 @@ class SearchHistoryFragment : BaseVmFragment<SearchHistoryViewModel>() {
 
     override fun observe() {
         super.observe()
-        mViewModel.run {
-            hotWords.observe(viewLifecycleOwner, {
-                tvHotSearch.visibility = View.VISIBLE
-                setHotwords(it)
-            })
-            searchHistory.observe(viewLifecycleOwner, {
-                tvSearchHistory.isGone = it.isEmpty()
-                searchHistoryAdapter.submitList(it)
-            })
-        }
+        mViewModel.hotWords.observe(viewLifecycleOwner, {
+            tvHotSearch.visibility = View.VISIBLE
+            setHotwords(it)
+        })
+        mViewModel.searchHistory.observe(viewLifecycleOwner, {
+            tvSearchHistory.isGone = it.isEmpty()
+            searchHistoryAdapter.submitList(it)
+        })
     }
 
     private fun setHotwords(hotwords: List<HotWord>) {

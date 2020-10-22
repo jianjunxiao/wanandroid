@@ -35,7 +35,7 @@ object Config {
 
     const val coilVersion = "1.0.0-rc3"
 
-    const val brvhaVersion = "2.9.50"
+    const val brvhaVersion = "3.0.6"
 
     const val flowLayoutVersion = "1.1.2"
 

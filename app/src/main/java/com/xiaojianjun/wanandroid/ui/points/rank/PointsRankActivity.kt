@@ -1,12 +1,10 @@
 package com.xiaojianjun.wanandroid.ui.points.rank
 
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.base.BaseVmActivity
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
-import com.xiaojianjun.wanandroid.common.loadmore.CommonLoadMoreView
-import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
+import com.xiaojianjun.wanandroid.common.loadmore.setLoadMoreStatus
 import kotlinx.android.synthetic.main.activity_points_rank.*
 import kotlinx.android.synthetic.main.include_reload.*
 
@@ -19,10 +17,9 @@ class PointsRankActivity : BaseVmActivity<PointsRankViewModel>() {
     override fun viewModelClass() = PointsRankViewModel::class.java
 
     override fun initView() {
-        mAdapter = PointsRankAdapter().apply {
-            setLoadMoreView(CommonLoadMoreView())
-            bindToRecyclerView(recyclerView)
-            setOnLoadMoreListener({ mViewModel.loadMoreData() }, recyclerView)
+        mAdapter = PointsRankAdapter().also {
+            it.loadMoreModule.setOnLoadMoreListener { mViewModel.loadMoreData() }
+            recyclerView.adapter = it
         }
         swipeRefreshLayout.run {
             setColorSchemeResources(R.color.textColorPrimary)
@@ -47,13 +44,8 @@ class PointsRankActivity : BaseVmActivity<PointsRankViewModel>() {
             refreshStatus.observe(this@PointsRankActivity, {
                 swipeRefreshLayout.isRefreshing = it
             })
-            loadMoreStatus.observe(this@PointsRankActivity, Observer {
-                when (it) {
-                    LoadMoreStatus.COMPLETED -> mAdapter.loadMoreComplete()
-                    LoadMoreStatus.ERROR -> mAdapter.loadMoreFail()
-                    LoadMoreStatus.END -> mAdapter.loadMoreEnd()
-                    else -> return@Observer
-                }
+            loadMoreStatus.observe(this@PointsRankActivity, {
+                mAdapter.loadMoreModule.setLoadMoreStatus(it)
             })
             reloadStatus.observe(this@PointsRankActivity, {
                 reloadView.isVisible = it

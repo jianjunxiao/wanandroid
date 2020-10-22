@@ -152,5 +152,6 @@ fun whiteHostList() = arrayOf(
     "cn.bing.com",
     "weixin.sogou.com",
     "sug.so.360.cn",
-    "market.geekbang.org"
+    "market.geekbang.org",
+    "www.bilibili.com"
 )
