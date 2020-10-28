@@ -11,7 +11,8 @@ import kotlinx.android.synthetic.main.item_points_rank.view.*
  * Created by xiaojianjun on 2019-12-02.
  */
 @SuppressLint("SetTextI18n")
-class PointsRankAdapter : BaseLoadMoreAdapter<PointRank, BaseViewHolder>(R.layout.item_points_rank) {
+class PointsRankAdapter :
+    BaseLoadMoreAdapter<PointRank, BaseViewHolder>(R.layout.item_points_rank) {
     override fun convert(holder: BaseViewHolder, item: PointRank) {
         holder.itemView.run {
             tvNo.text = "${holder.adapterPosition + 1}"

@@ -7,7 +7,6 @@ import com.xiaojianjun.wanandroid.R
 import com.xiaojianjun.wanandroid.base.BaseVmFragment
 import com.xiaojianjun.wanandroid.common.ScrollToTop
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
-import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.ui.detail.DetailActivity
 import com.xiaojianjun.wanandroid.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_navigation.*

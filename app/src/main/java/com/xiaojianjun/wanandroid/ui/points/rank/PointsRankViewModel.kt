@@ -3,6 +3,7 @@ package com.xiaojianjun.wanandroid.ui.points.rank
 import androidx.lifecycle.MutableLiveData
 import com.xiaojianjun.wanandroid.base.BaseViewModel
 import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
+import com.xiaojianjun.wanandroid.ext.concat
 import com.xiaojianjun.wanandroid.model.bean.PointRank
 
 /**
@@ -45,7 +46,8 @@ class PointsRankViewModel : BaseViewModel() {
                 loadMoreStatus.value = LoadMoreStatus.LOADING
                 val pagination = pointsRankRespository.getPointsRank(page + 1)
                 page = pagination.curPage
-                pointsRank.value?.addAll(pagination.datas)
+                pointsRank.value = pointsRank.value.concat(pagination.datas)
+
                 loadMoreStatus.value = if (pagination.offset >= pagination.total) {
                     LoadMoreStatus.END
                 } else {

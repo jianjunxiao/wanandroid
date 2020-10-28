@@ -33,7 +33,7 @@ object Config {
     const val moshiVersion = "1.11.0"
     const val PersistentCookieJarVersion = "v1.0.1"
 
-    const val coilVersion = "1.0.0-rc3"
+    const val coilVersion = "1.0.0"
 
     const val brvhaVersion = "3.0.6"
 

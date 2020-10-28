@@ -12,7 +12,8 @@ import kotlinx.android.synthetic.main.item_mine_points.view.*
  * Created by xiaojianjun on 2019-12-02.
  */
 @SuppressLint("SetTextI18n")
-class MinePointsAdapter : BaseLoadMoreAdapter<PointRecord, BaseViewHolder>(R.layout.item_mine_points) {
+class MinePointsAdapter :
+    BaseLoadMoreAdapter<PointRecord, BaseViewHolder>(R.layout.item_mine_points) {
     override fun convert(holder: BaseViewHolder, item: PointRecord) {
         holder.itemView.run {
             tvReason.text = item.reason

@@ -5,6 +5,7 @@ import com.xiaojianjun.wanandroid.base.BaseViewModel
 import com.xiaojianjun.wanandroid.common.bus.Bus
 import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
 import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
+import com.xiaojianjun.wanandroid.ext.concat
 import com.xiaojianjun.wanandroid.model.bean.Article
 import com.xiaojianjun.wanandroid.model.store.UserInfoStore
 import com.xiaojianjun.wanandroid.model.store.isLogin
@@ -55,11 +56,11 @@ class PopularViewModel : BaseViewModel() {
         launch(
             block = {
                 loadMoreStatus.value = LoadMoreStatus.LOADING
+
                 val pagination = popularRepository.getArticleList(page)
                 page = pagination.curPage
-                val currentList = articleList.value ?: mutableListOf()
-                currentList.addAll(pagination.datas)
-                articleList.value = currentList
+                articleList.value = articleList.value.concat(pagination.datas)
+
                 loadMoreStatus.value = if (pagination.offset >= pagination.total) {
                     LoadMoreStatus.END
                 } else {

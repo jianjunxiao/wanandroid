@@ -3,6 +3,7 @@ package com.xiaojianjun.wanandroid.ui.points.mine
 import androidx.lifecycle.MutableLiveData
 import com.xiaojianjun.wanandroid.base.BaseViewModel
 import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreStatus
+import com.xiaojianjun.wanandroid.ext.concat
 import com.xiaojianjun.wanandroid.model.bean.PointRank
 import com.xiaojianjun.wanandroid.model.bean.PointRecord
 
@@ -52,7 +53,7 @@ class MinePointsViewModel : BaseViewModel() {
 
                 val pagination = minePointsRespository.getPointsRecord(page + 1)
                 page = pagination.curPage
-                pointsList.value?.addAll(pagination.datas)
+                pointsList.value = pointsList.value.concat(pagination.datas)
 
                 loadMoreStatus.value = if (pagination.offset >= pagination.total) {
                     LoadMoreStatus.END
