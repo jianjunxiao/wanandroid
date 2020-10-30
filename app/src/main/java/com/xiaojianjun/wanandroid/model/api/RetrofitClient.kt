@@ -1,10 +1,10 @@
 package com.xiaojianjun.wanandroid.model.api
 
-import android.util.Log
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.xiaojianjun.wanandroid.App
+import com.xiaojianjun.wanandroid.common.core.Logger
 import com.xiaojianjun.wanandroid.common.core.MoshiHelper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,7 +24,7 @@ object RetrofitClient {
 
     /**log**/
     private val logger = HttpLoggingInterceptor.Logger {
-        Log.d("RetrofitClient", it)
+        Logger.i(this::class.simpleName, it)
     }
     private val logInterceptor = HttpLoggingInterceptor(logger).apply {
         level = HttpLoggingInterceptor.Level.BODY

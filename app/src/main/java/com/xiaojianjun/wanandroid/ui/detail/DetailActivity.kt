@@ -1,7 +1,6 @@
 package com.xiaojianjun.wanandroid.ui.detail
 
 import android.net.Uri
-import android.util.Log
 import android.view.KeyEvent
 import android.view.ViewGroup.LayoutParams
 import android.webkit.ConsoleMessage
@@ -17,6 +16,7 @@ import com.xiaojianjun.wanandroid.common.bus.Bus
 import com.xiaojianjun.wanandroid.common.bus.USER_COLLECT_UPDATED
 import com.xiaojianjun.wanandroid.common.bus.USER_LOGIN_STATE_CHANGED
 import com.xiaojianjun.wanandroid.common.core.ActivityHelper
+import com.xiaojianjun.wanandroid.common.core.Logger
 import com.xiaojianjun.wanandroid.common.core.whiteHostList
 import com.xiaojianjun.wanandroid.ext.htmlToSpanned
 import com.xiaojianjun.wanandroid.ext.setBrightness
@@ -73,7 +73,7 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
                 }
 
                 override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-                    Log.d("WanAandroidWebView", "${consoleMessage?.message()}")
+                    Logger.d("WanAandroidWebView", consoleMessage?.message())
                     return super.onConsoleMessage(consoleMessage)
                 }
             })
