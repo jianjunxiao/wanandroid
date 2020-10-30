@@ -1,4 +1,4 @@
-package com.xiaojianjun.wanandroid.ui.main.mine
+package com.xiaojianjun.wanandroid.ui.main.profile
 
 import android.annotation.SuppressLint
 import androidx.core.view.isGone
@@ -20,17 +20,17 @@ import com.xiaojianjun.wanandroid.ui.points.mine.MinePointsActivity
 import com.xiaojianjun.wanandroid.ui.points.rank.PointsRankActivity
 import com.xiaojianjun.wanandroid.ui.settings.SettingsActivity
 import com.xiaojianjun.wanandroid.ui.shared.SharedActivity
-import kotlinx.android.synthetic.main.fragment_mine.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 
-class MineFragment : BaseVmFragment<MineViewModel>() {
+class ProfileFragment : BaseVmFragment<ProfileViewModel>() {
 
     companion object {
-        fun newInstance() = MineFragment()
+        fun newInstance() = ProfileFragment()
     }
 
-    override fun layoutRes() = R.layout.fragment_mine
+    override fun layoutRes() = R.layout.fragment_profile
 
-    override fun viewModelClass() = MineViewModel::class.java
+    override fun viewModelClass() = ProfileViewModel::class.java
 
     override fun initView() {
         clHeader.setOnClickListener {

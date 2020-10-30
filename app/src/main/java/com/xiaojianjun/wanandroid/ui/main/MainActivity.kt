@@ -12,7 +12,7 @@ import com.xiaojianjun.wanandroid.common.ScrollToTop
 import com.xiaojianjun.wanandroid.ext.showToast
 import com.xiaojianjun.wanandroid.ui.main.discovery.DiscoveryFragment
 import com.xiaojianjun.wanandroid.ui.main.home.HomeFragment
-import com.xiaojianjun.wanandroid.ui.main.mine.MineFragment
+import com.xiaojianjun.wanandroid.ui.main.profile.ProfileFragment
 import com.xiaojianjun.wanandroid.ui.main.navigation.NavigationFragment
 import com.xiaojianjun.wanandroid.ui.main.system.SystemFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,7 +34,7 @@ class MainActivity : BaseActivity() {
             R.id.system to createFragment(SystemFragment::class.java),
             R.id.discovery to createFragment(DiscoveryFragment::class.java),
             R.id.navigation to createFragment(NavigationFragment::class.java),
-            R.id.mine to createFragment(MineFragment::class.java)
+            R.id.mine to createFragment(ProfileFragment::class.java)
         )
 
         bottomNavigationView.run {
@@ -65,7 +65,7 @@ class MainActivity : BaseActivity() {
                 SystemFragment::class.java -> SystemFragment.newInstance()
                 DiscoveryFragment::class.java -> DiscoveryFragment.newInstance()
                 NavigationFragment::class.java -> NavigationFragment.newInstance()
-                MineFragment::class.java -> MineFragment.newInstance()
+                ProfileFragment::class.java -> ProfileFragment.newInstance()
                 else -> throw IllegalArgumentException("argument ${clazz.simpleName} is illegal")
             }
         }

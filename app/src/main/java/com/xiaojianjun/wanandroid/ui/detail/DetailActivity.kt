@@ -45,7 +45,10 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
         article = intent?.getParcelableExtra(PARAM_ARTICLE) ?: return
 
         tvTitle.text = article.title.htmlToSpanned()
-        ivBack.setOnClickListener { ActivityHelper.finish(DetailActivity::class.java) }
+
+        ivBack.setOnClickListener {
+            ActivityHelper.finish(DetailActivity::class.java)
+        }
         ivMore.setOnClickListener {
             ActionFragment.newInstance(article).show(supportFragmentManager)
         }
@@ -66,30 +69,8 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
             .setMainFrameErrorView(R.layout.include_reload, R.id.btnReload)
             .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
             .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.DISALLOW)
-            .setWebChromeClient(object : WebChromeClient() {
-                override fun onReceivedTitle(view: WebView?, title: String?) {
-                    setTitle(title)
-                    super.onReceivedTitle(view, title)
-                }
-
-                override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-                    Logger.d("WanAandroidWebView", consoleMessage?.message())
-                    return super.onConsoleMessage(consoleMessage)
-                }
-            })
-            .setWebViewClient(object : WebViewClient() {
-                override fun shouldOverrideUrlLoading(
-                    view: WebView?,
-                    request: WebResourceRequest?
-                ): Boolean {
-                    return !whiteHostList().contains(request?.url?.host)
-                }
-
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    super.onPageFinished(view, url)
-                    view?.loadUrl(customJs(url))
-                }
-            })
+            .setWebChromeClient(webChromeClient)
+            .setWebViewClient(webViewClient)
             .createAgentWeb()
             .ready()
             .get()
@@ -104,6 +85,32 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
             }
         }
         agentWeb?.urlLoader?.loadUrl(article.link)
+    }
+
+    private val webChromeClient = object : WebChromeClient() {
+        override fun onReceivedTitle(view: WebView?, title: String?) {
+            setTitle(title)
+            super.onReceivedTitle(view, title)
+        }
+
+        override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+            Logger.d("WanAandroidWebView", consoleMessage?.message())
+            return super.onConsoleMessage(consoleMessage)
+        }
+    }
+
+    private val webViewClient = object : WebViewClient() {
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            return !whiteHostList().contains(request?.url?.host)
+        }
+
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+            view?.loadUrl(customJs(url))
+        }
     }
 
     /**
@@ -161,7 +168,7 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         return if (agentWeb?.handleKeyEvent(keyCode, event) == true) {
-            return true
+            true
         } else {
             super.onKeyDown(keyCode, event)
         }
@@ -198,14 +205,18 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
     override fun observe() {
         super.observe()
         mViewModel.collect.observe(this, {
-            if (article.collect != it) {
-                article.collect = it
-                // 收藏状态变化，通知其他更新
-                Bus.post(USER_COLLECT_UPDATED, article.id to it)
-            }
+            onCollectStatusChanged(it)
         })
         Bus.observe<Boolean>(USER_LOGIN_STATE_CHANGED, this, {
             mViewModel.updateCollectStatus(article.id)
         })
+    }
+
+    private fun onCollectStatusChanged(collect: Boolean) {
+        if (article.collect != collect) {
+            article.collect = collect
+            // 收藏状态变化，通知其他更新
+            Bus.post(USER_COLLECT_UPDATED, article.id to collect)
+        }
     }
 }

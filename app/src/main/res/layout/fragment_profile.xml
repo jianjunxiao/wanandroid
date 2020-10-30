@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.main.mine.MineFragment">
+        tools:context=".ui.main.profile.ProfileFragment">
 
     <RelativeLayout
             android:layout_width="match_parent"
