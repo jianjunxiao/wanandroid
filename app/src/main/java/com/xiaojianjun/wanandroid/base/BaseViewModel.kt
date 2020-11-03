@@ -16,6 +16,7 @@ import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import javax.net.ssl.SSLHandshakeException
 
 typealias Block<T> = suspend (CoroutineScope) -> T
 typealias Error = suspend (Exception) -> Unit
@@ -100,7 +101,11 @@ open class BaseViewModel : ViewModel() {
                 }
             }
             // 网络请求失败
-            is ConnectException, is SocketTimeoutException, is UnknownHostException, is HttpException ->
+            is ConnectException,
+            is SocketTimeoutException,
+            is UnknownHostException,
+            is HttpException,
+            is SSLHandshakeException ->
                 if (showErrorToast) App.instance.showToast(R.string.network_request_failed)
             // 数据解析错误
             is JsonDataException, is JsonEncodingException ->
