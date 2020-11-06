@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/load_complete"
-                android:textColor="@color/textColorPrimary"/>
+                android:textColor="@color/textColorPrimary" />
     </FrameLayout>
 
     <FrameLayout

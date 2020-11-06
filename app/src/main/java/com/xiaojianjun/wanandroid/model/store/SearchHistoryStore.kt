@@ -1,6 +1,5 @@
 package com.xiaojianjun.wanandroid.model.store
 
-import com.squareup.moshi.Moshi
 import com.xiaojianjun.wanandroid.App
 import com.xiaojianjun.wanandroid.common.core.MoshiHelper
 import com.xiaojianjun.wanandroid.common.core.getSpValue

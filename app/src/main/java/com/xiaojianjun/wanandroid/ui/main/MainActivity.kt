@@ -12,8 +12,8 @@ import com.xiaojianjun.wanandroid.common.ScrollToTop
 import com.xiaojianjun.wanandroid.ext.showToast
 import com.xiaojianjun.wanandroid.ui.main.discovery.DiscoveryFragment
 import com.xiaojianjun.wanandroid.ui.main.home.HomeFragment
-import com.xiaojianjun.wanandroid.ui.main.profile.ProfileFragment
 import com.xiaojianjun.wanandroid.ui.main.navigation.NavigationFragment
+import com.xiaojianjun.wanandroid.ui.main.profile.ProfileFragment
 import com.xiaojianjun.wanandroid.ui.main.system.SystemFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
