@@ -1,5 +1,6 @@
 package com.xiaojianjun.wanandroid.model.store
 
+import com.squareup.moshi.Moshi
 import com.xiaojianjun.wanandroid.App
 import com.xiaojianjun.wanandroid.common.core.MoshiHelper
 import com.xiaojianjun.wanandroid.common.core.getSpValue
@@ -36,7 +37,10 @@ object SearchHistoryStore {
         return if (listStr.isEmpty()) {
             mutableListOf()
         } else {
-            MoshiHelper.listfromJson<String>(listStr).toMutableList()
+            MoshiHelper.fromJson<MutableList<String>>(
+                json = listStr,
+                type = (object : MoshiHelper.TypeToken<MutableList<String>>() {}).type
+            ) ?: mutableListOf()
         }
     }
 }

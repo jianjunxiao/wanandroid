@@ -1,8 +1,9 @@
 package com.xiaojianjun.wanandroid.common.core
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
 /**
  * moshi json 解析
@@ -17,9 +18,15 @@ object MoshiHelper {
     /**
      *  json string 解析成对象，可能为null
      *  @param [json] json string
+     *  @param [type] 解析的泛型类型。注意：如果解析的目标实体类有泛型，type不能为空，否则会报错；如果解析目标实
+     *                体类没有泛型，type可以不传。
      */
-    inline fun <reified T> fromJson(json: String): T? {
-        return moshi.adapter(T::class.java).fromJson(json)
+    inline fun <reified T> fromJson(json: String, type: Type? = null): T? {
+        return if (type == null) {
+            moshi.adapter(T::class.java).fromJson(json)
+        } else {
+            moshi.adapter<T>(type).fromJson(json)
+        }
     }
 
     /**
@@ -31,11 +38,20 @@ object MoshiHelper {
     }
 
     /**
-     * 将json list string转换为对象列表
-     * @param [json] json list string
+     * 泛型类型获取，根据指定的泛型类型T，获取对应的ParameterizedType
+     * 比如: (object : MoshiHelper.TypeToken<ApiResult<List<Map<String,Int>>>>() {}).type
      */
-    inline fun <reified T> listfromJson(json: String): List<T> {
-        val type = Types.newParameterizedType(List::class.java, T::class.java)
-        return moshi.adapter<List<T>>(type).fromJson(json) ?: emptyList()
+    abstract class TypeToken<T> {
+
+        /**
+         * 泛型T对应的Type
+         */
+        var type: Type
+
+        init {
+            val parameterizedType = this.javaClass.genericSuperclass
+                    as ParameterizedType
+            type = parameterizedType.actualTypeArguments[0]
+        }
     }
 }
