@@ -1,5 +1,5 @@
 object Config {
-    const val gradleVersion = "4.1.0"
+    const val gradleVersion = "4.1.1"
     const val kotlinVersion = "1.4.10"
 
     const val coroutinesVersion = "1.3.9"
