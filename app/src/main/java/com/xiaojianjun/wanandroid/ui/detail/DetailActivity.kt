@@ -44,7 +44,7 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
 
         article = intent?.getParcelableExtra(PARAM_ARTICLE) ?: return
 
-        tvTitle.text = article.title.htmlToSpanned()
+        setDetailTitle(article.title.htmlToSpanned())
 
         ivBack.setOnClickListener {
             ActivityHelper.finish(DetailActivity::class.java)
@@ -89,7 +89,7 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
 
     private val webChromeClient = object : WebChromeClient() {
         override fun onReceivedTitle(view: WebView?, title: String?) {
-            setTitle(title)
+            setDetailTitle(title, true)
             super.onReceivedTitle(view, title)
         }
 
@@ -184,8 +184,12 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
         return js.toString()
     }
 
-    private fun setTitle(title: String?) {
+    /**
+     * 设置标题
+     */
+    private fun setDetailTitle(title: CharSequence?, isSelected: Boolean = false) {
         tvTitle.text = title
+        tvTitle.postDelayed({ tvTitle.isSelected = isSelected }, 500)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
