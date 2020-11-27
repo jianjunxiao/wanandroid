@@ -9,6 +9,7 @@ fun whiteHostList() = arrayOf(
     "www.wanandroid.com",
     "study.163.com",
     "juejin.im",
+    "juejin.cn",
     "www.jianshu.com",
     "mp.weixin.qq.com",
     "blog.csdn.net",
@@ -153,5 +154,9 @@ fun whiteHostList() = arrayOf(
     "weixin.sogou.com",
     "sug.so.360.cn",
     "market.geekbang.org",
-    "www.bilibili.com"
+    "m.bilibili.com",
+    "www.tutieshi.com",
+    "www.aliyun.com",
+    "promotion.aliyun.com",
+    "fabiomsr.github.io",
 )

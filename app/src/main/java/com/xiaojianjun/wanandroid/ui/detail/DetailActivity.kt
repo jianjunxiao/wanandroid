@@ -120,7 +120,13 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
         val js = StringBuilder()
         js.append("javascript:(function(){")
         when (Uri.parse(url).host) {
-            "juejin.im" -> {
+            "juejin.im", "juejin.cn" -> {
+                js.append("var followButtonList = document.getElementsByClassName('follow-button');")
+                js.append("if(followButtonList&&followButtonList.length){followButtonList[0].parentNode.removeChild(followButtonList[0])}")
+                js.append("var articleBannerList = document.getElementsByClassName('article-banner');")
+                js.append("if(articleBannerList&&articleBannerList.length){articleBannerList[0].parentNode.removeChild(articleBannerList[0])}")
+                js.append("var subscribeBtnList = document.getElementsByClassName('subscribe-btn');")
+                js.append("if(subscribeBtnList&&subscribeBtnList.length){subscribeBtnList[0].parentNode.removeChild(subscribeBtnList[0])}")
                 js.append("var headerList = document.getElementsByClassName('main-header-box');")
                 js.append("if(headerList&&headerList.length){headerList[0].parentNode.removeChild(headerList[0])}")
                 js.append("var openAppList = document.getElementsByClassName('open-in-app');")
@@ -133,8 +139,18 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
                 js.append("if(columnViewList&&columnViewList.length){columnViewList[0].style.margin = '0px'}")
             }
             "www.jianshu.com" -> {
+                js.append("var badgeItemList = document.getElementsByClassName('badge-item');")
+                js.append("if(badgeItemList&&badgeItemList.length){badgeItemList[0].parentNode.removeChild(badgeItemList[0])}")
+                js.append("var appOpenList = document.getElementsByClassName('app-open');")
+                js.append("if(appOpenList&&appOpenList.length){appOpenList[0].parentNode.removeChild(appOpenList[0])}")
                 js.append("var jianshuHeader = document.getElementById('jianshu-header');")
                 js.append("if(jianshuHeader){jianshuHeader.parentNode.removeChild(jianshuHeader)}")
+                js.append("var commentMain = document.getElementById('comment-main');")
+                js.append("if(commentMain){commentMain.parentNode.removeChild(commentMain)}")
+                js.append("var footer = document.getElementById('footer');")
+                js.append("if(footer){footer.parentNode.removeChild(footer)}")
+                js.append("var revealAd = document.getElementById('reveal-ad');")
+                js.append("if(revealAd){revealAd.parentNode.removeChild(revealAd)}")
                 js.append("var headerShimList = document.getElementsByClassName('header-shim');")
                 js.append("if(headerShimList&&headerShimList.length){headerShimList[0].parentNode.removeChild(headerShimList[0])}")
                 js.append("var fubiaoList = document.getElementsByClassName('fubiao-dialog');")
@@ -148,12 +164,18 @@ class DetailActivity : BaseVmActivity<DetailViewModel>() {
                 js.append("if(callAppBtnList&&callAppBtnList.length){callAppBtnList[0].parentNode.removeChild(callAppBtnList[0])}")
             }
             "blog.csdn.net" -> {
+                js.append("var detailFollow = document.getElementById('detailFollow');")
+                js.append("if(detailFollow){detailFollow.parentNode.removeChild(detailFollow)}")
                 js.append("var csdnToolBar = document.getElementById('csdn-toolbar');")
                 js.append("if(csdnToolBar){csdnToolBar.parentNode.removeChild(csdnToolBar)}")
                 js.append("var csdnMain = document.getElementById('main');")
                 js.append("if(csdnMain){csdnMain.style.margin='0px'}")
                 js.append("var operate = document.getElementById('operate');")
                 js.append("if(operate){operate.parentNode.removeChild(operate)}")
+                js.append("var haveHeartCountList = document.getElementsByClassName('have-heart-count');")
+                js.append("if(haveHeartCountList&&haveHeartCountList.length){haveHeartCountList[0].parentNode.removeChild(haveHeartCountList[0])}")
+                js.append("var asideHeaderFixedList = document.getElementsByClassName('aside-header-fixed');")
+                js.append("if(asideHeaderFixedList&&asideHeaderFixedList.length){asideHeaderFixedList[0].parentNode.removeChild(asideHeaderFixedList[0])}")
                 js.append("var feedSignSpanList = document.getElementsByClassName('feed-Sign-span');")
                 js.append("if(feedSignSpanList&&feedSignSpanList.length){feedSignSpanList[0].parentNode.removeChild(feedSignSpanList[0])}")
             }
