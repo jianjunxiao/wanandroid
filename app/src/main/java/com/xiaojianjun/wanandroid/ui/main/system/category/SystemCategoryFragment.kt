@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.xiaojianjun.wanandroid.App
 import com.xiaojianjun.wanandroid.R
+import com.xiaojianjun.wanandroid.ext.dpToPx
 import com.xiaojianjun.wanandroid.model.bean.Category
 import com.xiaojianjun.wanandroid.ui.main.system.SystemFragment
 import com.xiaojianjun.wanandroid.util.getSreenHeight
@@ -82,7 +83,7 @@ class SystemCategoryFragment : BottomSheetDialogFragment() {
     }
 
     fun show(manager: FragmentManager, height: Int? = null) {
-        this.height = height ?: (getSreenHeight(App.instance) * 0.75f).toInt()
+        this.height = height ?: getSreenHeight(App.instance) - 48.dpToPx().toInt()
         if (!this.isAdded) {
             super.show(manager, "SystemCategoryFragment")
         }
