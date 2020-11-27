@@ -1,15 +1,15 @@
 object Config {
     const val gradleVersion = "4.1.1"
-    const val kotlinVersion = "1.4.10"
+    const val kotlinVersion = "1.4.20"
 
-    const val coroutinesVersion = "1.3.9"
+    const val coroutinesVersion = "1.4.2"
 
     const val buildToolsVersion = "30.0.1"
     const val compileSdkVersion = 30
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
 
-    const val junitVersion = "4.13"
+    const val junitVersion = "4.13.1"
     const val runnerVersion = "1.0.2"
     const val espressoVersion = "3.0.2"
 
@@ -20,7 +20,7 @@ object Config {
     const val fragmentVersion = "1.2.5"
     const val appCompatVersion = "1.2.0"
 
-    const val constraintLayoutVersion = "2.0.2"
+    const val constraintLayoutVersion = "2.0.4"
     const val coordinatorLayoutVersion = "1.1.0"
     const val swipeRefreshLayoutVersion = "1.1.0"
     const val recyclerViewVersion = "1.1.0"
