@@ -65,6 +65,10 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     androidExtensions {
         isExperimental = true
     }

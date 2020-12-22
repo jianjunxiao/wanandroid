@@ -18,15 +18,9 @@ object MoshiHelper {
     /**
      *  json string 解析成对象，可能为null
      *  @param [json] json string
-     *  @param [type] 解析的泛型类型。注意：如果解析的目标实体类有泛型，type不能为空，否则会报错；如果解析目标实
-     *                体类没有泛型，type可以不传。
      */
-    inline fun <reified T> fromJson(json: String, type: Type? = null): T? {
-        return if (type == null) {
-            moshi.adapter(T::class.java).fromJson(json)
-        } else {
-            moshi.adapter<T>(type).fromJson(json)
-        }
+    inline fun <reified T> fromJson(json: String): T? {
+        return moshi.adapter<T>(getType<T>()).fromJson(json)
     }
 
     /**
@@ -35,6 +29,13 @@ object MoshiHelper {
      */
     inline fun <reified T> toJson(t: T): String {
         return moshi.adapter(T::class.java).toJson(t)
+    }
+
+    /**
+     * 获取指定泛型T的Type
+     */
+    inline fun <reified T> getType(): Type {
+        return (object : TypeToken<T>() {}).type
     }
 
     /**

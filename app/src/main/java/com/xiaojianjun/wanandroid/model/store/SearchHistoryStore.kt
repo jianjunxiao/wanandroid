@@ -36,10 +36,7 @@ object SearchHistoryStore {
         return if (listStr.isEmpty()) {
             mutableListOf()
         } else {
-            MoshiHelper.fromJson<MutableList<String>>(
-                json = listStr,
-                type = (object : MoshiHelper.TypeToken<MutableList<String>>() {}).type
-            ) ?: mutableListOf()
+            MoshiHelper.fromJson<MutableList<String>>(listStr) ?: mutableListOf()
         }
     }
 }
