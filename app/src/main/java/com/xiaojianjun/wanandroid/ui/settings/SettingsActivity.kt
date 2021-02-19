@@ -64,7 +64,7 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
             showToast(getString(R.string.stay_tuned))
         }
         llAboutUs.setOnClickListener {
-            ActivityHelper.start(
+            ActivityHelper.startActivity(
                 DetailActivity::class.java,
                 mapOf(
                     PARAM_ARTICLE to Article(
@@ -79,14 +79,14 @@ class SettingsActivity : BaseVmActivity<SettingsViewModel>() {
                 .setMessage(R.string.confirm_logout)
                 .setPositiveButton(R.string.confirm) { _, _ ->
                     mViewModel.logout()
-                    ActivityHelper.start(LoginActivity::class.java)
+                    ActivityHelper.startActivity(LoginActivity::class.java)
                     ActivityHelper.finish(SettingsActivity::class.java)
                 }
                 .setNegativeButton(R.string.cancel) { _, _ -> }
                 .show()
         }
         tvLogout.isVisible = isLogin()
-        ivTest.setOnClickListener { ActivityHelper.start(TestActivity::class.java) }
+        ivTest.setOnClickListener { ActivityHelper.startActivity(TestActivity::class.java) }
     }
 
     private fun setFontSize() {

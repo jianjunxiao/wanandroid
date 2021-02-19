@@ -30,7 +30,7 @@ class CollectionActivity : BaseVmActivity<CollectionViewModel>() {
         mAdater = ArticleAdapter().also {
             it.setOnItemClickListener { _, _, position ->
                 val article = it.data[position]
-                ActivityHelper.start(
+                ActivityHelper.startActivity(
                     DetailActivity::class.java, mapOf(DetailActivity.PARAM_ARTICLE to article)
                 )
             }

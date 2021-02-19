@@ -32,10 +32,10 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
 
     override fun initView() {
         ivAdd.setOnClickListener {
-            checkLogin { ActivityHelper.start(ShareActivity::class.java) }
+            checkLogin { ActivityHelper.startActivity(ShareActivity::class.java) }
         }
         ivSearch.setOnClickListener {
-            ActivityHelper.start(SearchActivity::class.java)
+            ActivityHelper.startActivity(SearchActivity::class.java)
         }
         swipeRefreshLayout.run {
             setColorSchemeResources(R.color.textColorPrimary)
@@ -45,7 +45,7 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
 
         hotWordsAdapter = HotWordsAdapter(R.layout.item_hot_word).apply {
             setOnItemClickListener { _, _, position ->
-                ActivityHelper.start(
+                ActivityHelper.startActivity(
                     SearchActivity::class.java, mapOf(
                         SearchActivity.SEARCH_WORDS to data[position].name
                     )
@@ -77,7 +77,7 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
                 tagFlowLayout.adapter = TagAdapter(it)
                 tagFlowLayout.setOnTagClickListener { _, position, _ ->
                     val frequently = it[position]
-                    ActivityHelper.start(
+                    ActivityHelper.startActivity(
                         DetailActivity::class.java,
                         mapOf(
                             PARAM_ARTICLE to Article(
@@ -108,7 +108,7 @@ class DiscoveryFragment : BaseVmFragment<DiscoveryViewModel>(), ScrollToTop {
             start()
             setOnBannerListener {
                 val banner = banners[it]
-                ActivityHelper.start(
+                ActivityHelper.startActivity(
                     DetailActivity::class.java,
                     mapOf(PARAM_ARTICLE to Article(title = banner.title, link = banner.url))
                 )

@@ -37,22 +37,22 @@ class ProfileFragment : BaseVmFragment<ProfileViewModel>() {
             checkLogin { /*上传头像，暂不支持*/ }
         }
         llMyPoints.setOnClickListener {
-            checkLogin { ActivityHelper.start(MinePointsActivity::class.java) }
+            checkLogin { ActivityHelper.startActivity(MinePointsActivity::class.java) }
         }
         llPointsRank.setOnClickListener {
-            ActivityHelper.start(PointsRankActivity::class.java)
+            ActivityHelper.startActivity(PointsRankActivity::class.java)
         }
         llMyShare.setOnClickListener {
-            checkLogin { ActivityHelper.start(SharedActivity::class.java) }
+            checkLogin { ActivityHelper.startActivity(SharedActivity::class.java) }
         }
         llMyCollect.setOnClickListener {
-            checkLogin { ActivityHelper.start(CollectionActivity::class.java) }
+            checkLogin { ActivityHelper.startActivity(CollectionActivity::class.java) }
         }
         llHistory.setOnClickListener {
-            ActivityHelper.start(HistoryActivity::class.java)
+            ActivityHelper.startActivity(HistoryActivity::class.java)
         }
         llAboutAuthor.setOnClickListener {
-            ActivityHelper.start(
+            ActivityHelper.startActivity(
                 DetailActivity::class.java,
                 mapOf(
                     PARAM_ARTICLE to Article(
@@ -63,10 +63,10 @@ class ProfileFragment : BaseVmFragment<ProfileViewModel>() {
             )
         }
         llOpenSource.setOnClickListener {
-            ActivityHelper.start(OpenSourceActivity::class.java)
+            ActivityHelper.startActivity(OpenSourceActivity::class.java)
         }
         llSetting.setOnClickListener {
-            ActivityHelper.start(SettingsActivity::class.java)
+            ActivityHelper.startActivity(SettingsActivity::class.java)
         }
 
         updateUi()

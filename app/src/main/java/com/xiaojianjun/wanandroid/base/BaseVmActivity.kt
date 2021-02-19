@@ -41,7 +41,7 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
         mViewModel.loginStatusInvalid.observe(this, {
             if (it) {
                 Bus.post(USER_LOGIN_STATE_CHANGED, false)
-                ActivityHelper.start(LoginActivity::class.java)
+                ActivityHelper.startActivity(LoginActivity::class.java)
             }
         })
     }
@@ -69,7 +69,7 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
             then?.invoke()
             true
         } else {
-            ActivityHelper.start(LoginActivity::class.java)
+            ActivityHelper.startActivity(LoginActivity::class.java)
             false
         }
     }

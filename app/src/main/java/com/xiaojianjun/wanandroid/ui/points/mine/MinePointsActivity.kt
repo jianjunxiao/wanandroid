@@ -33,7 +33,7 @@ class MinePointsActivity : BaseVmActivity<MinePointsViewModel>() {
             setOnRefreshListener { mViewModel.refresh() }
         }
         ivBack.setOnClickListener { ActivityHelper.finish(MinePointsActivity::class.java) }
-        ivRank.setOnClickListener { ActivityHelper.start(PointsRankActivity::class.java) }
+        ivRank.setOnClickListener { ActivityHelper.startActivity(PointsRankActivity::class.java) }
         btnReload.setOnClickListener { mViewModel.refresh() }
     }
 

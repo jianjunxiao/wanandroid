@@ -33,7 +33,7 @@ class NavigationFragment : BaseVmFragment<NavigationViewModel>(), ScrollToTop {
         }
         mAdapter = NavigationAdapter(R.layout.item_navigation).also {
             it.onItemTagClickListener = { article ->
-                ActivityHelper.start(
+                ActivityHelper.startActivity(
                     DetailActivity::class.java,
                     mapOf(DetailActivity.PARAM_ARTICLE to article)
                 )

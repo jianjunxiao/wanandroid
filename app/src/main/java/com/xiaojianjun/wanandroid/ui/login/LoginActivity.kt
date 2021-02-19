@@ -18,7 +18,7 @@ class LoginActivity : BaseVmActivity<LoginViewModel>() {
             ActivityHelper.finish(LoginActivity::class.java)
         }
         tvGoRegister.setOnClickListener {
-            ActivityHelper.start(RegisterActivity::class.java)
+            ActivityHelper.startActivity(RegisterActivity::class.java)
         }
         tietPassword.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == IME_ACTION_GO) {

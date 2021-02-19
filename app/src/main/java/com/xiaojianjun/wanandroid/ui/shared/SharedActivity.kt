@@ -36,7 +36,7 @@ class SharedActivity : BaseVmActivity<SharedViewModel>() {
             }
             it.setOnItemClickListener { _, _, position ->
                 val article = it.data[position]
-                ActivityHelper.start(
+                ActivityHelper.startActivity(
                     DetailActivity::class.java, mapOf(DetailActivity.PARAM_ARTICLE to article)
                 )
             }
@@ -79,7 +79,7 @@ class SharedActivity : BaseVmActivity<SharedViewModel>() {
             mViewModel.refreshArticleList()
         }
         ivAdd.setOnClickListener {
-            ActivityHelper.start(ShareActivity::class.java)
+            ActivityHelper.startActivity(ShareActivity::class.java)
         }
         ivBack.setOnClickListener {
             ActivityHelper.finish(SharedActivity::class.java)

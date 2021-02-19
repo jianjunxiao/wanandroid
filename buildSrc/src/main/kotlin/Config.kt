@@ -1,5 +1,5 @@
 object Config {
-    const val gradleVersion = "4.1.1"
+    const val gradleVersion = "4.1.2"
     const val kotlinVersion = "1.4.20"
 
     const val coroutinesVersion = "1.4.2"
@@ -16,8 +16,8 @@ object Config {
     const val materialVersion = "1.2.1"
 
     const val coreVersion = "1.3.2"
-    const val activityVersion = "1.1.0"
-    const val fragmentVersion = "1.2.5"
+    const val activityVersion = "1.2.0"
+    const val fragmentVersion = "1.3.0"
     const val appCompatVersion = "1.2.0"
 
     const val constraintLayoutVersion = "2.0.4"

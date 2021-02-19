@@ -63,7 +63,7 @@ class OpenSourceActivity : BaseActivity() {
             it.setList(openSourceData)
             it.setOnItemClickListener { _, _, position ->
                 val article = it.data[position]
-                ActivityHelper.start(DetailActivity::class.java, mapOf(PARAM_ARTICLE to article))
+                ActivityHelper.startActivity(DetailActivity::class.java, mapOf(PARAM_ARTICLE to article))
             }
             recyclerView.adapter = it
         }

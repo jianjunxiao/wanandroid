@@ -13,7 +13,7 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.decorView.postDelayed({
-            ActivityHelper.start(MainActivity::class.java)
+            ActivityHelper.startActivity(MainActivity::class.java)
             ActivityHelper.finish(SplashActivity::class.java)
         }, 1000)
     }

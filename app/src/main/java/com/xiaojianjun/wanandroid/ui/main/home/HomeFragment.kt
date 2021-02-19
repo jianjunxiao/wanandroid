@@ -62,7 +62,7 @@ class HomeFragment : BaseFragment(), ScrollToTop {
                 currentOffset = offset
             }
         })
-        llSearch.setOnClickListener { ActivityHelper.start(SearchActivity::class.java) }
+        llSearch.setOnClickListener { ActivityHelper.startActivity(SearchActivity::class.java) }
     }
 
     override fun scrollToTop() {
