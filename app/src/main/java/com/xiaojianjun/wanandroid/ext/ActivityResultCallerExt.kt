@@ -1,4 +1,4 @@
-package com.xiaojianjun.wanandroid.common.core
+package com.xiaojianjun.wanandroid.ext
 
 import android.content.Intent
 import android.content.IntentSender
