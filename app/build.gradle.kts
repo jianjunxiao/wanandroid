@@ -1,18 +1,18 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.android.application")
-    id("com.google.devtools.ksp")
-    id("org.jetbrains.kotlin.plugin.parcelize")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.xiaojianjun.wanandroid"
-    compileSdk = Config.compileSdkVersion
+    compileSdk = libs.versions.compile.sdk.get().toInt()
 
     defaultConfig {
-        minSdk = Config.minSdkVersion
-        targetSdk = Config.targetSdkVersion
+        minSdk = libs.versions.min.sdk.get().toInt()
+        targetSdk = libs.versions.target.sdk.get().toInt()
         applicationId = "com.xiaojianjun.wanandroid"
         versionCode = 20201127
         versionName = "1.0.5"
@@ -122,52 +122,52 @@ kotlin {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Config.kotlinVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Config.coroutinesVersion}")
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlinx.coroutines.android)
 
-    testImplementation("junit:junit:${Config.junitVersion}")
-    androidTestImplementation("com.android.support.test:runner:${Config.runnerVersion}")
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:${Config.espressoVersion}")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 
-    implementation("com.google.android.material:material:${Config.materialVersion}")
+    implementation(libs.material)
 
-    implementation("androidx.core:core-ktx:${Config.coreVersion}")
+    implementation(libs.androidx.core.ktx)
 
-    implementation("androidx.appcompat:appcompat:${Config.appCompatVersion}")
-    implementation("androidx.activity:activity-ktx:${Config.activityVersion}")
-    implementation("androidx.fragment:fragment-ktx:${Config.fragmentVersion}")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
 
-    implementation("androidx.constraintlayout:constraintlayout:${Config.constraintLayoutVersion}")
-    implementation("androidx.coordinatorlayout:coordinatorlayout:${Config.coordinatorLayoutVersion}")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:${Config.swipeRefreshLayoutVersion}")
-    implementation("androidx.recyclerview:recyclerview:${Config.recyclerViewVersion}")
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.coordinatorlayout)
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.recyclerview)
 
-    implementation("androidx.lifecycle:lifecycle-process:${Config.lifecycleVersion}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Config.lifecycleVersion}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Config.lifecycleVersion}")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:${Config.lifecycleVersion}")
+    implementation(libs.androidx.lifecycle.process)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 
-    implementation("androidx.room:room-runtime:${Config.roomVersion}")
-    implementation("androidx.room:room-ktx:${Config.roomVersion}")
-    ksp("androidx.room:room-compiler:${Config.roomVersion}")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
-    implementation("com.squareup.okhttp3:okhttp:${Config.okHttpVersion}")
-    implementation("com.squareup.okhttp3:logging-interceptor:${Config.okHttpVersion}")
-    implementation("com.squareup.retrofit2:retrofit:${Config.retrofitVersion}")
-    implementation("com.squareup.retrofit2:converter-moshi:${Config.retrofitVersion}")
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.moshi)
 
-    implementation("com.squareup.moshi:moshi:${Config.moshiVersion}")
-    implementation("com.squareup.moshi:moshi-kotlin:${Config.moshiVersion}")
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
 
-    implementation("io.coil-kt:coil:${Config.coilVersion}")
-    implementation("io.coil-kt:coil-gif:${Config.coilVersion}")
-    implementation("io.coil-kt:coil-svg:${Config.coilVersion}")
-    implementation("io.coil-kt:coil-video:${Config.coilVersion}")
+    implementation(libs.coil)
+    implementation(libs.coil.gif)
+    implementation(libs.coil.svg)
+    implementation(libs.coil.video)
 
-    implementation("com.github.CymChad:BaseRecyclerViewAdapterHelper:${Config.brvhaVersion}")
+    implementation(libs.base.recyclerview.adapter.helper)
 
-    implementation("com.hyman:flowlayout-lib:${Config.flowLayoutVersion}")
-    implementation("com.just.agentweb:agentweb:${Config.agentWebVersion}")
-    implementation("com.github.franmontiel:PersistentCookieJar:${Config.PersistentCookieJarVersion}")
-    implementation("com.youth.banner:banner:${Config.bannerVersion}")
+    implementation(libs.flowlayout)
+    implementation(libs.agentweb)
+    implementation(libs.persistent.cookie.jar)
+    implementation(libs.banner)
 }
