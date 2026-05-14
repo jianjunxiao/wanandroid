@@ -2,7 +2,7 @@ package com.xiaojianjun.wanandroid.model.bean
 
 import android.os.Parcelable
 import androidx.annotation.Keep
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Created by xiaojianjun on 2019-11-12.

@@ -1,13 +1,13 @@
 object Config {
-    const val gradleVersion = "4.1.2"
-    const val kotlinVersion = "1.4.20"
+    const val gradleVersion = "9.2.1"
+    const val kotlinVersion = "2.3.20"
+    const val kspVersion = "2.3.8"
 
     const val coroutinesVersion = "1.4.2"
 
-    const val buildToolsVersion = "30.0.1"
-    const val compileSdkVersion = 30
+    const val compileSdkVersion = 36
     const val minSdkVersion = 23
-    const val targetSdkVersion = 30
+    const val targetSdkVersion = 36
 
     const val junitVersion = "4.13.1"
     const val runnerVersion = "1.0.2"
@@ -26,22 +26,20 @@ object Config {
     const val recyclerViewVersion = "1.1.0"
 
     const val lifecycleVersion = "2.2.0"
-    const val roomVersion = "2.2.5"
+    const val roomVersion = "2.8.4"
 
     const val retrofitVersion = "2.9.0"
     const val okHttpVersion = "4.9.0"
     const val moshiVersion = "1.11.0"
     const val PersistentCookieJarVersion = "v1.0.1"
 
-    const val coilVersion = "1.0.0"
+    const val coilVersion = "2.7.0"
 
     const val brvhaVersion = "3.0.6"
 
     const val flowLayoutVersion = "1.1.2"
 
     const val agentWebVersion = "4.1.4"
-
-    const val liveEventBusVersion = "1.7.2"
 
     const val bannerVersion = "1.4.10"
 }

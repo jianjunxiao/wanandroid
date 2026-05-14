@@ -101,7 +101,7 @@ class MainActivity : BaseActivity() {
             .setDuration(duration)
             .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
             .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     bottomNavigationViewAnimtor = null
                 }
             })

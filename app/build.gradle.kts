@@ -1,34 +1,22 @@
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
-    kotlin("android.extensions")
+    id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 android {
-    compileSdkVersion(Config.compileSdkVersion)
-    buildToolsVersion(Config.buildToolsVersion)
+    namespace = "com.xiaojianjun.wanandroid"
+    compileSdk = Config.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion(Config.minSdkVersion)
-        targetSdkVersion(Config.targetSdkVersion)
+        minSdk = Config.minSdkVersion
+        targetSdk = Config.targetSdkVersion
         applicationId = "com.xiaojianjun.wanandroid"
         versionCode = 20201127
         versionName = "1.0.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments(
-                    mapOf(
-                        "room.schemaLocation" to "$projectDir/build/schemas",
-                        "room.incremental" to "true",
-                        "room.expandProjection" to "true"
-                    )
-                )
-            }
-        }
     }
 
     signingConfigs {
@@ -37,8 +25,6 @@ android {
             storePassword = "1qaz2wsx"
             keyAlias = "wanandroid"
             keyPassword = "1qaz2wsx"
-            isV1SigningEnabled = true
-            isV2SigningEnabled = true
         }
     }
 
@@ -46,7 +32,6 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            isZipAlignEnabled = true
             signingConfig = this@android.signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -56,7 +41,6 @@ android {
         getByName("debug") {
             isMinifyEnabled = false
             isShrinkResources = false
-            isZipAlignEnabled = true
             signingConfig = this@android.signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -65,26 +49,19 @@ android {
         }
     }
 
-    lintOptions {
-        isCheckReleaseBuilds = false
-        isAbortOnError = false
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
     }
 
     buildFeatures {
         viewBinding = true
-    }
-
-    androidExtensions {
-        isExperimental = true
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
+        buildConfig = true
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     val dimensionsFlavors = mapOf(
@@ -105,7 +82,7 @@ android {
         )
     )
 
-    flavorDimensions(*dimensionsFlavors.keys.toTypedArray())
+    flavorDimensions += dimensionsFlavors.keys
 
     productFlavors {
         dimensionsFlavors.forEach { (dimension, flavors) ->
@@ -118,16 +95,28 @@ android {
             }
         }
     }
+}
 
-    applicationVariants.all {
-        val variantName = this.productFlavors.fold("") { acc, productFlavor ->
-            "${acc}_${productFlavor.name}".trim('_')
+androidComponents {
+    onVariants { variant ->
+        val variantName = variant.productFlavors.joinToString("_") { it.second }
+        variant.outputs.forEach { output ->
+            output.outputFileName.set(
+                "wandroid_${variantName}_v${output.versionName.get()}_${output.versionCode.get()}.apk"
+            )
         }
-        val variantVesionName = "v${this.versionName}"
-        val variantVersionCode = this.versionCode
-        this.outputs.filterIsInstance<ApkVariantOutputImpl>().forEach {
-            it.outputFileName = "wandroid_${variantName}_${variantVesionName}_${variantVersionCode}.apk"
-        }
+    }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/build/schemas")
+    arg("room.incremental", "true")
+    arg("room.expandProjection", "true")
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_11
     }
 }
 
@@ -160,7 +149,7 @@ dependencies {
 
     implementation("androidx.room:room-runtime:${Config.roomVersion}")
     implementation("androidx.room:room-ktx:${Config.roomVersion}")
-    kapt("androidx.room:room-compiler:${Config.roomVersion}")
+    ksp("androidx.room:room-compiler:${Config.roomVersion}")
 
     implementation("com.squareup.okhttp3:okhttp:${Config.okHttpVersion}")
     implementation("com.squareup.okhttp3:logging-interceptor:${Config.okHttpVersion}")
@@ -179,7 +168,6 @@ dependencies {
 
     implementation("com.hyman:flowlayout-lib:${Config.flowLayoutVersion}")
     implementation("com.just.agentweb:agentweb:${Config.agentWebVersion}")
-    implementation("com.jeremyliao:live-event-bus-x:${Config.liveEventBusVersion}")
     implementation("com.github.franmontiel:PersistentCookieJar:${Config.PersistentCookieJarVersion}")
     implementation("com.youth.banner:banner:${Config.bannerVersion}")
 }

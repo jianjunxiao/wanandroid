@@ -9,13 +9,10 @@ import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.decode.SvgDecoder
-import coil.fetch.VideoFrameFileFetcher
-import coil.fetch.VideoFrameUriFetcher
+import coil.decode.VideoFrameDecoder
 import coil.imageLoader
 import coil.load
 import coil.transform.CircleCropTransformation
-import coil.util.CoilUtils
-import okhttp3.OkHttpClient
 
 object CoilHelper {
 
@@ -23,20 +20,14 @@ object CoilHelper {
     fun init(context: Context) {
         val imageLoader = ImageLoader.Builder(context)
             .crossfade(200)
-            .okHttpClient {
-                OkHttpClient.Builder()
-                    .cache(CoilUtils.createDefaultCache(context))
-                    .build()
-            }
-            .componentRegistry {
+            .components {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    add(ImageDecoderDecoder())
+                    add(ImageDecoderDecoder.Factory())
                 } else {
-                    add(GifDecoder())
+                    add(GifDecoder.Factory())
                 }
-                add(SvgDecoder(context))
-                add(VideoFrameFileFetcher(context))
-                add(VideoFrameUriFetcher(context))
+                add(SvgDecoder.Factory())
+                add(VideoFrameDecoder.Factory())
             }
             .build()
         Coil.setImageLoader(imageLoader)

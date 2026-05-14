@@ -1,19 +1,28 @@
 package com.xiaojianjun.wanandroid.common.bus
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.jeremyliao.liveeventbus.LiveEventBus
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Created by xiaojianjun on 2019-11-25.
  */
 object Bus {
 
+    @PublishedApi
+    internal val channels = ConcurrentHashMap<String, EventLiveData<Any>>()
+
+    @PublishedApi
+    internal fun channel(name: String): EventLiveData<Any> {
+        return channels.getOrPut(name) { EventLiveData() }
+    }
+
     /**
      * 发布LiveDataEventBus消息
      */
     inline fun <reified T> post(channel: String, value: T) {
-        LiveEventBus.get(channel, T::class.java).post(value)
+        this.channel(channel).postEvent(value as Any)
     }
 
     /**
@@ -23,7 +32,7 @@ object Bus {
      * @param observer 观察者
      */
     inline fun <reified T> observe(channel: String, owner: LifecycleOwner, observer: Observer<T>) {
-        LiveEventBus.get(channel, T::class.java).observe(owner, observer)
+        this.channel(channel).observeEvent(owner, observer, false)
     }
 
     /**
@@ -32,7 +41,7 @@ object Bus {
      * @param observer 观察者
      */
     inline fun <reified T> observeForever(channel: String, observer: Observer<T>) {
-        LiveEventBus.get(channel, T::class.java).observeForever(observer)
+        this.channel(channel).observeEventForever(observer, false)
     }
 
     /**
@@ -46,7 +55,7 @@ object Bus {
         owner: LifecycleOwner,
         observer: Observer<T>
     ) {
-        LiveEventBus.get(channel, T::class.java).observeSticky(owner, observer)
+        this.channel(channel).observeEvent(owner, observer, true)
     }
 
     /**
@@ -58,6 +67,44 @@ object Bus {
         channel: String,
         observer: Observer<T>
     ) {
-        LiveEventBus.get(channel, T::class.java).observeStickyForever(observer)
+        this.channel(channel).observeEventForever(observer, true)
+    }
+
+    @PublishedApi
+    internal class EventLiveData<T : Any> : MutableLiveData<T>() {
+        private var version = 0
+
+        @PublishedApi
+        internal
+        fun postEvent(value: T) {
+            version++
+            postValue(value)
+        }
+
+        @PublishedApi
+        internal
+        fun <R> observeEvent(owner: LifecycleOwner, observer: Observer<R>, sticky: Boolean) {
+            val startVersion = if (sticky) -1 else version
+            super.observe(owner, VersionedObserver(startVersion, observer))
+        }
+
+        @PublishedApi
+        internal
+        fun <R> observeEventForever(observer: Observer<R>, sticky: Boolean) {
+            val startVersion = if (sticky) -1 else version
+            super.observeForever(VersionedObserver(startVersion, observer))
+        }
+
+        private inner class VersionedObserver<R>(
+            private var lastVersion: Int,
+            private val observer: Observer<R>
+        ) : Observer<T> {
+            override fun onChanged(value: T) {
+                if (lastVersion >= version) return
+                lastVersion = version
+                @Suppress("UNCHECKED_CAST")
+                observer.onChanged(value as R)
+            }
+        }
     }
 }
