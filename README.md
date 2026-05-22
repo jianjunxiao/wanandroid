@@ -1,6 +1,6 @@
 # WanAndroid Compose 客户端
 
-这是一个基于 [WanAndroid](https://www.wanandroid.com/) 开放 API 的 Android 客户端。项目最早使用传统 View + XML 实现界面，后来已经完整迁移到 Jetpack Compose：从页面、导航、主题、列表状态到旧 XML 资源清理，**迁移过程全部由 Codex 完成，开发者没有手写一行迁移代码**。
+这是一个基于 [WanAndroid](https://www.wanandroid.com/) 开放 API 的 Android 客户端。项目最早使用传统 View + XML 实现界面，后来已经完整迁移到 Jetpack Compose，迁移范围覆盖页面、导航、主题、列表状态和旧 XML 资源清理。
 
 > **View + XML 到 Jetpack Compose 的迁移过程全部由 Codex 完成，没有手写一行迁移代码。**
 
