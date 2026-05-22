@@ -17,75 +17,17 @@
             tools:ignore="GoogleAppIndexingWarning"
             tools:targetApi="n">
         <activity
-                android:name=".ui.splash.SplashActivity"
+                android:name=".ui.compose.MainComposeActivity"
+                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
                 android:exported="true"
-                android:screenOrientation="portrait"
-                android:theme="@style/SplashTheme">
+                android:launchMode="singleTask"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-                android:name=".ui.main.MainActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-        <activity
-                android:name=".ui.detail.DetailActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-        <activity
-                android:name=".ui.register.RegisterActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask"
-                android:screenOrientation="portrait" />
-        <activity
-                android:name=".ui.login.LoginActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask"
-                android:screenOrientation="portrait" />
-        <activity
-                android:name=".ui.search.SearchActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-        <activity
-                android:name=".ui.collection.CollectionActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-        <activity
-                android:name=".ui.points.rank.PointsRankActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-        <activity
-                android:name=".ui.points.mine.MinePointsActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-        <activity
-                android:name=".ui.settings.SettingsActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-        <activity
-                android:name=".ui.share.ShareActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-        <activity
-                android:name=".ui.shared.SharedActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-        <activity
-                android:name=".ui.history.HistoryActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-        <activity
-                android:name=".ui.opensource.OpenSourceActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
-
-        <activity
-                android:name=".ui.test.TestActivity"
-                android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
-                android:launchMode="singleTask" />
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@ import retrofit2.http.*
 interface ApiService {
 
     companion object {
-        const val BASE_URL = "https://www.wanandroid.com"
+        const val BASE_URL = "https://wanandroid.com"
     }
 
     @GET("/article/listproject/{page}/json")

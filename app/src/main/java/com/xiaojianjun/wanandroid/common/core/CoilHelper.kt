@@ -43,7 +43,7 @@ fun ImageView.load(
     circleCrop: Boolean = false,
     cornerRadius: Float = 0f,
 ) {
-    this.load(url, context.imageLoader) {
+    this.load(url.normalizedWanAndroidImageUrlOrNull(), context.imageLoader) {
         if (lifecycle != null) {
             lifecycle(lifecycle)
         }

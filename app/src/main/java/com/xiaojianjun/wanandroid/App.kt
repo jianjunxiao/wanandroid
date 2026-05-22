@@ -1,10 +1,8 @@
 package com.xiaojianjun.wanandroid
 
 import android.app.Application
-import com.xiaojianjun.wanandroid.common.core.ActivityHelper
 import com.xiaojianjun.wanandroid.common.core.CoilHelper
 import com.xiaojianjun.wanandroid.common.core.DayNightHelper
-import com.xiaojianjun.wanandroid.common.loadmore.LoadMoreHelper
 import com.xiaojianjun.wanandroid.util.isMainProcess
 
 /**
@@ -26,9 +24,7 @@ class App : Application() {
     }
 
     private fun init() {
-        LoadMoreHelper.init()
         CoilHelper.init(this)
-        ActivityHelper.init(this)
         DayNightHelper.init()
     }
 

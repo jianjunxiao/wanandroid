@@ -1,5 +1,6 @@
 package com.xiaojianjun.wanandroid.model.store
 
+import android.content.Context
 import com.xiaojianjun.wanandroid.App
 import com.xiaojianjun.wanandroid.common.core.getSpValue
 import com.xiaojianjun.wanandroid.common.core.putSpValue
@@ -20,8 +21,13 @@ object SettingsStore {
     fun getWebTextZoom() =
         getSpValue(SP_SETTINGS, App.instance, KEY_WEB_TEXT_ZOOM, DEFAULT_WEB_TEXT_ZOOM)
 
-    fun setNightMode(nightMode: Boolean) =
-        putSpValue(SP_SETTINGS, App.instance, KEY_NIGHT_MODE, nightMode)
+    fun setNightMode(nightMode: Boolean) {
+        App.instance
+            .getSharedPreferences(SP_SETTINGS, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(KEY_NIGHT_MODE, nightMode)
+            .commit()
+    }
 
     fun getNightMode() =
         getSpValue(SP_SETTINGS, App.instance, KEY_NIGHT_MODE, false)
