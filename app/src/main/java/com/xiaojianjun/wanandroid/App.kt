@@ -1,8 +1,13 @@
 package com.xiaojianjun.wanandroid
 
 import android.app.Application
-import com.xiaojianjun.wanandroid.common.core.CoilHelper
-import com.xiaojianjun.wanandroid.common.core.DayNightHelper
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
+import com.xiaojianjun.wanandroid.model.api.StoredCookie
+import com.xiaojianjun.wanandroid.model.api.WanApiClient
+import com.xiaojianjun.wanandroid.model.room.RoomHelper
+import com.xiaojianjun.wanandroid.model.store.ReadHistoryStore
+import com.xiaojianjun.wanandroid.platform.AndroidPlatform
+import com.xiaojianjun.wanandroid.platform.PlatformPreferences
 import com.xiaojianjun.wanandroid.util.isMainProcess
 
 /**
@@ -24,8 +29,15 @@ class App : Application() {
     }
 
     private fun init() {
-        CoilHelper.init(this)
-        DayNightHelper.init()
+        AndroidPlatform.initialize(this, BuildConfig.VERSION_NAME)
+        ReadHistoryStore.storage = RoomHelper
+        if (!PlatformPreferences.getBoolean("sp_migration", "cookies_v1", false)) {
+            val legacy = SharedPrefsCookiePersistor(this)
+            WanApiClient.importLegacyCookies(legacy.loadAll().map {
+                StoredCookie(it.name, it.value, it.domain, it.path, it.expiresAt, it.secure, it.httpOnly, it.hostOnly)
+            })
+            PlatformPreferences.putBoolean("sp_migration", "cookies_v1", true)
+        }
     }
 
 }

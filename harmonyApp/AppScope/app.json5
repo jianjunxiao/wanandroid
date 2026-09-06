@@ -1,0 +1,10 @@
+{
+  "app": {
+    "bundleName": "com.xiaojianjun.wanandroid",
+    "vendor": "xiaojianjun",
+    "versionCode": 20260514,
+    "versionName": "1.0.6",
+    "icon": "$media:app_icon",
+    "label": "$string:app_name"
+  }
+}

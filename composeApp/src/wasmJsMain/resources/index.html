@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>玩安卓</title><link rel="icon" href="favicon.png" type="image/png">
+  <style>
+    html,body,#composeApp{width:100%;height:100%;margin:0;overflow:hidden}
+    body{overscroll-behavior:none}
+    #composeApp{touch-action:none}
+    #startup-error:not([hidden]){position:fixed;inset:0;z-index:10;display:grid;place-content:center;justify-items:center;background:#fff;color:#333;font:16px system-ui}
+    #startup-error button{padding:8px 24px;font:inherit;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div id="composeApp"></div>
+  <div id="startup-error" role="alert" hidden>
+    <p>页面资源加载失败，请重试</p>
+    <button type="button" onclick="location.reload()">重试</button>
+  </div>
+  <script src="wanandroid.js" onerror="document.getElementById('startup-error').hidden=false"></script>
+</body>
+</html>

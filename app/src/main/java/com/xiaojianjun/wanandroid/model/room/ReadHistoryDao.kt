@@ -1,8 +1,6 @@
 package com.xiaojianjun.wanandroid.model.room
 
 import androidx.room.*
-import com.xiaojianjun.wanandroid.model.bean.Article
-import com.xiaojianjun.wanandroid.model.bean.Tag
 
 /**
  * Created by xiaojianjun on 2019-12-05.
@@ -10,12 +8,12 @@ import com.xiaojianjun.wanandroid.model.bean.Tag
 @Dao
 interface ReadHistoryDao {
     @Transaction
-    @Insert(entity = Article::class, onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertArticle(article: Article): Long
+    @Insert(entity = StoredArticle::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertArticle(article: StoredArticle): Long
 
     @Transaction
-    @Insert(entity = Tag::class, onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTag(tag: Tag): Long
+    @Insert(entity = StoredTag::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTag(tag: StoredTag): Long
 
     @Transaction
     @Query("SELECT * FROM article ORDER BY readTime DESC")
@@ -27,14 +25,14 @@ interface ReadHistoryDao {
 
     @Transaction
     @Query("SELECT * FROM tag WHERE articleId = :articleId")
-    suspend fun queryAllTags(articleId: Long): List<Tag>
+    suspend fun queryAllTags(articleId: Long): List<StoredTag>
 
     @Transaction
-    @Delete(entity = Article::class)
-    suspend fun deleteArticle(article: Article)
+    @Delete(entity = StoredArticle::class)
+    suspend fun deleteArticle(article: StoredArticle)
 
     @Transaction
-    @Delete(entity = Tag::class)
-    suspend fun deleteTag(tag: Tag)
+    @Delete(entity = StoredTag::class)
+    suspend fun deleteTag(tag: StoredTag)
 
 }

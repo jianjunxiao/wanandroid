@@ -7,16 +7,15 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // Kotlin/Wasm 会为 Node.js 工具链注册专用下载仓库。
     repositories {
         google()
         mavenCentral()
         maven { url = uri("https://jitpack.io") }
-        maven { url = uri("https://maven.aliyun.com/repository/public") }
-        maven { url = uri("https://jcenter.bintray.com") }
     }
 }
 
 include(":app")
+include(":composeApp")
 rootProject.name = "wanandroid"
 rootProject.buildFileName = "build.gradle.kts"
