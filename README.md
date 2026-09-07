@@ -2,7 +2,7 @@
 
 基于 [WanAndroid 开放 API](https://wanandroid.com/) 的 Kotlin 客户端，支持 **Android、iOS、HarmonyOS 和 Web**。文章浏览、分类、搜索、收藏、分享、积分和设置共用一套 Compose UI 与业务代码。
 
-项目经历了 **View/XML → Jetpack Compose → Compose Multiplatform** 两次迁移，迁移实现、构建和本地回归由 Codex 执行。当前保留原有页面风格、导航与列表交互，以及 Android 的渠道配置和本地数据兼容。
+项目经历了 **View/XML → Jetpack Compose → Compose Multiplatform** 两次迁移，迁移实现、构建和本地回归由 Codex 执行。当前保留原有页面风格、导航与列表交互，以及 Android 的渠道配置。
 
 [运行截图](docs/screenshots/README.md) · [快速开始](#快速开始) · [支持与验证](#支持与验证) · [迁移记录](docs/multiplatform-migration.md)
 
@@ -70,12 +70,12 @@ Web 使用相同的 Compose 页面，通过 Wasm 运行；API 和图片请求由
 
 ```bash
 ./gradlew help
-./gradlew :app:assembleEnterpriseAlphaDebug
-adb install -r app/build/outputs/apk/enterpriseAlpha/debug/wandroid_enterprise_alpha_v1.0.6_20260514.apk
+./gradlew :androidApp:assembleEnterpriseAlphaDebug
+adb install -r androidApp/build/outputs/apk/enterpriseAlpha/debug/wandroid_enterprise_alpha_v1.0.6_20260514.apk
 adb shell am start -n com.xiaojianjun.wanandroid/.ui.compose.MainComposeActivity
 ```
 
-也可使用 Android Studio 运行 `app`。原有渠道与环境 flavor 保留；升级验证使用覆盖安装，以保留 SharedPreferences、Cookie 和 Room 阅读历史。
+也可使用 Android Studio 运行 `androidApp`。原有渠道与环境 flavor 保留；当前版本不提供旧版持久化数据迁移。
 
 ### iOS
 
@@ -88,7 +88,7 @@ open iosApp/iosApp.xcodeproj
 ### HarmonyOS
 
 ```bash
-./harmony/gradlew -p harmony publishDebugBinariesToHarmonyApp
+./harmonyApp/harmony/gradlew -p harmonyApp/harmony publishDebugBinariesToHarmonyApp
 cd harmonyApp
 ohpm install
 hvigorw --mode module -p product=default -p module=entry@default -p buildMode=debug assembleHap --no-daemon
@@ -101,40 +101,68 @@ hdc shell aa start -a EntryAbility -b com.xiaojianjun.wanandroid
 ### Web
 
 ```bash
-./gradlew :composeApp:wasmJsBrowserDistribution
-node web/server.mjs
+./gradlew :webApp:wasmJsBrowserDistribution
+node webApp/web/server.mjs
 ```
 
-访问 [http://127.0.0.1:8080](http://127.0.0.1:8080)。服务默认读取 `composeApp/build/dist/wasmJs/productionExecutable`，支持通过 `PORT`、`WANANDROID_WEB_DIST` 修改端口和产物目录。
+访问 [http://127.0.0.1:8080](http://127.0.0.1:8080)。服务默认读取 `webApp/build/dist/wasmJs/productionExecutable`，支持通过 `PORT`、`WANANDROID_WEB_DIST` 修改端口和产物目录。
 
 API 代理负责跨域和 HttpOnly Cookie，不能直接以 `file://` 打开页面。公网部署需配置 HTTPS 反向代理；完整命令与配置说明见[构建文档](docs/multiplatform-migration.md#构建与运行)。
 
 ## 架构与技术栈
 
-页面按功能组织，沿用 ViewModel、StateFlow、Repository 的数据流。Ktor 与 kotlinx.serialization 负责 API，Coil 3 负责图片；平台入口通过 `expect/actual` 提供网络引擎、存储、网页容器和系统交互。
+工程按 JetBrains 的[最新模块结构指导](https://kotlinlang.org/docs/multiplatform/multiplatform-project-recommended-structure.html)组织：`shared` 提供共享库，各平台应用模块负责启动与打包。四端共享 Compose UI 和业务逻辑，使用单个共享模块。
+
+页面按功能组织，采用 ViewModel、StateFlow、Repository 的数据流。`model/repository` 负责数据访问，`di/AppContainer` 组装依赖并通过构造参数交给 ViewModel；导航条目负责 ViewModel 生命周期。Ktor 与 kotlinx.serialization 负责 API，Coil 3 负责图片，`expect/actual` 提供平台能力。
 
 ```text
-composeApp/src/
+shared/src/
 ├── commonMain/     Compose 页面、资源、主题、Navigation 3、ViewModel、Repository、API
-├── commonTest/     共享状态逻辑、HTML 文本、日期和 API 契约测试
+├── commonTest/     状态逻辑、HTML、日期、API 契约及依赖注入回归
 ├── androidMain/    SharedPreferences、OkHttp、WebView、系统栏
 ├── iosMain/        NSUserDefaults、Darwin HTTP、WKWebView
 ├── ohosMain/       文件存储、NetworkKit 桥接、ArkUI 互操作
-└── wasmJsMain/     浏览器存储、返回事件、iframe、中文与 Emoji 字体
-app/               Android 宿主、原 Room 数据库和数据迁移
+└── wasmJsMain/     浏览器存储、返回事件、iframe 等平台适配
+androidApp/        Android 宿主与 Room 阅读历史存储
 iosApp/            SwiftUI 宿主与 Xcode 工程
-harmony/           CPF-KMP-CMP 独立 Gradle 构建
+webApp/            Web 启动入口、静态文件、字体资源和 Wasm 应用打包
+└── web/           Node.js 同源 API / 图片代理及测试
 harmonyApp/        ArkUI 宿主、N-API、NetworkKit 与 ArkWeb
-web/               Node.js 同源 API / 图片代理及测试
+└── harmony/       CPF-KMP-CMP 独立 Gradle 构建
 ```
 
 Android、iOS、Web 使用 Kotlin **2.3.20** / Compose Multiplatform **1.10.3**；HarmonyOS 使用 CPF-KMP-CMP 的 Kotlin **2.2.21-1.0.0** / Compose **1.9.2-1.0.0**。
 
-鸿蒙构建直接引用同一份 `commonMain` 源码与资源。独立构建用于兼容鸿蒙发行版的原生工具链；页面和业务逻辑无需复制。详细版本组合见[依赖说明](docs/multiplatform-migration.md#依赖组合)。
+`androidApp` 和 `webApp` 通过 Gradle 依赖 `shared`，`iosApp` 链接它导出的 framework。`shared` 的 Wasm 目标只生成库，浏览器入口和可执行产物由 `webApp` 提供；`webApp/web` 负责静态产物托管和同源代理服务，独立运行。
+
+`harmonyApp/harmony` 直接引用同一份 `shared/src/commonMain` 源码与资源，并将原生库、头文件和资源交给 `harmonyApp/entry` 打包。它保留独立 Gradle 工具链；DevEco Studio 仍打开 `harmonyApp`。平台配套工程收在对应应用目录下是本项目的组织约定，并非官方强制目录。详细版本组合见[依赖说明](docs/multiplatform-migration.md#依赖组合)。
+
+### 构建配置与工具链
+
+四端都有各自的工具链。仓库保存版本声明、构建脚本和工程配置，JDK、SDK、编译器等由开发机安装或构建工具下载。
+
+| 平台 | 仓库中的配置与构建流程 | 本机工具 |
+| --- | --- | --- |
+| Android | 根 Gradle 构建 `shared` 与 `androidApp`，生成 APK；配置位于各模块的 `build.gradle.kts` | JDK、Android SDK |
+| iOS | `iosApp` 的 Xcode 构建阶段调用根 Gradle 的 `:shared:embedAndSignAppleFrameworkForXcode`，再由 Xcode 编译 SwiftUI 宿主并链接 framework | JDK、Kotlin/Native、Xcode 自带的 Swift 编译器和 iOS SDK |
+| Web | 根 Gradle 将 `shared` 与 `webApp` 编译为 Wasm 应用；`webApp/web/server.mjs` 通过 Node.js 托管产物并提供同源代理 | JDK、构建插件管理的 Node.js 等依赖；运行代理服务另需本机 Node.js |
+| HarmonyOS | `harmonyApp/harmony` 的独立 Gradle 编译共享源码，再由 `harmonyApp` 中的 Hvigor/ArkTS 工程生成 HAP | JDK、CPF Kotlin/Native、DevEco Studio、HarmonyOS SDK、ohpm、Hvigor |
+
+Android、iOS、Web 的 Kotlin/Compose 构建使用同一套版本，由根目录的 [Gradle Wrapper](gradle/wrapper/gradle-wrapper.properties) 和 [版本目录](gradle/libs.versions.toml)管理，因此无需额外建立独立 Gradle 工程。iOS 的原生宿主仍有独立的 [Xcode 工程](iosApp/iosApp.xcodeproj/project.pbxproj)。
+
+HarmonyOS 使用 CPF-KMP-CMP 的 OHOS 适配发行版，Kotlin/Compose 版本与主构建不同，Gradle 也分别使用 **8.14.3** 和 **9.4.1**。因此本项目在 [harmonyApp/harmony](harmonyApp/harmony/) 中隔离版本与构建配置。该目录不存放编译器本体；`webApp/web` 则是运行服务目录，Web 编译仍由根 Gradle 完成。
+
+默认安装与缓存位置如下，实际路径以本机配置为准：
+
+- **Gradle 与插件**：Wrapper 下载到 `~/.gradle/wrapper/dists`，插件和依赖缓存在 `~/.gradle/caches`；可通过 `GRADLE_USER_HOME` 更改根目录。
+- **Kotlin/Native**：编译器及原生依赖通常位于 `~/.konan`，iOS 与 HarmonyOS 使用各自版本的发行包。
+- **JDK 与 Android SDK**：由 IDE 或开发者安装；JDK 通过 `JAVA_HOME` 或 IDE 的 Gradle JDK 设置选择，Android SDK 通过本机 `local.properties` 的 `sdk.dir` 指定。
+- **Xcode 工具链**：随 Xcode 安装；使用 `xcode-select -p` 查看当前开发者目录，Swift 编译器与 iOS SDK 位于该目录下。
+- **HarmonyOS 工具链**：由 DevEco Studio/SDK 管理器安装；本项目构建使用 `OHOS_SDK_HOME`、`DEVECO_SDK_HOME` 和本机命令路径定位相关工具。
 
 ## 支持与验证
 
-截至 **2026-09-06**，Android APK、iOS 模拟器应用、HarmonyOS 原生库/HAP 和 Web Wasm 产物均已构建并运行验证。公开页面使用真实 API；账号及服务端写操作目前仅完成浏览器隔离模拟接口回归，四端真实账号闭环尚待专用测试账号验证。
+截至 **2026-09-07**，Android APK、iOS 模拟器应用、HarmonyOS 原生库/HAP 和 Web Wasm 产物均已构建并运行验证。公开页面使用真实 API；账号及服务端写操作目前仅完成浏览器隔离模拟接口回归，四端真实账号闭环尚待专用测试账号验证。
 
 | 能力 | Android | iOS | HarmonyOS | Web |
 | --- | --- | --- | --- | --- |
@@ -149,15 +177,15 @@ Android、iOS、Web 使用 Kotlin **2.3.20** / Compose Multiplatform **1.10.3**�
 回归命令：
 
 ```bash
-./gradlew :composeApp:testAndroidHostTest :app:testEnterpriseAlphaDebugUnitTest
-node --test web/server.test.mjs
+./gradlew :shared:testAndroidHostTest :androidApp:testEnterpriseAlphaDebugUnitTest
+node --test webApp/web/server.test.mjs
 ```
 
-已通过 **32 项共享测试、1 项 Android 宿主测试、6 项 Web 代理测试**。构建和测试记录、升级兼容性以及模拟器回归范围均保留在迁移文档中。
+已通过 **35 项共享测试、1 项 Android 宿主测试、6 项 Web 代理测试**。构建和测试记录、平台差异以及模拟器回归范围均保留在迁移文档中。
 
 ## 迁移与维护
 
-- [迁移架构、兼容处理与复审记录](docs/multiplatform-migration.md)
+- [迁移架构、平台适配与复审记录](docs/multiplatform-migration.md)
 - [三端截图、采集环境与页面范围](docs/screenshots/README.md)
 - [依赖升级、版本同步与发布注意事项](docs/multiplatform-migration.md#维护与发布)
 
@@ -168,4 +196,4 @@ node --test web/server.test.mjs
 - [WanAndroid](https://wanandroid.com/)：开放 API 与内容。
 - [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform)、[CPF-KMP-CMP](https://gitcode.com/CPF-KMP-CMP)：跨平台 UI 与鸿蒙适配。
 - [Ktor](https://github.com/ktorio/ktor)、[Coil](https://github.com/coil-kt/coil)：网络与图片加载。
-- [Noto CJK](https://github.com/notofonts/noto-cjk)、[Noto Emoji](https://github.com/googlefonts/noto-emoji)：Web 字体；对应 OFL 许可证随 [Web 资源](composeApp/src/wasmJsMain/resources/licenses/) 一起提供。
+- [Noto CJK](https://github.com/notofonts/noto-cjk)、[Noto Emoji](https://github.com/googlefonts/noto-emoji)：Web 字体；对应 OFL 许可证随 [Web 资源](webApp/src/wasmJsMain/resources/licenses/) 一起提供。

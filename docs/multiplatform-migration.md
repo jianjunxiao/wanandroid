@@ -6,15 +6,37 @@
 
 | 目录 | 职责 |
 | --- | --- |
-| `composeApp/src/commonMain` | 原有业务、UI、导航、主题、资源、API、状态和存储接口 |
-| `composeApp/src/commonTest` | 原有交互状态测试及新增网络契约、HTML 文本测试 |
-| `app`、`composeApp/src/androidMain` | Android 入口、Room、SharedPreferences、OkHttp、WebView、系统栏 |
-| `iosApp`、`composeApp/src/iosMain` | SwiftUI 宿主、Darwin HTTP、NSUserDefaults、WKWebView |
-| `web`、`composeApp/src/wasmJsMain` | Wasm 入口、浏览器存储、返回事件、iframe、同源代理、中文字体 |
-| `harmony`、`composeApp/src/ohosMain` | CPF-KMP-CMP 构建、OHOS 存储、NetworkKit 引擎、ArkUI 互操作 |
+| `shared/src/commonMain` | 原有业务、UI、导航、主题、资源、API、状态和存储接口 |
+| `shared/src/commonTest` | 原有交互状态测试及新增网络契约、HTML 文本测试 |
+| `androidApp`、`shared/src/androidMain` | Android 入口、Room、SharedPreferences、OkHttp、WebView、系统栏 |
+| `iosApp`、`shared/src/iosMain` | SwiftUI 宿主、Darwin HTTP、NSUserDefaults、WKWebView |
+| `shared/src/wasmJsMain` | 浏览器存储、返回事件、iframe 等共享库平台适配 |
+| `webApp` | Wasm 应用入口、Webpack、HTML、中文与 Emoji 字体和许可证 |
+| `webApp/web` | Node.js 静态产物托管、同源 API / 图片代理及代理测试 |
+| `harmonyApp/harmony`、`shared/src/ohosMain` | CPF-KMP-CMP 构建、OHOS 存储、NetworkKit 引擎、ArkUI 互操作 |
 | `harmonyApp` | ArkUI 宿主、原生控制器注册、N-API、HTTP 和 ArkWeb 桥接 |
 
-`harmony` 直接引用 `../composeApp/src/commonMain/kotlin` 和共同资源，不维护另一套页面。检查 CPF `org.jetbrains.compose.ui:ui:1.9.2-1.0.0` 的发布元数据后确认该发行版没有 Web 目标，因此官方构建与鸿蒙构建分离。
+`harmonyApp/harmony` 直接引用 `../../shared/src/commonMain/kotlin` 和共同资源，不维护另一套页面。检查 CPF `org.jetbrains.compose.ui:ui:1.9.2-1.0.0` 的发布元数据后确认该发行版没有 Web 目标，因此 JetBrains 工具链与鸿蒙工具链分别构建。
+
+### 对齐 JetBrains 新默认结构（2026-09-07）
+
+按[官方模块结构指南](https://kotlinlang.org/docs/multiplatform/multiplatform-project-recommended-structure.html)将原共享模块命名为 `shared`，Android 宿主命名为 `androidApp`，新增独立 `webApp`。共享 UI、业务和 `expect/actual` 留在共享库，各平台应用模块消费共享库并负责启动、应用资源和打包。
+
+- `shared` 保留 Android Library、iOS framework 与 Wasm 库目标，移出 Wasm 可执行文件、Webpack 配置和浏览器入口。
+- `webApp` 依赖 `shared`，单独包含入口、HTML、favicon、中文/Emoji 字体及许可证。字体使用独立资源包，公共图片与文案由共享库提供。
+- `iosApp` 的 Gradle 任务、framework 搜索路径及增量链接输出切换到 `shared`。Android 包名、渠道和版本保持原约定。
+- `model/repository` 统一存放数据访问代码。`AppContainer` 创建 Repository，ViewModel 通过构造函数接收所需依赖；`appViewModel` 复用当前导航条目的 ViewModelStore。
+- 阅读历史、搜索历史依赖通过存储接口传入，可使用内存实现测试；生产环境沿用各端现有持久化方式。新增测试覆盖注入网络后的首页加载与置顶顺序、详情与历史共享存储，以及本地搜索历史。
+- 四端共用 Compose UI，单个共享模块足够；鸿蒙因配套编译器不同保留独立 Gradle 构建，直接读取 `shared` 的源码和资源。
+
+本次对齐工程职责和依赖组织，依赖版本组合见下表。已有运行截图和功能差异说明继续保留，调整后的构建与回归结果在验证章节单独记录。
+
+### 平台配套工程归档（2026-09-07）
+
+- 将根目录的 `harmony` 收入 `harmonyApp/harmony`，保留独立 Gradle Wrapper 与 CPF 依赖配置；源码和资源从 `../../shared` 读取，编译产物发布到 `../entry`，再由 DevEco / hvigor 打包。
+- 将根目录的 `web` 收入 `webApp/web`，服务脚本根据自身位置定位仓库根目录，默认托管 `webApp/build/dist/wasmJs/productionExecutable`。`WANANDROID_WEB_DIST` 的相对路径仍以仓库根目录为基准。
+- 目录按所属平台归档，构建职责保持独立：`webApp` 编译 Wasm，Node.js 服务托管产物并代理接口；鸿蒙 Gradle 编译共享代码，hvigor 打包应用。此嵌套方式是本项目的组织约定。
+- 归档后验证通过：主工程 Gradle 配置、Android APK、Web distribution、鸿蒙共享库与 HAP、6 项 Web 代理测试。核对 `.so`、头文件和 25 个共享资源均发布到正确位置；鸿蒙模拟器重新安装后，首页和项目图文正常。Web 服务从新路径在 `http://127.0.0.1:8080` 启动，Chrome 152 / 1280×720 实测首页进入项目页，字体、图片和列表正常，控制台无错误。此次仅调整目录与路径，iOS 沿用前一节的构建和运行验证。
 
 ### 依赖组合
 
@@ -32,12 +54,12 @@
 
 Android 保留原 `applicationId`、渠道/环境、签名配置、版本、minSdk 23、compileSdk/targetSdk 36。iOS 提供 `iosArm64` 和 `iosSimulatorArm64`；鸿蒙提供 `ohosArm64`，宿主兼容 SDK 5.0.5(API 17)。这些配置下限不代表已逐一验证最低版本设备。
 
-## 关键实现与兼容处理
+## 关键实现与平台适配
 
 - API 全部移到 Ktor，保留原接口路径、分页起点、表单字段和业务错误。对 `data: null` 的写操作单独处理，避免收藏/分享成功后被当成解析错误。
 - 响应显式按 UTF-8 字节解析，并切到平台后台 Dispatcher。鸿蒙平台分支中的字符集转换曾在大型中文分类响应上阻塞主线程；改动后体系页面在模拟器正常加载，未再出现同一阻塞。
 - 鸿蒙的 HTTPS 使用 NetworkKit，Ktor 负责请求、Cookie 和超时。N-API 请求、完成、取消均回到 ArkTS 所属主线程；页面销毁释放未完成请求。保留多个 `Set-Cookie` 响应头。
-- Android 读取原 SharedPreferences，并在首次启动导入 PersistentCookieJar 数据。阅读历史继续使用原 Room 数据库及字段映射；迁移前后的数据库 identity hash 均为 `2ea3e540e4f7ee0c3a2eac8229e8ec4a`。
+- Android 使用 SharedPreferences 保存账号、搜索和设置，使用 Room 保存阅读历史。当前版本不承担旧持久化数据迁移：已移除 PersistentCookieJar 导入、一次性迁移标记和相关依赖；Cookie 统一由 Ktor 的共享持久化实现保存。
 - iOS、Web、鸿蒙使用平台持久化 JSON 保存账号、搜索、历史和设置。鸿蒙文件写入经锁保护并使用临时文件替换；历史更新和 Cookie 更新分别互斥。
 - 页面事件改为进程内 Flow/StateFlow，配合 ViewModel 生命周期。鸿蒙 Navigation 3 使用对应版本的 ViewModel 装饰器；路由退出时清理 ViewModel。
 - ArticleCard 统一接收长按回调，避免外层长按与卡片点击竞争，覆盖分享与阅读历史删除入口。
@@ -56,12 +78,12 @@ Android 保留原 `applicationId`、渠道/环境、签名配置、版本、minS
 
 ```bash
 ./gradlew help
-./gradlew :composeApp:testAndroidHostTest :app:testEnterpriseAlphaDebugUnitTest :app:assembleEnterpriseAlphaDebug
-adb install -r app/build/outputs/apk/enterpriseAlpha/debug/wandroid_enterprise_alpha_v1.0.6_20260514.apk
+./gradlew :shared:testAndroidHostTest :androidApp:testEnterpriseAlphaDebugUnitTest :androidApp:assembleEnterpriseAlphaDebug
+adb install -r androidApp/build/outputs/apk/enterpriseAlpha/debug/wandroid_enterprise_alpha_v1.0.6_20260514.apk
 adb shell am start -n com.xiaojianjun.wanandroid/.ui.compose.MainComposeActivity
 ```
 
-其他渠道/环境继续使用原有 flavor 任务。覆盖安装不要使用 `adb uninstall`，否则无法验证旧数据保留。
+其他渠道/环境继续使用原有 flavor 任务。日常调试可覆盖安装；当前验收不要求从旧版应用升级保留数据。
 
 ### iOS
 
@@ -81,23 +103,23 @@ xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp \
 安装 Node.js 22 或更新版本。本次验证使用 Node.js 24.14.1、Chromium 152.0.7977.76。
 
 ```bash
-./gradlew :composeApp:wasmJsBrowserDistribution
-node --test web/server.test.mjs
-node web/server.mjs
+./gradlew :webApp:wasmJsBrowserDistribution
+node --test webApp/web/server.test.mjs
+node webApp/web/server.mjs
 ```
 
-访问 `http://127.0.0.1:8080`。产物目录为 `composeApp/build/dist/wasmJs/productionExecutable`，服务默认读取该目录。支持 `PORT` 和 `WANANDROID_WEB_DIST` 环境变量覆盖。
+访问 `http://127.0.0.1:8080`。产物目录为 `webApp/build/dist/wasmJs/productionExecutable`，服务默认读取该目录。支持 `PORT` 和 `WANANDROID_WEB_DIST` 环境变量覆盖。
 
 需要支持 Wasm GC 的浏览器。静态文件与 API 代理必须同源，直接以 `file://` 打开无效。服务器仅监听回环地址；部署时由 HTTPS 反向代理转发，并设置 `X-Forwarded-Proto: https`，以保留安全 Cookie 属性。未执行公网部署。
 
-中文和 Emoji 字体的 OFL 许可证位于 `composeApp/src/wasmJsMain/resources/licenses/`，随 Web 产物一起输出。
+中文和 Emoji 字体的 OFL 许可证位于 `webApp/src/wasmJsMain/resources/licenses/`，随 Web 产物一起输出。
 
 ### HarmonyOS
 
 安装 DevEco Studio、HarmonyOS SDK、ohpm、hvigor。将 `OHOS_SDK_HOME`、`DEVECO_SDK_HOME` 指向 DevEco 的 SDK 目录。本机二者为 `/Applications/DevEco-Studio.app/Contents/sdk`。
 
 ```bash
-./harmony/gradlew -p harmony publishDebugBinariesToHarmonyApp
+./harmonyApp/harmony/gradlew -p harmonyApp/harmony publishDebugBinariesToHarmonyApp
 cd harmonyApp
 ohpm install
 hvigorw --mode module -p product=default -p module=entry@default -p buildMode=debug assembleHap --no-daemon
@@ -111,7 +133,19 @@ hdc shell aa start -a EntryAbility -b com.xiaojianjun.wanandroid
 
 ## 验证结果
 
-验证日期：2026-09-06。构建、静态测试、模拟器和真实账号验证分开记录。
+最近架构回归：2026-09-07。初次跨端迁移回归：2026-09-06。构建、静态测试、模拟器和真实账号验证分开记录。
+
+### 结构调整后的回归（2026-09-07）
+
+- 最终目录下重新执行 Gradle 配置检查、Android Debug APK、Web production distribution、iOS framework / 模拟器应用及鸿蒙原生库 / HAP 构建，全部通过。iOS 使用独立 DerivedData 目录，确认宿主链接的是 `shared` 导出的新 framework。
+- 35 项共享 Kotlin 测试、1 项 Android 宿主测试、6 项 Node.js 代理测试通过，均无失败。新增 3 项测试覆盖 Repository 构造注入、首页真实 ViewModel 加载、详情与历史共用存储，以及搜索历史读写。
+- Android、iOS、HarmonyOS 模拟器重新安装最终产物，实测首页、项目、真实搜索、文章详情、返回与新建阅读历史；切换夜间模式后冷启动，主题和新建历史仍保留。
+- Web 使用 Chrome 152 / Playwright CLI，在 1280×720 和 430×932 验证真实首页、项目图文与字体、搜索、文章、浏览器返回及阅读历史。刷新最终产物后夜间模式与新建阅读历史保留；16 项同源资源无 HTTP 错误，`webApp` 的两份字体均返回 200，`shared` 的图标与文案正常加载。重新加载后的应用页面无控制台错误；文章内第三方脚本的权限策略和图片解析报错单独记录，不计为应用自身错误。
+- 按当前需求删除旧 Cookie 导入、一次性迁移标记及专用依赖。正常账号、搜索、历史、设置持久化保留，不再把旧版本持久化数据升级作为验收目标。
+- 清理源码和宿主工程中的 38 个空目录；没有删除文件来制造空目录。IDE、构建缓存和依赖安装目录不属于源码清理范围。
+- 核对原模块全部 230 个跟踪文件的迁移去向，未发现遗漏。`git diff --check` 和新增源码空白检查通过。既有三端图库仍是 2026-09-06 采集，本节记录本次架构调整的回归范围。
+
+以下保留初次迁移的验证基线及已知平台差异。
 
 ### 构建与测试
 
@@ -127,7 +161,7 @@ hdc shell aa start -a EntryAbility -b com.xiaojianjun.wanandroid
 | 鸿蒙原生库 + HAP 构建/安装/启动 | 通过 |
 | `git diff --check` | 通过 |
 
-共享测试覆盖原有首页/体系/导航状态逻辑、图片地址规范化、HTML 实体及带引号的标签属性、跨年日期，以及空响应写操作、UTF-8 表单、大型中文与表情响应、分页、长 ID、数字类型兼容、账号过期和旧账号 JSON 兼容。代理测试覆盖静态 MIME/HEAD、空字符路径、上游响应中断后服务可用性、来源和地址白名单、Cookie/表单转发、HTTPS Cookie、会话清理、图片域名隔离。
+共享测试覆盖原有首页/体系/导航状态逻辑、图片地址规范化、HTML 实体及带引号的标签属性、跨年日期，以及空响应写操作、UTF-8 表单、大型中文与表情响应、分页、长 ID、数字类型兼容、账号过期和账号 JSON 序列化。代理测试覆盖静态 MIME/HEAD、空字符路径、上游响应中断后服务可用性、来源和地址白名单、Cookie/表单转发、HTTPS Cookie、会话清理、图片域名隔离。
 
 ### 实际设备和浏览器
 
@@ -185,8 +219,8 @@ Web 项目封面和中文、Emoji 显示实测：[项目页截图](verification/
 
 ## 维护与发布
 
-- 官方三端共享依赖在 `gradle/libs.versions.toml` 与 `composeApp/build.gradle.kts`，鸿蒙版本在 `harmony/build.gradle.kts`、`harmonyApp/oh-package.json5` / lockfile。升级时需同时验证两个 Gradle 构建，不能直接混用两套原生依赖。
-- 发布版本需同步 Android `app/build.gradle.kts`、iOS `iosApp/Configuration/Config.xcconfig`、鸿蒙 `harmonyApp/AppScope/app.json5`，以及 Web/鸿蒙 `Platform.versionName`。当前版本均为 `1.0.6`，原生宿主 build/versionCode 为 `20260514`。
+- 官方三端共享依赖在 `gradle/libs.versions.toml` 与 `shared/build.gradle.kts`，鸿蒙版本在 `harmonyApp/harmony/build.gradle.kts`、`harmonyApp/oh-package.json5` / lockfile。升级时需同时验证两个 Gradle 构建，不能直接混用两套原生依赖。
+- 发布版本需同步 Android `androidApp/build.gradle.kts`、iOS `iosApp/Configuration/Config.xcconfig`、鸿蒙 `harmonyApp/AppScope/app.json5`，以及 Web/鸿蒙 `Platform.versionName`。当前版本均为 `1.0.6`，原生宿主 build/versionCode 为 `20260514`。
 - 不提交构建目录、生成的 framework / so / C 头文件 / HAP、模拟器数据和本机 SDK 配置。保留 Gradle wrapper、Kotlin/JS yarn lockfile、OHPM lockfile 及字体许可证。
 - 账号写操作回归应使用专用测试账号，并分别验证各端 Cookie 持久化、退出、过期、收藏、分享及删除。当前仓库没有真实测试账号配置。
 

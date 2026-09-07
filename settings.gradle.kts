@@ -11,11 +11,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://jitpack.io") }
     }
 }
 
-include(":app")
-include(":composeApp")
+include(":shared", ":androidApp", ":webApp")
 rootProject.name = "wanandroid"
 rootProject.buildFileName = "build.gradle.kts"

@@ -21,8 +21,6 @@ androidx-core = "1.3.2"
 androidx-activity = "1.2.0"
 androidx-appcompat = "1.2.0"
 room = "2.8.4"
-okhttp = "4.9.0"
-persistent-cookie-jar = "v1.0.1"
 compose-bom = "2026.04.01"
 activity-compose = "1.13.0"
 
@@ -51,10 +49,6 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-
-persistent-cookie-jar = { group = "com.github.franmontiel", name = "PersistentCookieJar", version.ref = "persistent-cookie-jar" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
