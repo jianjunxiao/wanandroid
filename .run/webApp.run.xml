@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="webApp" type="ShConfigurationType">
+    <option name="SCRIPT_PATH" value="$PROJECT_DIR$/webApp/web/run.sh" />
+    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="INTERPRETER_PATH" value="/bin/zsh" />
+    <option name="INTERPRETER_OPTIONS" value="-l" />
+    <option name="EXECUTE_IN_TERMINAL" value="false" />
+    <option name="EXECUTE_SCRIPT_FILE" value="true" />
+    <method v="2" />
+  </configuration>
+</component>

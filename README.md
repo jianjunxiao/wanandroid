@@ -61,10 +61,29 @@ Web 使用相同的 Compose 页面，通过 Wasm 运行；API 和图片请求由
 | 公共构建 | JDK 17；使用仓库提供的 Gradle Wrapper |
 | Android | Android SDK 36、模拟器或设备；在本机 `local.properties` 中设置 SDK 路径 |
 | iOS | Apple Silicon Mac、Xcode、iOS Simulator；当前提供 `iosArm64` 和 `iosSimulatorArm64` |
-| HarmonyOS | DevEco Studio、HarmonyOS SDK、ohpm、hvigor；配置 `OHOS_SDK_HOME` 与 `DEVECO_SDK_HOME` |
+| HarmonyOS | DevEco Studio 26.0.0、配套 HarmonyOS SDK、ohpm、hvigor；配置 `OHOS_SDK_HOME` 与 `DEVECO_SDK_HOME` |
 | Web | Node.js 22+、支持 Wasm GC 的浏览器 |
 
 以下命令从仓库根目录执行。首次构建需要下载依赖；各平台 SDK 和签名属于本机配置。
+
+### Android Studio 运行入口
+
+同步工程后，可在顶部运行配置中选择对应应用：
+
+| 入口 | 行为 |
+| --- | --- |
+| `androidApp` | 构建并运行 Android 应用；使用 Android Studio 的设备选择器 |
+| `iosApp` | 通过 Kotlin Multiplatform 插件与 Xcode 工程运行 iOS；也可直接使用 Xcode |
+| `webApp` | 构建 Wasm 应用并启动静态页面、API 与图片代理服务；点击控制台中的本地网址访问 |
+| `harmonyApp` | 安装 OHPM 依赖、编译共享库、构建 HAP，然后通过 hdc 安装并启动鸿蒙应用 |
+
+Web、鸿蒙入口保存于 [.run](.run/)，使用 IDE 自带的 Shell Script 配置。当前默认 `/bin/zsh -l`，会加载 macOS 的 `~/.zprofile`，因此 SDK 环境变量与工具的 `PATH` 应在该文件配置；其他开发环境可在 **Run → Edit Configurations** 调整解释器。若入口未出现，确认 **Shell Script** 插件已启用，并重新打开运行配置列表。保存方式见 [JetBrains 运行配置说明](https://www.jetbrains.com/help/idea/run-debug-configuration.html)。
+
+`webApp` 的服务在 Run 窗口持续运行，点击 Stop 即可停止；共享代码改动后重新运行会重新构建。默认端口为 8080，可在运行配置的环境变量中设置 `PORT`。
+
+运行 `harmonyApp` 前先启动鸿蒙模拟器，或连接并授权真机 USB 调试。仅连接一个设备时自动选择；连接多个设备时，Run 控制台会列出设备编号、ID 和名称，点击控制台并输入编号后回车，输入 `q` 取消。也可在 **Run → Edit Configurations → harmonyApp → Environment variables** 中设置 `HDC_DEVICE_ID` 固定设备，值取自 `hdc list targets -v` 中处于 `Connected` 状态的设备。
+
+`harmonyApp` 是 Shell Script 入口，不能使用 Android Studio 的 Android 设备下拉框。若需要原生鸿蒙设备选择器或 ArkTS/C++ 断点调试，用 DevEco Studio 打开 `harmonyApp` 并运行 `entry`。
 
 ### Android
 
@@ -77,6 +96,8 @@ adb shell am start -n com.xiaojianjun.wanandroid/.ui.compose.MainComposeActivity
 
 也可使用 Android Studio 运行 `androidApp`。原有渠道与环境 flavor 保留；当前版本不提供旧版持久化数据迁移。
 
+从旧目录结构更新后，先执行 **Sync Project with Gradle Files**，再在顶部运行配置中选择 `androidApp`，并在 **Build Variants** 中选择 `enterpriseAlphaDebug`。若仍报 `project 'app' not found`，说明 IDE 沿用了旧运行配置：在 **Run → Edit Configurations** 中将 Android 配置的 Module 改为同步后的 `wanandroid.androidApp`，或使用新生成的 `androidApp` 配置。
+
 ### iOS
 
 ```bash
@@ -88,15 +109,21 @@ open iosApp/iosApp.xcodeproj
 ### HarmonyOS
 
 ```bash
-./harmonyApp/harmony/gradlew -p harmonyApp/harmony publishDebugBinariesToHarmonyApp
-cd harmonyApp
-ohpm install
-hvigorw --mode module -p product=default -p module=entry@default -p buildMode=debug assembleHap --no-daemon
-hdc install -r entry/build/default/outputs/default/entry-default-unsigned.hap
-hdc shell aa start -a EntryAbility -b com.xiaojianjun.wanandroid
+./harmonyApp/run.sh
 ```
 
-也可在生成共享库后，用 DevEco Studio 打开 `harmonyApp` 运行 `entry`。修改共享源码后，需重新生成共享库，再构建 HAP。上述 Debug HAP 已在模拟器安装验证；真机和发布包需另外配置证书。
+脚本会生成共享库、构建 HAP，并安装到所选设备。优先安装本次生成的 `entry-default-signed.hap`；未配置签名时生成的 `unsigned.hap` 仅适用于允许未签名安装的模拟器。安装失败会立即停止；安装、启动失败均返回非零退出码。
+
+真机首次运行需要按照[华为官方自动签名流程](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-signing-auto)完成配置：
+
+1. 连接真机并授权 USB 调试，用 DevEco Studio 打开 `harmonyApp`。
+2. 进入 **File → Project Structure → Project → Signing Configs**，勾选 **Automatically generate signature**，按提示登录华为开发者账号并完成签名。
+3. 确认 `build-profile.json5` 中 `app.products` 的 `default` 产品绑定 `signingConfig: "default"`，名称与 `app.signingConfigs` 中生成的签名方案一致。
+4. 解锁真机并保持亮屏，再运行 `harmonyApp`。新增调试设备后，需重新自动签名以更新 Profile 中的设备列表。
+
+签名材料和 `build-profile.json5` 中生成的本机签名字段保留在本地，不提交个人证书、密码和绝对路径。发布包需要另外配置发布证书。工程显式设置 `targetSdkVersion` 为 `26.0.0`，与当前配套 SDK 及此前产物的实际目标版本一致。
+
+也可先执行 `./harmonyApp/harmony/gradlew -p harmonyApp/harmony publishDebugBinariesToHarmonyApp`，再在 DevEco Studio 运行 `entry`；修改共享源码后需重新生成共享库。启动脚本的设备选择、签名产物选择和错误处理可运行 `node --test harmonyApp/run.test.mjs` 验证。
 
 ### Web
 

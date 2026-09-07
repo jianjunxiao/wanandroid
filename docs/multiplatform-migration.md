@@ -116,20 +116,20 @@ node webApp/web/server.mjs
 
 ### HarmonyOS
 
-安装 DevEco Studio、HarmonyOS SDK、ohpm、hvigor。将 `OHOS_SDK_HOME`、`DEVECO_SDK_HOME` 指向 DevEco 的 SDK 目录。本机二者为 `/Applications/DevEco-Studio.app/Contents/sdk`。
+安装 DevEco Studio 26.0.0、配套 HarmonyOS SDK、ohpm、hvigor。将 `OHOS_SDK_HOME`、`DEVECO_SDK_HOME` 指向 DevEco 的 SDK 目录。本机二者为 `/Applications/DevEco-Studio.app/Contents/sdk`。
 
 ```bash
-./harmonyApp/harmony/gradlew -p harmonyApp/harmony publishDebugBinariesToHarmonyApp
-cd harmonyApp
-ohpm install
-hvigorw --mode module -p product=default -p module=entry@default -p buildMode=debug assembleHap --no-daemon
-hdc install -r entry/build/default/outputs/default/entry-default-unsigned.hap
-hdc shell aa start -a EntryAbility -b com.xiaojianjun.wanandroid
+./harmonyApp/run.sh
+node --test harmonyApp/run.test.mjs
 ```
 
-也可以在 DevEco Studio 打开 `harmonyApp`，安装 OHPM 依赖后运行。`publishDebugBinariesToHarmonyApp` 会生成 `libwanandroid.so`、C 头文件和共享资源；这些生成物不提交。修改共同源码后，需要先执行该 Gradle 任务，再构建 HAP。
+脚本仅列出已连接设备：单设备自动选择，多设备可输入编号，也可通过 `HDC_DEVICE_ID` 固定目标。Android Studio 的 `harmonyApp` 共享入口调用此脚本；它不接入 Android 的设备下拉框。
 
-当前任务生成的是模拟器已安装验证的 Debug HAP。真机安装、Release 签名和上架需配置相应证书，未在此次验证范围内。
+脚本中的 `publishDebugBinariesToHarmonyApp` 生成 `libwanandroid.so`、C 头文件和共享资源；这些生成物不提交。也可以先执行 `./harmonyApp/harmony/gradlew -p harmonyApp/harmony publishDebugBinariesToHarmonyApp`，再在 DevEco Studio 打开 `harmonyApp` 运行 `entry`；修改共享源码后需要重新执行该 Gradle 任务。
+
+真机需要使用 DevEco 官方自动签名，确保 `default` 产品绑定对应签名方案，并将当前设备加入调试 Profile。配置步骤见 [README 的 HarmonyOS 运行说明](../README.md#harmonyos)。脚本优先安装本次构建的已签名 HAP；未签名 HAP 仅适用于允许未签名安装的模拟器。安装失败不会继续启动，设备端安装或启动报错即使伴随 hdc 退出码 0，脚本也会以非零状态结束。若报 `10106102`，请解锁手机并保持亮屏后重试。
+
+`targetSdkVersion` 显式设为 `26.0.0`，保持当前 SDK 下已有产物的目标版本。调试签名和本机材料不提交；Release 签名与上架仍需单独配置，未在本次验证范围内。
 
 ## 验证结果
 
