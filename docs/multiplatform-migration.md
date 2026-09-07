@@ -2,7 +2,7 @@
 
 ## 范围与架构
 
-共享原有 Compose 页面、布局参数、主题、资源、导航栈及 Repository / ViewModel。平台差异限定在入口、网络引擎、本地存储、网页容器、返回事件、系统栏和图片解码能力。
+共享原有 Compose 页面、布局参数、主题、资源、导航栈及 Repository / ViewModel。当前完整的模块层级和构建入口见 [README 工程目录](../README.md#工程目录)。根 Gradle 注册 `shared`、`androidApp`、`webApp`，iOS 使用 Xcode 宿主工程，HarmonyOS 使用独立 CPF Gradle 工程和 Hvigor 宿主工程。平台适配覆盖入口、网络引擎、本地存储、网页容器、返回事件、系统栏和图片解码能力，滚动反馈保留各平台默认实现。
 
 | 目录 | 职责 |
 | --- | --- |
@@ -15,8 +15,9 @@
 | `webApp/web` | Node.js 静态产物托管、同源 API / 图片代理及代理测试 |
 | `harmonyApp/harmony`、`shared/src/ohosMain` | CPF-KMP-CMP 构建、OHOS 存储、NetworkKit 引擎、ArkUI 互操作 |
 | `harmonyApp` | ArkUI 宿主、原生控制器注册、N-API、HTTP 和 ArkWeb 桥接 |
+| `.run` | Web、HarmonyOS 共享 Shell Script 运行配置 |
 
-`harmonyApp/harmony` 直接引用 `../../shared/src/commonMain/kotlin` 和共同资源，不维护另一套页面。检查 CPF `org.jetbrains.compose.ui:ui:1.9.2-1.0.0` 的发布元数据后确认该发行版没有 Web 目标，因此 JetBrains 工具链与鸿蒙工具链分别构建。
+`harmonyApp/harmony` 直接引用 `../../shared/src/commonMain/kotlin`、`../../shared/src/commonMain/composeResources` 及 `../../shared/src/ohosMain/kotlin`，将产物发布到 `harmonyApp/entry`；根 Gradle 的 `shared` 未注册 OHOS 目标。检查 CPF `org.jetbrains.compose.ui:ui:1.9.2-1.0.0` 的发布元数据后确认该发行版没有 Web 目标，因此 JetBrains 工具链与鸿蒙工具链分别构建。
 
 ### 对齐 JetBrains 新默认结构（2026-09-07）
 
@@ -29,7 +30,7 @@
 - 阅读历史、搜索历史依赖通过存储接口传入，可使用内存实现测试；生产环境沿用各端现有持久化方式。新增测试覆盖注入网络后的首页加载与置顶顺序、详情与历史共享存储，以及本地搜索历史。
 - 四端共用 Compose UI，单个共享模块足够；鸿蒙因配套编译器不同保留独立 Gradle 构建，直接读取 `shared` 的源码和资源。
 
-本次对齐工程职责和依赖组织，依赖版本组合见下表。已有运行截图和功能差异说明继续保留，调整后的构建与回归结果在验证章节单独记录。
+本次对齐工程职责和依赖组织，调整时的构建与回归结果在验证章节单独记录。下表维护当前构建声明的依赖版本，截图与历史验证保留各自的采集时间和版本基线。
 
 ### 平台配套工程归档（2026-09-07）
 
@@ -40,19 +41,22 @@
 
 ### 依赖组合
 
+当前版本以根 `gradle/libs.versions.toml`、两套 Gradle Wrapper、`harmonyApp/harmony/build.gradle.kts` 和 `harmonyApp/oh-package.json5` 为准。
+
 | 组件 | Android / iOS / Web | HarmonyOS |
 | --- | --- | --- |
-| Gradle | 9.4.1 | 8.14.3 |
-| Kotlin | 2.3.20 | 2.2.21-1.0.0 |
-| Compose Multiplatform | 1.10.3 | 1.9.2-1.0.0 |
+| Gradle | 9.7.1 | 8.14.3 |
+| Kotlin | 2.4.10 | 2.2.21-1.0.0 |
+| Compose Multiplatform | 1.12.0 | 1.9.2-1.0.0 |
+| Coroutines | 1.11.0 | 1.10.2-1.0.0 |
 | Lifecycle | 2.10.0 | 2.9.4-1.0.0 |
 | Navigation 3 | 1.1.1 | 1.9.2-1.0.0 |
 | Ktor | 3.3.3 | 3.3.3-1.0.0 |
 | Coil | 3.3.0 | 3.3.0-1.0.0 |
 | kotlinx.serialization | 1.9.0 | 1.9.1-1.0.0 |
-| 宿主 | AGP 9.2.1 / Xcode / Node.js | OHPM Compose 1.9.2-1.0.0 |
+| 宿主 | AGP 9.4.0 / Xcode / Node.js | OHPM Compose 1.9.2-1.0.0 |
 
-Android 保留原 `applicationId`、渠道/环境、签名配置、版本、minSdk 23、compileSdk/targetSdk 36。iOS 提供 `iosArm64` 和 `iosSimulatorArm64`；鸿蒙提供 `ohosArm64`，宿主兼容 SDK 5.0.5(API 17)。这些配置下限不代表已逐一验证最低版本设备。
+Android 保留原 `applicationId`、渠道/环境和应用版本，当前 minSdk 为 23、compileSdk/targetSdk 为 37。iOS 提供 `iosArm64` 和 `iosSimulatorArm64`；鸿蒙提供 `ohosArm64`，宿主兼容 SDK 为 5.0.5(API 17)、目标 SDK 为 26.0.0。最低版本设备的验证范围见后文。
 
 ## 关键实现与平台适配
 
@@ -74,7 +78,7 @@ Android 保留原 `applicationId`、渠道/环境、签名配置、版本、minS
 
 ### Android
 
-安装 JDK 17、Android SDK 36 和模拟器，配置本机 `local.properties`。本次使用 JetBrains Runtime 17.0.14。
+安装 JDK 17、Android SDK 37 和模拟器，配置本机 `local.properties`。迁移回归时使用的 JDK 为 JetBrains Runtime 17.0.14。
 
 ```bash
 ./gradlew help
@@ -100,7 +104,9 @@ xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp \
 
 ### Web
 
-安装 Node.js 22 或更新版本。本次验证使用 Node.js 24.14.1、Chromium 152.0.7977.76。
+安装 Node.js 22 或更新版本。迁移回归时使用 Node.js 24.14.1、Chromium 152.0.7977.76。
+
+运行 `./webApp/web/run.sh` 可完成构建并启动本地服务，与 Android Studio 的 `webApp` 入口相同。也可分步构建、测试与启动：
 
 ```bash
 ./gradlew :webApp:wasmJsBrowserDistribution
@@ -133,7 +139,14 @@ node --test harmonyApp/run.test.mjs
 
 ## 验证结果
 
-最近架构回归：2026-09-07。初次跨端迁移回归：2026-09-06。构建、静态测试、模拟器和真实账号验证分开记录。
+最近架构回归：2026-09-07。初次跨端迁移回归：2026-09-06。当时主工程使用 Gradle 9.4.1、Kotlin 2.3.20、Compose 1.10.3、AGP 9.2.1 和 compileSdk/targetSdk 36。当前依赖配置见[依赖组合](#依赖组合)，升级后的全量四端回归结果尚未补录。构建、静态测试、模拟器和真实账号验证分开记录。
+
+### 运行入口修复验证（2026-09-07）
+
+- 新增 `.run/webApp.run.xml`、`.run/harmonyApp.run.xml`，分别调用 `webApp/web/run.sh` 与 `harmonyApp/run.sh`。Web 构建、代理服务启动和浏览器真实首页加载通过。
+- 16 项鸿蒙启动脚本测试通过，覆盖多设备选择、固定设备、离线设备过滤、取消选择、签名产物选择、旧包清理，以及 hdc 返回 0 时的设备端安装/启动失败。
+- 通过 DevEco 官方自动签名构建 HAP，并成功安装到 Mate 60。启动被锁屏状态阻止（`10106102`），脚本正确返回非零退出码；真机完整交互回归待补。
+- 显式配置鸿蒙 `targetSdkVersion: "26.0.0"`，构建日志中的目标 SDK 缺省提示与签名缺失提示已消除。
 
 ### 结构调整后的回归（2026-09-07）
 
@@ -197,8 +210,9 @@ Web 项目封面和中文、Emoji 显示实测：[项目页截图](verification/
 3. **图片格式能力**：Coil 官方 GIF 动画和视频帧扩展仅支持 Android。四端静态图片和 SVG 已接入；非 Android 的 GIF 动画/视频缩略图不宣称与 Android 完全等同。本次实际接口图片主要为静态图，未逐格式构造四端媒体回归集。
 4. **文章字号**：Android `WebSettings.textZoom`、鸿蒙 `textZoomRatio` 只调整文字；iOS `WKWebView.pageZoom` 和 Web iframe 比例缩放会连同图片及布局一起缩放。设置值与持久化相同，实际呈现方式不完全相同。跨域 iframe 无法直接修改目标文档字体。
 5. **缓存清理**：Android 统计并清理内部/外部 cache 目录，额外清理 Coil 内存；iOS 统计 Caches 目录的普通文件，清理该目录、NSURLCache 和 Coil；鸿蒙统计并清理 Coil 内存及磁盘；Web 统计并清理 Coil 内存缓存。各端都保留账号、设置及历史。原生网页容器的独立网站数据、浏览器 HTTP 缓存不在统一清理范围内，当前缓存数字不能跨平台直接比较。
-6. 未执行物理真机、最低系统版本、所有浏览器/机型、Release 签名、应用商店发布和公网部署。构建通过不替代这些验证。
+6. 鸿蒙真机已完成签名包安装，完整真机交互回归待补。最低系统版本、所有浏览器/机型、Release 签名、应用商店发布和公网部署尚未验证。
 7. Web 包含本地中文字体及 Skia/Wasm 资源，首次加载体积较大；本次未做首屏性能专项优化。
+8. **边界滚动反馈**：列表未统一覆盖平台默认 overscroll。Android 使用 EdgeEffect 拉伸/发光，iOS 与当前鸿蒙适配库使用内容位移回弹；列表代码共享，实际边界滚动手感仍有差异。
 
 ## 本次复审修正
 

@@ -4,11 +4,11 @@
 
 项目经历了 **View/XML → Jetpack Compose → Compose Multiplatform** 两次迁移，迁移实现、构建和本地回归由 Codex 执行。当前保留原有页面风格、导航与列表交互，以及 Android 的渠道配置。
 
-[运行截图](docs/screenshots/README.md) · [快速开始](#快速开始) · [支持与验证](#支持与验证) · [迁移记录](docs/multiplatform-migration.md)
+[工程目录](#工程目录) · [运行截图](docs/screenshots/README.md) · [快速开始](#快速开始) · [支持与验证](#支持与验证) · [迁移记录](docs/multiplatform-migration.md)
 
 ## 运行效果
 
-以下为当前版本在三个模拟器上的实际运行画面。完整图库按相同页面并排展示，覆盖首页各 Tab、体系、发现、导航、搜索、文章、个人页面及夜间模式。
+以下为 2026-09-06 迁移回归时在三个模拟器上采集的实际运行画面，应用版本为 `1.0.6`。完整图库按相同页面并排展示，覆盖首页各 Tab、体系、发现、导航、搜索、文章、个人页面及夜间模式。
 
 <table>
 <tr><th>Android</th><th>iOS</th><th>HarmonyOS</th></tr>
@@ -59,7 +59,7 @@ Web 使用相同的 Compose 页面，通过 Wasm 运行；API 和图片请求由
 | 平台 | 所需环境 |
 | --- | --- |
 | 公共构建 | JDK 17；使用仓库提供的 Gradle Wrapper |
-| Android | Android SDK 36、模拟器或设备；在本机 `local.properties` 中设置 SDK 路径 |
+| Android | Android SDK 37、模拟器或设备；在本机 `local.properties` 中设置 SDK 路径 |
 | iOS | Apple Silicon Mac、Xcode、iOS Simulator；当前提供 `iosArm64` 和 `iosSimulatorArm64` |
 | HarmonyOS | DevEco Studio 26.0.0、配套 HarmonyOS SDK、ohpm、hvigor；配置 `OHOS_SDK_HOME` 与 `DEVECO_SDK_HOME` |
 | Web | Node.js 22+、支持 Wasm GC 的浏览器 |
@@ -128,41 +128,86 @@ open iosApp/iosApp.xcodeproj
 ### Web
 
 ```bash
-./gradlew :webApp:wasmJsBrowserDistribution
-node webApp/web/server.mjs
+./webApp/web/run.sh
 ```
 
-访问 [http://127.0.0.1:8080](http://127.0.0.1:8080)。服务默认读取 `webApp/build/dist/wasmJs/productionExecutable`，支持通过 `PORT`、`WANANDROID_WEB_DIST` 修改端口和产物目录。
+脚本先执行 `:webApp:wasmJsBrowserDistribution`，再启动 `webApp/web/server.mjs`。访问 [http://127.0.0.1:8080](http://127.0.0.1:8080)；服务默认读取 `webApp/build/dist/wasmJs/productionExecutable`，支持通过 `PORT`、`WANANDROID_WEB_DIST` 修改端口和产物目录。
 
 API 代理负责跨域和 HttpOnly Cookie，不能直接以 `file://` 打开页面。公网部署需配置 HTTPS 反向代理；完整命令与配置说明见[构建文档](docs/multiplatform-migration.md#构建与运行)。
 
 ## 架构与技术栈
 
-工程按 JetBrains 的[最新模块结构指导](https://kotlinlang.org/docs/multiplatform/multiplatform-project-recommended-structure.html)组织：`shared` 提供共享库，各平台应用模块负责启动与打包。四端共享 Compose UI 和业务逻辑，使用单个共享模块。
+工程参考 JetBrains 的[模块结构指导](https://kotlinlang.org/docs/multiplatform/multiplatform-project-recommended-structure.html)组织：`shared` 提供共享 UI 和业务，各平台宿主负责启动与打包。Android、iOS、Web 使用根 Gradle 构建；HarmonyOS 使用独立的 CPF Gradle 构建编译同一份共享源码，再由 Hvigor 打包。
 
 页面按功能组织，采用 ViewModel、StateFlow、Repository 的数据流。`model/repository` 负责数据访问，`di/AppContainer` 组装依赖并通过构造参数交给 ViewModel；导航条目负责 ViewModel 生命周期。Ktor 与 kotlinx.serialization 负责 API，Coil 3 负责图片，`expect/actual` 提供平台能力。
 
+### 工程目录
+
+主要源码、宿主与构建入口如下：
+
 ```text
-shared/src/
-├── commonMain/     Compose 页面、资源、主题、Navigation 3、ViewModel、Repository、API
-├── commonTest/     状态逻辑、HTML、日期、API 契约及依赖注入回归
-├── androidMain/    SharedPreferences、OkHttp、WebView、系统栏
-├── iosMain/        NSUserDefaults、Darwin HTTP、WKWebView
-├── ohosMain/       文件存储、NetworkKit 桥接、ArkUI 互操作
-└── wasmJsMain/     浏览器存储、返回事件、iframe 等平台适配
-androidApp/        Android 宿主与 Room 阅读历史存储
-iosApp/            SwiftUI 宿主与 Xcode 工程
-webApp/            Web 启动入口、静态文件、字体资源和 Wasm 应用打包
-└── web/           Node.js 同源 API / 图片代理及测试
-harmonyApp/        ArkUI 宿主、N-API、NetworkKit 与 ArkWeb
-└── harmony/       CPF-KMP-CMP 独立 Gradle 构建
+wanandroid/
+├── shared/                        共享 UI、业务和平台适配源码
+│   ├── build.gradle.kts           Android Library、iOS framework、Wasm 库目标
+│   └── src/
+│       ├── commonMain/            Kotlin 业务、Compose 页面及 composeResources
+│       ├── commonTest/            共享状态、API、存储与依赖注入测试
+│       ├── androidMain/           SharedPreferences、OkHttp、WebView、系统栏
+│       ├── iosMain/               iOS 控制器入口、NSUserDefaults、Darwin、WKWebView
+│       ├── ohosMain/              鸿蒙控制器入口、文件存储、NetworkKit 桥接
+│       └── wasmJsMain/            浏览器存储、返回事件、iframe 平台适配
+├── androidApp/
+│   ├── build.gradle.kts           APK、渠道、环境、签名与 Room 配置
+│   └── src/                       Application、Activity、Room 阅读历史及宿主测试
+├── iosApp/
+│   ├── Configuration/             Xcode 版本、包名和签名配置
+│   ├── iosApp/                    SwiftUI 宿主、Info.plist、应用图标
+│   └── iosApp.xcodeproj/          Xcode 工程及共享 framework 构建阶段
+├── webApp/
+│   ├── build.gradle.kts           Wasm 可执行目标与 Webpack 配置
+│   ├── src/wasmJsMain/            浏览器 main 入口、HTML、字体和许可证
+│   └── web/
+│       ├── run.sh                 构建 Web 并启动本地服务
+│       ├── server.mjs             静态产物托管、同源 API 与图片代理
+│       └── server.test.mjs        代理服务测试
+├── harmonyApp/
+│   ├── AppScope/                  鸿蒙应用信息、图标和全局资源
+│   ├── entry/                     ArkUI 宿主、N-API、NetworkKit、ArkWeb 与 HAP 模块
+│   ├── harmony/                   独立 CPF Gradle 工程、Wrapper 及原生库发布任务
+│   ├── hvigor/                    Hvigor 配置
+│   ├── hvigorfile.ts              鸿蒙应用构建入口
+│   ├── build-profile.json5        产品、SDK 与签名方案
+│   ├── oh-package.json5           OHPM 依赖
+│   ├── run.sh                     选择设备、构建、安装并启动鸿蒙应用
+│   └── run.test.mjs               设备选择与部署错误处理测试
+├── .run/                          Web、HarmonyOS 共享 IDE 运行配置
+├── gradle/
+│   ├── libs.versions.toml         Android、iOS、Web 的依赖与插件版本
+│   └── wrapper/                   根 Gradle Wrapper 配置
+├── build.gradle.kts               根构建插件声明
+├── settings.gradle.kts            根 Gradle 模块注册与仓库配置
+├── gradle.properties              根构建参数
+├── gradlew                        根 Gradle 启动脚本（Windows 使用 gradlew.bat）
+├── docs/                          迁移记录、运行截图和验证记录
+├── images/                        原 View/XML 版本的历史图片
+└── README.md
 ```
 
-Android、iOS、Web 使用 Kotlin **2.3.20** / Compose Multiplatform **1.10.3**；HarmonyOS 使用 CPF-KMP-CMP 的 Kotlin **2.2.21-1.0.0** / Compose **1.9.2-1.0.0**。
+根 [settings.gradle.kts](settings.gradle.kts) 只注册 `:shared`、`:androidApp`、`:webApp` 三个 Gradle 模块。Android Studio 打开仓库根目录，Xcode 打开 `iosApp/iosApp.xcodeproj`，DevEco Studio 打开 `harmonyApp`。
 
 `androidApp` 和 `webApp` 通过 Gradle 依赖 `shared`，`iosApp` 链接它导出的 framework。`shared` 的 Wasm 目标只生成库，浏览器入口和可执行产物由 `webApp` 提供；`webApp/web` 负责静态产物托管和同源代理服务，独立运行。
 
-`harmonyApp/harmony` 直接引用同一份 `shared/src/commonMain` 源码与资源，并将原生库、头文件和资源交给 `harmonyApp/entry` 打包。它保留独立 Gradle 工具链；DevEco Studio 仍打开 `harmonyApp`。平台配套工程收在对应应用目录下是本项目的组织约定，并非官方强制目录。详细版本组合见[依赖说明](docs/multiplatform-migration.md#依赖组合)。
+`harmonyApp/harmony` 显式引用 `shared/src/commonMain` 的 Kotlin 源码和 Compose 资源，以及 `shared/src/ohosMain`，将原生库、头文件和资源发布到 `harmonyApp/entry`。`ohosMain` 由这个独立工程编译，根 Gradle 的 `shared` 未注册 OHOS 目标。`harmonyApp/harmony` 与 `webApp/web` 按所属平台归档是本项目的组织约定，并非官方强制目录。
+
+### 当前版本配置
+
+| 组件 | Android / iOS / Web | HarmonyOS |
+| --- | --- | --- |
+| Gradle | 9.7.1 | 8.14.3 |
+| Kotlin | 2.4.10 | 2.2.21-1.0.0 |
+| Compose Multiplatform | 1.12.0 | 1.9.2-1.0.0 |
+
+Android 使用 AGP **9.4.0**，`compileSdk` / `targetSdk` 为 **37**，`minSdk` 为 **23**。版本来源为根 [Gradle Wrapper](gradle/wrapper/gradle-wrapper.properties)、[版本目录](gradle/libs.versions.toml)、[鸿蒙 Gradle 构建](harmonyApp/harmony/build.gradle.kts)及其 [Wrapper](harmonyApp/harmony/gradle/wrapper/gradle-wrapper.properties)。完整依赖对照见[依赖组合](docs/multiplatform-migration.md#依赖组合)。
 
 ### 构建配置与工具链
 
@@ -177,7 +222,7 @@ Android、iOS、Web 使用 Kotlin **2.3.20** / Compose Multiplatform **1.10.3**�
 
 Android、iOS、Web 的 Kotlin/Compose 构建使用同一套版本，由根目录的 [Gradle Wrapper](gradle/wrapper/gradle-wrapper.properties) 和 [版本目录](gradle/libs.versions.toml)管理，因此无需额外建立独立 Gradle 工程。iOS 的原生宿主仍有独立的 [Xcode 工程](iosApp/iosApp.xcodeproj/project.pbxproj)。
 
-HarmonyOS 使用 CPF-KMP-CMP 的 OHOS 适配发行版，Kotlin/Compose 版本与主构建不同，Gradle 也分别使用 **8.14.3** 和 **9.4.1**。因此本项目在 [harmonyApp/harmony](harmonyApp/harmony/) 中隔离版本与构建配置。该目录不存放编译器本体；`webApp/web` 则是运行服务目录，Web 编译仍由根 Gradle 完成。
+HarmonyOS 使用 CPF-KMP-CMP 的 OHOS 适配发行版，因此本项目在 [harmonyApp/harmony](harmonyApp/harmony/) 中隔离版本与构建配置。编译器本体位于本机工具或缓存目录；[webApp/web](webApp/web/) 保存 Node.js 运行服务，Web 编译仍由根 Gradle 完成。
 
 默认安装与缓存位置如下，实际路径以本机配置为准：
 
@@ -189,7 +234,9 @@ HarmonyOS 使用 CPF-KMP-CMP 的 OHOS 适配发行版，Kotlin/Compose 版本与
 
 ## 支持与验证
 
-截至 **2026-09-07**，Android APK、iOS 模拟器应用、HarmonyOS 原生库/HAP 和 Web Wasm 产物均已构建并运行验证。公开页面使用真实 API；账号及服务端写操作目前仅完成浏览器隔离模拟接口回归，四端真实账号闭环尚待专用测试账号验证。
+以下记录来自 **2026-09-06 至 2026-09-07** 的迁移与架构回归：Android APK、iOS 模拟器应用、HarmonyOS 原生库/HAP 和 Web Wasm 产物均完成构建与运行验证。当时主工程使用 Gradle 9.4.1、Kotlin 2.3.20、Compose 1.10.3；当前配置见[当前版本配置](#当前版本配置)，依赖升级后的全量四端回归结果尚未补录。
+
+公开页面使用真实 API；账号及服务端写操作目前仅完成浏览器隔离模拟接口回归，四端真实账号闭环尚待专用测试账号验证。
 
 | 能力 | Android | iOS | HarmonyOS | Web |
 | --- | --- | --- | --- | --- |
@@ -199,16 +246,17 @@ HarmonyOS 使用 CPF-KMP-CMP 的 OHOS 适配发行版，Kotlin/Compose 版本与
 | GIF 动画 / 视频帧解码 | 已接入 | 未接入 | 未接入 | 未接入 |
 | 禁止 iframe 的文章 | 原生网页容器 | 原生网页容器 | 原生网页容器 | 外部打开 |
 
-各端缓存统计与清理范围不同；Web 弹窗关闭后还存在上游无障碍树恢复问题。当前不宣称四端像素或能力完全一致，完整差异、实测设备和未验证范围见[验证记录](docs/multiplatform-migration.md#验证结果)。
+各端缓存统计与清理范围不同，列表仍采用平台默认的 overscroll 手感；Web 弹窗关闭后还存在上游无障碍树恢复问题。完整差异、实测设备和未验证范围见[验证记录](docs/multiplatform-migration.md#验证结果)。
 
 回归命令：
 
 ```bash
 ./gradlew :shared:testAndroidHostTest :androidApp:testEnterpriseAlphaDebugUnitTest
 node --test webApp/web/server.test.mjs
+node --test harmonyApp/run.test.mjs
 ```
 
-已通过 **35 项共享测试、1 项 Android 宿主测试、6 项 Web 代理测试**。构建和测试记录、平台差异以及模拟器回归范围均保留在迁移文档中。
+迁移及运行入口修复阶段已记录 **35 项共享测试、1 项 Android 宿主测试、6 项 Web 代理测试、16 项鸿蒙启动脚本测试**通过。鸿蒙签名 HAP 已安装到 Mate 60，启动验证受手机锁屏限制；具体结果见迁移文档中的[运行入口修复验证](docs/multiplatform-migration.md#运行入口修复验证2026-09-07)。
 
 ## 迁移与维护
 

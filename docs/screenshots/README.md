@@ -1,6 +1,6 @@
 # 三端运行截图
 
-本页展示 Android、iOS、HarmonyOS 当前版本的实际运行画面，每一行对应相同功能。截图通过应用正常操作采集，网络内容来自 WanAndroid 真实 API；没有绘制替代 UI，也没有用模拟账号数据填充页面。
+本页展示 2026-09-06 迁移回归时采集的 Android、iOS、HarmonyOS 实际运行画面，应用版本为 `1.0.6`，每一行对应相同功能。截图通过应用正常操作采集，网络内容来自 WanAndroid 真实 API；没有绘制替代 UI，也没有用模拟账号数据填充页面。当前目录与依赖配置见[项目 README](../../README.md#工程目录)。
 
 [返回项目介绍](../../README.md) · [构建与验证记录](../multiplatform-migration.md)
 
