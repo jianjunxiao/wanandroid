@@ -3,6 +3,7 @@
     "products": [
       {
         "name": "default",
+        "signingConfig": "default",
         "compatibleSdkVersion": "5.0.5(17)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
@@ -17,10 +18,25 @@
     ],
     "buildModeSet": [
       {
-        "name": "debug",
+        "name": "debug"
       },
       {
         "name": "release"
+      }
+    ],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/xiao/.ohos/config/default_harmonyApp_TUB0uXb8gWUAx7V7sAvCGacGqPNqXz0q2lnmjYpn5dI=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B8F55716A698B27B33504E444E072E280C5B1688D3654F633AE9A3525746FF0980D9C084A503233",
+          "profile": "/Users/xiao/.ohos/config/default_harmonyApp_TUB0uXb8gWUAx7V7sAvCGacGqPNqXz0q2lnmjYpn5dI=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/xiao/.ohos/config/default_harmonyApp_TUB0uXb8gWUAx7V7sAvCGacGqPNqXz0q2lnmjYpn5dI=.p12",
+          "storePassword": "0000001BAADC7F456E854853D5EB07AC88E238F27BDF823F10D049CEB623FF5B6199BDE5F7789737D9F057"
+        }
       }
     ]
   },
