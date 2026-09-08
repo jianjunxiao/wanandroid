@@ -3,22 +3,20 @@ import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import nativeApi, { HostBridge } from 'libentry.so';
-import { HttpService } from '../network/HttpService';
 
+/** 承载共享 Compose 页面，并提供系统栏与应用退出能力。 */
 @Entry
 @Component
 struct Index {
   private controller?: ArkUIViewController;
-  private http: HttpService = new HttpService((id: number, response: string) => nativeApi.completeHttp(id, response));
   private context?: common.UIAbilityContext;
   private hostWindow?: window.Window;
 
+  /** 使用应用目录和宿主回调创建控制器；网络客户端由共享层统一持有。 */
   aboutToAppear(): void {
     this.context = this.getUIContext().getHostContext() as common.UIAbilityContext;
     this.hostWindow = AppStorage.get<window.Window>('mainWindow');
     const bridge: HostBridge = {
-      request: (id: number, request: string) => this.http.request(id, request),
-      cancelRequest: (id: number) => this.http.cancel(id),
       dark: () => this.setSystemBars(true),
       light: () => this.setSystemBars(false),
       exit: () => this.exit()
@@ -60,8 +58,6 @@ struct Index {
     .height('100%')
     .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
   }
-
-  aboutToDisappear(): void { this.http.close(); }
 
   onPageHide(): void { this.controller?.onPageHide(); }
   onPageShow(): void { this.controller?.onPageShow(); }

@@ -9,5 +9,6 @@ if ! command -v node >/dev/null 2>&1; then
     exit 1
 fi
 
-./gradlew :webApp:wasmJsBrowserDistribution
+# Web 使用自身的 JetBrains Wrapper，避免进入移动端 CPF 构建。
+./webApp/gradlew -p webApp wasmJsBrowserDistribution
 exec node webApp/web/server.mjs

@@ -81,7 +81,8 @@ run_hdc_checked() (
 )
 
 ohpm install
-./harmony/gradlew -p harmony publishDebugBinariesToHarmonyApp
+# 共享库由根工程的 shared 编译，Hvigor 只负责下方的宿主打包与签名。
+../gradlew -p .. :shared:publishDebugBinariesToHarmonyApp
 
 signed_hap=entry/build/default/outputs/default/entry-default-signed.hap
 unsigned_hap=entry/build/default/outputs/default/entry-default-unsigned.hap

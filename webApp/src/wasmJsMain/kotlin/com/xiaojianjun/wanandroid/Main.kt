@@ -13,7 +13,7 @@ import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.window.ComposeViewport
 import com.xiaojianjun.wanandroid.platform.BrowserNavigation
 import com.xiaojianjun.wanandroid.platform.leaveWebApp
-import com.xiaojianjun.wanandroid.web.resources.Res
+import com.xiaojianjun.wanandroid.resources.Res
 import com.xiaojianjun.wanandroid.ui.compose.WanAndroidComposeApp
 import kotlinx.browser.document
 import kotlinx.coroutines.CancellationException
@@ -23,6 +23,7 @@ import kotlinx.coroutines.coroutineScope
 @JsFun("() => { document.getElementById('startup-error').hidden = false; }")
 private external fun showStartupError()
 
+/** 预加载与公共图标一起打包的 Web 字体，再启动共享页面；加载失败时展示现有重试入口。 */
 fun main() {
     ComposeViewport(document.getElementById("composeApp")!!) {
         BrowserNavigation()

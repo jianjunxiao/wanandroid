@@ -1,0 +1,16 @@
+# Web 保留原 JetBrains 发行版，直接编译 shared 中的同一份公共与浏览器适配源码。
+[versions]
+kotlin = "2.4.10"
+compose-multiplatform = "1.12.0"
+ktor = "3.3.3"
+serialization = "1.9.0"
+coil-multiplatform = "3.3.0"
+navigation3-multiplatform = "1.1.1"
+coroutines = "1.11.0"
+lifecycle-multiplatform = "2.10.0"
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

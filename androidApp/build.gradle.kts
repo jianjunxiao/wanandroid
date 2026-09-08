@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
+    // AGP 8 不内置 Kotlin，宿主与共享库必须使用同一 CPF 编译器。
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
 }
@@ -101,7 +103,9 @@ androidComponents {
     onVariants { variant ->
         val variantName = variant.productFlavors.joinToString("_") { it.second }
         variant.outputs.forEach { output ->
-            output.outputFileName.set(
+            // AGP 8.11 尚未在 VariantOutput 公共接口暴露文件名属性。
+            // 将版本相关实现限制在命名处，继续保留渠道 APK 名称及 IDE 的产物元数据。
+            (output as com.android.build.api.variant.impl.VariantOutputImpl).outputFileName.set(
                 "wandroid_${variantName}_v${output.versionName.get()}_${output.versionCode.get()}.apk"
             )
         }

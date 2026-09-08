@@ -2,7 +2,7 @@
 
 ## 范围与架构
 
-共享原有 Compose 页面、布局参数、主题、资源、导航栈及 Repository / ViewModel。当前完整的模块层级和构建入口见 [README 工程目录](../README.md#工程目录)。根 Gradle 注册 `shared`、`androidApp`、`webApp`，iOS 使用 Xcode 宿主工程，HarmonyOS 使用独立 CPF Gradle 工程和 Hvigor 宿主工程。平台适配覆盖入口、网络引擎、本地存储、网页容器、返回事件、系统栏和图片解码能力，滚动反馈保留各平台默认实现。
+共享原有 Compose 页面、布局参数、主题、资源、导航栈及 Repository / ViewModel。当前完整的模块层级和构建入口见 [README 工程目录](../README.md#工程目录)。根 Gradle 只注册 `shared`、`androidApp`，`shared` 统一 Android、iOS、OHOS 目标。iOS 使用 Xcode 宿主，HarmonyOS 使用 Hvigor 宿主；Web 在 `webApp` 使用独立 Gradle 构建。平台适配覆盖入口、网络引擎、本地存储、网页容器、返回事件、系统栏和图片解码能力，滚动反馈保留各平台默认实现。
 
 | 目录 | 职责 |
 | --- | --- |
@@ -10,14 +10,17 @@
 | `shared/src/commonTest` | 原有交互状态测试及新增网络契约、HTML 文本测试 |
 | `androidApp`、`shared/src/androidMain` | Android 入口、Room、SharedPreferences、OkHttp、WebView、系统栏 |
 | `iosApp`、`shared/src/iosMain` | SwiftUI 宿主、Darwin HTTP、NSUserDefaults、WKWebView |
+| `shared/src/nativeMain` | iOS 与 OHOS 共用的导航条目 ViewModel 生命周期适配 |
 | `shared/src/wasmJsMain` | 浏览器存储、返回事件、iframe 等共享库平台适配 |
-| `webApp` | Wasm 应用入口、Webpack、HTML、中文与 Emoji 字体和许可证 |
+| `webApp` | 独立 Gradle / Wrapper / 版本目录、Wasm 入口、Webpack、HTML、中文与 Emoji 字体和许可证 |
 | `webApp/web` | Node.js 静态产物托管、同源 API / 图片代理及代理测试 |
-| `harmonyApp/harmony`、`shared/src/ohosMain` | CPF-KMP-CMP 构建、OHOS 存储、NetworkKit 引擎、ArkUI 互操作 |
-| `harmonyApp` | ArkUI 宿主、原生控制器注册、N-API、HTTP 和 ArkWeb 桥接 |
+| `shared/build.gradle.kts`、`shared/src/ohosMain` | OHOS 共享库编译、存储、CPF Curl 引擎、ArkUI 互操作 |
+| `harmonyApp` | ArkUI 宿主、原生控制器注册、N-API 和 ArkWeb 桥接 |
 | `.run` | Web、HarmonyOS 共享 Shell Script 运行配置 |
 
-`harmonyApp/harmony` 直接引用 `../../shared/src/commonMain/kotlin`、`../../shared/src/commonMain/composeResources` 及 `../../shared/src/ohosMain/kotlin`，将产物发布到 `harmonyApp/entry`；根 Gradle 的 `shared` 未注册 OHOS 目标。检查 CPF `org.jetbrains.compose.ui:ui:1.9.2-1.0.0` 的发布元数据后确认该发行版没有 Web 目标，因此 JetBrains 工具链与鸿蒙工具链分别构建。
+移动三端统一使用 CPF Kotlin / Compose，OHOS 产物由根 `:shared:publishDebugBinariesToHarmonyApp` 发布到 `harmonyApp/entry`。CPF `org.jetbrains.compose.ui:ui:1.9.2-1.0.0` 发布元数据包含 Android、iOS 和 OHOS，没有 JS/Wasm 变体，因此 Web 保留独立 JetBrains 工具链，直接编译 `../shared/src/commonMain` 与 `../shared/src/wasmJsMain`，不复制业务源码。
+
+以下 2026-09-07 小节保留调整历史；当前目录、版本和命令以本页“范围与架构”“依赖组合”“构建与运行”为准。
 
 ### 对齐 JetBrains 新默认结构（2026-09-07）
 
@@ -41,36 +44,41 @@
 
 ### 依赖组合
 
-当前版本以根 `gradle/libs.versions.toml`、两套 Gradle Wrapper、`harmonyApp/harmony/build.gradle.kts` 和 `harmonyApp/oh-package.json5` 为准。
+当前移动端版本以根 `gradle/libs.versions.toml` 和 Wrapper 为准，Web 版本在 `webApp/gradle`；鸿蒙 ArkUI 宿主依赖仍由 `harmonyApp/oh-package.json5` 管理。
 
-| 组件 | Android / iOS / Web | HarmonyOS |
+| 组件 | Android / iOS / HarmonyOS | Web |
 | --- | --- | --- |
-| Gradle | 9.7.1 | 8.14.3 |
-| Kotlin | 2.4.10 | 2.2.21-1.0.0 |
-| Compose Multiplatform | 1.12.0 | 1.9.2-1.0.0 |
-| Coroutines | 1.11.0 | 1.10.2-1.0.0 |
-| Lifecycle | 2.10.0 | 2.9.4-1.0.0 |
-| Navigation 3 | 1.1.1 | 1.9.2-1.0.0 |
-| Ktor | 3.3.3 | 3.3.3-1.0.0 |
-| Coil | 3.3.0 | 3.3.0-1.0.0 |
-| kotlinx.serialization | 1.9.0 | 1.9.1-1.0.0 |
-| 宿主 | AGP 9.4.0 / Xcode / Node.js | OHPM Compose 1.9.2-1.0.0 |
+| Gradle | 8.14.3 | 9.7.1 |
+| Kotlin | 2.2.21-1.0.0 | 2.4.10 |
+| Compose Multiplatform | 1.9.2-1.0.0 | 1.12.0 |
+| Coroutines | 1.10.2-1.0.0 | 1.11.0 |
+| Lifecycle | 2.9.4-1.0.0 | 2.10.0 |
+| Navigation 3 | 1.9.2-1.0.0 | 1.1.1 |
+| Ktor | 3.3.3-1.0.0 | 3.3.3 |
+| Coil | Android 3.3.0；iOS / OHOS 3.3.0-1.0.0 | 3.3.0 |
+| kotlinx.serialization | 1.9.1-1.0.0 | 1.9.0 |
+| 宿主 | AGP 8.11.1 / Xcode / OHPM Compose 1.9.2-1.0.0 | Node.js |
 
-Android 保留原 `applicationId`、渠道/环境和应用版本，当前 minSdk 为 23、compileSdk/targetSdk 为 37。iOS 提供 `iosArm64` 和 `iosSimulatorArm64`；鸿蒙提供 `ohosArm64`，宿主兼容 SDK 为 5.0.5(API 17)、目标 SDK 为 26.0.0。最低版本设备的验证范围见后文。
+Android 保留原 `applicationId`、渠道/环境和应用版本，minSdk 仍为 23。为配套 CPF 编译器，AGP 调整为 8.11.1，compileSdk/targetSdk 从 37 调整为其[官方支持上限 36](https://developer.android.com/build/releases/agp-8-11-0-release-notes)。这会改变 Android 的目标版本行为基线，不影响安装到 API 37 设备；最低版本设备仍需单独回归。
+
+iOS 提供 `iosArm64` 和 `iosSimulatorArm64`；鸿蒙提供 `ohosArm64`，宿主兼容 SDK 为 5.0.5(API 17)、目标 SDK 为 26.0.0。
+
+CPF 版 Coil 的 Android AAR 使用 JVM 18 字节码，GIF 扩展还引入 minSdk 24 的 Skiko。根构建根据 Android 平台属性将 Coil 依赖统一解析为原官方 3.3.0，保留 JVM 11、API 23 及 Android GIF / 视频帧解码；Native 目标继续使用 CPF Coil。Android Navigation 3 的 ViewModel 装饰器继续使用官方 `lifecycle-viewmodel-navigation3:2.10.0`，其余平台适配见下文。
 
 ## 关键实现与平台适配
 
 - API 全部移到 Ktor，保留原接口路径、分页起点、表单字段和业务错误。对 `data: null` 的写操作单独处理，避免收藏/分享成功后被当成解析错误。
 - 响应显式按 UTF-8 字节解析，并切到平台后台 Dispatcher。鸿蒙平台分支中的字符集转换曾在大型中文分类响应上阻塞主线程；改动后体系页面在模拟器正常加载，未再出现同一阻塞。
-- 鸿蒙的 HTTPS 使用 NetworkKit，Ktor 负责请求、Cookie 和超时。N-API 请求、完成、取消均回到 ArkTS 所属主线程；页面销毁释放未完成请求。保留多个 `Set-Cookie` 响应头。
+- 移动三端共用 Ktor 请求、Cookie 和超时配置，Android / iOS / 鸿蒙分别选择 OkHttp / Darwin / CPF Curl 引擎。鸿蒙的 `ktor-client-curl:3.3.3-1.0.0` 包含 OHOS 的 libcurl、OpenSSL 静态库，直接处理 HTTPS、响应头、流式请求与取消，保持默认的证书链及主机名校验。API 和 Coil 共用客户端，已移除自定义 NetworkKit HTTP 服务及请求、取消、完成的 N-API 桥接；客户端由共享层持有，其生命周期不再依赖 ArkUI 页面的显示与隐藏。
+- CPF Curl 发布版的取消分支直接释放句柄却保留内部登记，超时/取消后关闭客户端会触发 `CURLM_BAD_EASY_HANDLE` 崩溃。`shared/thirdParty/ktor-curl` 修正事件循环的取消调度、及时处理完成队列、统一释放回调资源，并忽略已释放句柄的延迟背压恢复；其余引擎源码由 Gradle 从固定版本源码包提取，C interop 与原生库保持 CPF 发布产物。升级时需核对发布版是否已修复，并移除本地替换，详见[修复说明](../shared/thirdParty/ktor-curl/README.md)。
 - Android 使用 SharedPreferences 保存账号、搜索和设置，使用 Room 保存阅读历史。当前版本不承担旧持久化数据迁移：已移除 PersistentCookieJar 导入、一次性迁移标记和相关依赖；Cookie 统一由 Ktor 的共享持久化实现保存。
 - iOS、Web、鸿蒙使用平台持久化 JSON 保存账号、搜索、历史和设置。鸿蒙文件写入经锁保护并使用临时文件替换；历史更新和 Cookie 更新分别互斥。
-- 页面事件改为进程内 Flow/StateFlow，配合 ViewModel 生命周期。鸿蒙 Navigation 3 使用对应版本的 ViewModel 装饰器；路由退出时清理 ViewModel。
+- 页面事件改为进程内 Flow/StateFlow，配合 ViewModel 生命周期。CPF 未发布 Native 版 `lifecycle-viewmodel-navigation3`，iOS 与 OHOS 共用 `nativeMain` 中的装饰器：暂时离开组合时保留页面状态，条目出栈时清理 ViewModel，导航宿主销毁时兜底清理。
 - ArticleCard 统一接收长按回调，避免外层长按与卡片点击竞争，覆盖分享与阅读历史删除入口。
 - Android、iOS、鸿蒙分别用 WebView、WKWebView、ArkWeb 加载详情。平台容器按页面生命周期释放；文章字号取共同设置；Android/鸿蒙为文字缩放，iOS/Web 为整页缩放。
 - Web 使用同源 `/api` 代理管理 HttpOnly Cookie，图片经有限域名白名单代理。浏览器返回通过 `NavigationEventInput` 进入 Compose 分发器，使弹窗优先处理返回；Escape 由 Compose 处理。
 - 图片统一使用 Coil 3 与共享 HTTP 客户端，保留 200ms 渐显，注册 SVG；Android 保留 GIF 和视频帧解码模块。Web 预加载本地 Noto Sans CJK SC 常规字体和 Noto Color Emoji，避免中文及表情缺字。图片模型使用同源绝对地址，使 Coil 正确选择网络 Fetcher。
-- iOS 的 Xcode 工程从 `BUILT_PRODUCTS_DIR` 引用 Gradle 生成的 framework 链接，配置共享库搜索路径，并声明源库及构建产物的脚本输出；共享库更新后重新链接宿主，避免继续安装旧代码。
+- iOS 的 Xcode 构建阶段调用根 `:shared:embedAndSignAppleFrameworkForXcode`，同步 framework 与 Compose 资源。CPF 静态 framework 的无扩展名库文件未被当前 Xcode 链接器记录为输入，因此构建阶段按内容同步到 `BUILT_PRODUCTS_DIR/libWanAndroid.a`，并显式声明输出与静态链接依赖。无改动时不复制，共享代码变化时重新链接；Android Studio 已构建 framework 时也执行该同步。
 
 ## 构建与运行
 
@@ -78,7 +86,7 @@ Android 保留原 `applicationId`、渠道/环境和应用版本，当前 minSdk
 
 ### Android
 
-安装 JDK 17、Android SDK 37 和模拟器，配置本机 `local.properties`。迁移回归时使用的 JDK 为 JetBrains Runtime 17.0.14。
+安装 JDK 17、Android SDK 36 和模拟器，配置本机 `local.properties`。迁移回归时使用的 JDK 为 JetBrains Runtime 17.0.14。
 
 ```bash
 ./gradlew help
@@ -109,7 +117,7 @@ xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp \
 运行 `./webApp/web/run.sh` 可完成构建并启动本地服务，与 Android Studio 的 `webApp` 入口相同。也可分步构建、测试与启动：
 
 ```bash
-./gradlew :webApp:wasmJsBrowserDistribution
+./webApp/gradlew -p webApp wasmJsBrowserDistribution
 node --test webApp/web/server.test.mjs
 node webApp/web/server.mjs
 ```
@@ -131,7 +139,7 @@ node --test harmonyApp/run.test.mjs
 
 脚本仅列出已连接设备：单设备自动选择，多设备可输入编号，也可通过 `HDC_DEVICE_ID` 固定目标。Android Studio 的 `harmonyApp` 共享入口调用此脚本；它不接入 Android 的设备下拉框。
 
-脚本中的 `publishDebugBinariesToHarmonyApp` 生成 `libwanandroid.so`、C 头文件和共享资源；这些生成物不提交。也可以先执行 `./harmonyApp/harmony/gradlew -p harmonyApp/harmony publishDebugBinariesToHarmonyApp`，再在 DevEco Studio 打开 `harmonyApp` 运行 `entry`；修改共享源码后需要重新执行该 Gradle 任务。
+脚本中的 `publishDebugBinariesToHarmonyApp` 生成 `libwanandroid.so`、C 头文件和共享资源；这些生成物不提交。也可以先执行 `./gradlew :shared:publishDebugBinariesToHarmonyApp`，再在 DevEco Studio 打开 `harmonyApp` 运行 `entry`；修改共享源码后需要重新执行该 Gradle 任务。
 
 真机需要使用 DevEco 官方自动签名，确保 `default` 产品绑定对应签名方案，并将当前设备加入调试 Profile。配置步骤见 [README 的 HarmonyOS 运行说明](../README.md#harmonyos)。脚本优先安装本次构建的已签名 HAP；未签名 HAP 仅适用于允许未签名安装的模拟器。安装失败不会继续启动，设备端安装或启动报错即使伴随 hdc 退出码 0，脚本也会以非零状态结束。若报 `10106102`，请解锁手机并保持亮屏后重试。
 
@@ -139,7 +147,73 @@ node --test harmonyApp/run.test.mjs
 
 ## 验证结果
 
-最近架构回归：2026-09-07。初次跨端迁移回归：2026-09-06。当时主工程使用 Gradle 9.4.1、Kotlin 2.3.20、Compose 1.10.3、AGP 9.2.1 和 compileSdk/targetSdk 36。当前依赖配置见[依赖组合](#依赖组合)，升级后的全量四端回归结果尚未补录。构建、静态测试、模拟器和真实账号验证分开记录。
+最近架构回归：2026-09-08。初次跨端迁移回归：2026-09-06。当时主工程使用 Gradle 9.4.1、Kotlin 2.3.20、Compose 1.10.3、AGP 9.2.1 和 compileSdk/targetSdk 36。当前依赖配置见[依赖组合](#依赖组合)，移动三端统一后的验证在下方单独记录。构建、静态测试、模拟器和真实账号验证分开记录。
+
+### 鸿蒙切换 Curl（2026-09-08）
+
+鸿蒙网络切换为 CPF Ktor `3.3.3-1.0.0` 的 Curl 引擎，删除 `HarmonyHttpEngine.kt`、ArkTS `HttpService.ets`、HTTP 专用 N-API 函数及类型声明，并删除留下的空 `network` 目录。宿主桥接保留系统栏和退出能力，网页容器继续使用 ArkWeb。
+
+直接使用发布版时，独立 HAP 的请求断言通过，但超时/取消后关闭客户端会因重复清理句柄抛出 `CURLM_BAD_EASY_HANDLE` 并终止进程。仅恢复取消完成队列仍不能及时断开单个挂起连接，因此两个内部源码文件同时修正取消调度、队列处理和资源释放，并保护已释放句柄的延迟背压恢复。提交前 review 又复现并修复了响应头交付后提前注销取消监听、HTTP/1.0 错报为 HTTP/1.1 两个问题，补充回归后共 12 项通过。源码来源、构建方式与后续移除条件见[CPF Curl 修复说明](../shared/thirdParty/ktor-curl/README.md)。
+
+| 检查 | 本次结果 |
+| --- | --- |
+| 根 `:shared:publishDebugBinariesToHarmonyApp` | 通过；源码提取、OHOS 编译、链接和发布通过，共享库与宿主中 `.so` 的 SHA-256 一致 |
+| `:shared:testAndroidHostTest` | 检查通过；35 项既有测试结果为 0 失败，本次 `UP-TO-DATE` |
+| Android APK / 宿主单测 | `assembleEnterpriseAlphaDebug` 与 `testEnterpriseAlphaDebugUnitTest` 检查通过；宿主 1 项既有测试为 0 失败，单测本次 `UP-TO-DATE` |
+| Hvigor Debug HAP | 构建通过；同次未签名包成功覆盖安装到鸿蒙模拟器并启动，保留原应用数据 |
+| 首页与项目页 | HTTPS API、中文内容和项目封面正常；将图片缓存清至 `0B` 后重启，封面可以重新下载 |
+| 搜索与详情返回 | 通过 Curl 提交 `Compose` 查询，表单 POST、中文结果正常；文章网页可打开，返回后保留关键词与结果 |
+| 独立 HAP 网络检查 | 下列 12 项通过，关闭后测试进程继续存活；[原始结果](verification/curl-20260908/network-checks.log) |
+
+独立 HAP 使用相同版本的 CPF 依赖和相同的取消修复代码，通过真实 WanAndroid HTTPS 接口及仅监听本机的 HTTP/TLS 夹具验证：
+
+1. 默认信任配置下的 HTTPS API 请求。
+2. 两个独立 `Set-Cookie` 的完整接收及后续请求回传。
+3. 中文、加号、空格、`&`、`=` 的表单编码及 UTF-8 响应。
+4. HTTP 重定向。
+5. 请求超时及其异常类型。
+6. 请求取消和同一客户端的后续复用。
+7. 默认校验拒绝临时自签名证书。
+8. 仅有一个挂起请求时，取消后服务端在 1 秒内观察到 TCP 连接断开，不依赖后续请求触发清理。
+9. HTTP/1.0 响应正确报告实际协议版本。
+10. `Content-Length` 为 100、实际仅收到 7 字节时，拒绝截断的响应体。
+11. 已收到响应头和部分正文后取消，服务端在 1 秒内观察到连接断开。
+12. 取消之后关闭客户端，等待后台清理完成，无未捕获异常或进程崩溃。
+
+测试夹具使用合成 Cookie 和表单，不访问真实账号。独立可执行文件曾因 CPF 绑定中的未解析符号无法链接，随后改用与应用相同的共享库/HAP 运行方式；该问题不影响最终应用的 HAP 构建。本轮复核了 Android APK 和单测，未重复构建 iOS / Web 或运行这三端页面，也未验证鸿蒙真机、最低系统版本或真实账号登录及收藏/分享写操作。提交前另行复跑鸿蒙启动脚本 17 项和 Web 代理 6 项，均通过；Web 测试首次因沙箱禁止监听本机端口失败，允许本机监听后复跑通过。
+
+| 最终项目页 | 最终搜索结果 |
+| --- | --- |
+| ![HarmonyOS Curl 项目页](verification/curl-20260908/harmony-project.png) | ![HarmonyOS Curl 搜索结果](verification/curl-20260908/harmony-search.png) |
+
+### 移动三端统一构建（2026-09-08）
+
+- 根 `shared` 统一 Android Library、`iosArm64`、`iosSimulatorArm64`、`ohosArm64`。删除 `harmonyApp/harmony` 独立工程，鸿蒙运行脚本改为调用根共享库发布任务；保留设备选择、签名产物优先级和失败退出行为。
+- Web 保留 JetBrains 工具链，Wrapper、版本目录和 Yarn 锁文件统一位于 `webApp`；共享业务和浏览器适配仍只保留在 `shared/src`。根 Gradle 不加载 Web 插件。
+- iOS / OHOS 共享导航条目 ViewModel 生命周期和 CPF `BackHandler`。iOS 原来的新版返回 API 因宿主缺少 `NavigationEventDispatcher` 导致启动崩溃，切换配套 API 后真实首页、搜索、文章与返回正常。
+- Xcode 已确认将 `libWanAndroid.a` 记录为链接输入。再次修改共享源码后，在同一次 Xcode 构建中完成 Kotlin 编译、framework 更新和宿主 `Ld`，库与同步后的 `.a` SHA-256 一致；无需清理 DerivedData。
+
+| 检查 | 本次结果 |
+| --- | --- |
+| 根 Gradle `help` | 通过 |
+| 共享 Kotlin 测试 / Android 宿主单测 | 35 / 1 项通过，0 失败 |
+| Android `enterpriseAlphaDebug` APK | 通过；原 APK 文件名、渠道与版本保留 |
+| iOS 模拟器 / 真机架构 framework | 两个架构构建通过；Xcode 模拟器 App 构建、安装、启动通过 |
+| OHOS 原生库 / 资源发布 / HAP | 通过；`.so`、头文件和资源位于 `harmonyApp/entry` |
+| 鸿蒙启动脚本测试 | 17 项通过，包含根共享库任务参数及编译失败后停止部署 |
+| Web production distribution / 代理测试 | 构建通过；6 项测试通过 |
+| Android、iOS、HarmonyOS 模拟器 | 真实项目封面、中文与 Emoji、Compose 搜索、原生网页详情、返回后保留关键词和结果通过 |
+| Web 浏览器 | 真实首页与项目图文通过，应用控制台无 error |
+
+本次模拟器为 Android 17 / API 37 的 Resizable_Experimental、iOS 26.5 的 iPhone 17 Pro、HarmonyOS 7.0.0.105 的 nova 16。鸿蒙当前本机签名与模拟器已安装旧包不同，签名包覆盖安装报 `9568332`，启动脚本正确停止；随后使用同次生成的未签名调试包覆盖安装并完成上述回归，保留模拟器数据。没有改动签名配置或宣称签名包已在真机运行。
+
+本次项目页实际截图：
+
+| Android | iOS | HarmonyOS |
+| --- | --- | --- |
+| ![Android 项目页](verification/mobile-shared-20260908/android-project.png) | ![iOS 项目页](verification/mobile-shared-20260908/ios-project.jpg) | ![HarmonyOS 项目页](verification/mobile-shared-20260908/harmony-project.png) |
+
+本轮验证范围为构建迁移及公开页面主流程，未重复执行全部账号写操作、持久化边界和最低版本设备回归。iOS 宿主最低版本仍为 15.0，链接器提示 CPF Skiko 的 `libicu.icudtl_dat.o` 按 iOS Simulator 17.2 构建，iOS 15–17.1 兼容性尚未实测；Android API 23、真实设备、Release 签名与发布也未在本轮验证。既有完整图库继续保留 2026-09-06 的采集标记。
 
 ### 运行入口修复验证（2026-09-07）
 
@@ -233,9 +307,9 @@ Web 项目封面和中文、Emoji 显示实测：[项目页截图](verification/
 
 ## 维护与发布
 
-- 官方三端共享依赖在 `gradle/libs.versions.toml` 与 `shared/build.gradle.kts`，鸿蒙版本在 `harmonyApp/harmony/build.gradle.kts`、`harmonyApp/oh-package.json5` / lockfile。升级时需同时验证两个 Gradle 构建，不能直接混用两套原生依赖。
+- 移动三端目标和依赖在 `shared/build.gradle.kts`，版本在根 `gradle/libs.versions.toml`；Android Coil 平台解析规则在根 `build.gradle.kts`。Web 独立配置在 `webApp`，依赖版本在 `webApp/gradle/libs.versions.toml`；OHPM 依赖在 `harmonyApp/oh-package.json5` / lockfile。升级共享代码或依赖时需同时验证移动端与 Web 两套构建。
 - 发布版本需同步 Android `androidApp/build.gradle.kts`、iOS `iosApp/Configuration/Config.xcconfig`、鸿蒙 `harmonyApp/AppScope/app.json5`，以及 Web/鸿蒙 `Platform.versionName`。当前版本均为 `1.0.6`，原生宿主 build/versionCode 为 `20260514`。
-- 不提交构建目录、生成的 framework / so / C 头文件 / HAP、模拟器数据和本机 SDK 配置。保留 Gradle wrapper、Kotlin/JS yarn lockfile、OHPM lockfile 及字体许可证。
+- 不提交构建目录、生成的 framework / so / C 头文件 / HAP、模拟器数据和本机 SDK 配置。保留根目录和 `webApp` 的 Gradle Wrapper、`webApp/kotlin-js-store/wasm/yarn.lock`、OHPM lockfile 及字体许可证。
 - 账号写操作回归应使用专用测试账号，并分别验证各端 Cookie 持久化、退出、过期、收藏、分享及删除。当前仓库没有真实测试账号配置。
 
 ## 参考与许可

@@ -67,16 +67,6 @@ actual object Platform {
 actual fun createPlatformHttpClient(config: HttpClientConfig<*>.() -> Unit) = HttpClient(Darwin) { config() }
 
 @Composable
-actual fun PlatformBackHandler(enabled: Boolean, onBack: () -> Unit) {
-    androidx.navigationevent.compose.NavigationEventHandler(
-        state = androidx.navigationevent.compose.rememberNavigationEventState(androidx.navigationevent.NavigationEventInfo.None),
-        isBackEnabled = enabled,
-        isForwardEnabled = false,
-        onBackCompleted = onBack,
-    )
-}
-
-@Composable
 actual fun ArticleWebView(url: String, textZoom: Int, modifier: Modifier) {
     key(url) {
         UIKitView(

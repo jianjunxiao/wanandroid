@@ -1,28 +1,32 @@
 [versions]
-android-gradle-plugin = "9.4.0"
-kotlin = "2.4.10"
-compose-multiplatform = "1.12.0"
-ktor = "3.3.3"
-serialization = "1.9.0"
-coil-multiplatform = "3.3.0"
-navigation3-multiplatform = "1.1.1"
+# 移动三端共享 CPF 编译器及配套库；Web 版本独立声明在 webApp/gradle 中。
+android-gradle-plugin = "8.11.1"
+kotlin = "2.2.21-1.0.0"
+compose-multiplatform = "1.9.2-1.0.0"
+ktor = "3.3.3-1.0.0"
+serialization = "1.9.1-1.0.0"
+coil-multiplatform = "3.3.0-1.0.0"
+coil-android = "3.3.0"
+navigation3-multiplatform = "1.9.2-1.0.0"
+lifecycle-navigation-android = "2.10.0"
 ksp = "2.3.8"
 
-compile-sdk = "37"
+# AGP 8.11 的官方支持上限为 API 36；最低安装版本继续保持 23。
+compile-sdk = "36"
 min-sdk = "23"
-target-sdk = "37"
+target-sdk = "36"
 
-coroutines = "1.11.0"
-lifecycle-multiplatform = "2.10.0"
+coroutines = "1.10.2-1.0.0"
+lifecycle-multiplatform = "2.9.4-1.0.0"
 junit = "4.13.2"
 androidx-test-runner = "1.0.2"
 espresso = "3.0.2"
-androidx-core = "1.19.0"
-androidx-activity = "1.13.0"
+androidx-core = "1.17.0"
+androidx-activity = "1.11.0"
 androidx-appcompat = "1.8.0"
 room = "2.8.4"
-compose-bom = "2026.08.00"
-activity-compose = "1.13.0"
+compose-bom = "2025.11.00"
+activity-compose = "1.11.0"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -52,6 +56,7 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "android-gradle-plugin" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

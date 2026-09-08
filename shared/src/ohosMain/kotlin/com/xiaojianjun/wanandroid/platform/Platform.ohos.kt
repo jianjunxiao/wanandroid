@@ -11,6 +11,7 @@ import com.xiaojianjun.wanandroid.common.core.ImageCache
 import com.xiaojianjun.wanandroid.common.core.JsonCodec
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
+import io.ktor.client.engine.curl.Curl
 import kotlinx.atomicfu.locks.SynchronizedObject
 import kotlinx.atomicfu.locks.synchronized
 import kotlinx.cinterop.*
@@ -90,12 +91,16 @@ actual object Platform {
     actual suspend fun clearCache() = withContext(Dispatchers.Default) { ImageCache.clear() }
 }
 
-actual fun createPlatformHttpClient(config: HttpClientConfig<*>.() -> Unit) = HttpClient(HarmonyHttpEngine()) { config() }
-
-@Composable
-actual fun PlatformBackHandler(enabled: Boolean, onBack: () -> Unit) {
-    androidx.compose.ui.backhandler.BackHandler(enabled, onBack)
-}
+/**
+ * 使用 CPF Curl 创建鸿蒙 HTTP 客户端，保留引擎默认的证书链和主机名校验。
+ * 引擎的本地传输与资源清理修复位于 shared/thirdParty/ktor-curl。
+ *
+ * 请求直接在 Kotlin/Native 中执行；公共配置继续负责 Cookie、超时和业务错误处理。
+ *
+ * @param config 公共层的客户端配置，与 Android / iOS 使用同一套网络策略。
+ * @return 由调用方持有的客户端，不再使用时应调用 close 释放引擎资源。
+ */
+actual fun createPlatformHttpClient(config: HttpClientConfig<*>.() -> Unit) = HttpClient(Curl) { config() }
 
 @Composable
 actual fun ArticleWebView(url: String, textZoom: Int, modifier: Modifier) {

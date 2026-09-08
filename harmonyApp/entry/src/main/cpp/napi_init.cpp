@@ -24,25 +24,11 @@ static napi_value CreateController(napi_env env, napi_callback_info info) {
     return reinterpret_cast<napi_value>(WanMainArkUIViewController(env, filesDir.data(), cacheDir.data(), args[2]));
 }
 
-static napi_value CompleteHttp(napi_env env, napi_callback_info info) {
-    size_t argc = 2;
-    napi_value args[2];
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    int32_t id = 0;
-    std::vector<char> response;
-    if (argc != 2 || napi_get_value_int32(env, args[0], &id) != napi_ok || !ReadString(env, args[1], response)) {
-        napi_throw_type_error(env, nullptr, "网络响应参数无效");
-        return nullptr;
-    }
-    WanCompleteHttp(id, response.data());
-    return nullptr;
-}
-
 EXTERN_C_START
+/** 注册 Compose 互操作及控制器入口；HTTP 请求由共享库中的 Ktor 引擎直接执行。 */
 static napi_value Init(napi_env env, napi_value exports) {
     androidx_compose_ui_arkui_init(env, exports);
     napi_property_descriptor desc[] = {
-        {"completeHttp", nullptr, CompleteHttp, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"createController", nullptr, CreateController, nullptr, nullptr, nullptr, napi_default, nullptr},
     };
     napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc);

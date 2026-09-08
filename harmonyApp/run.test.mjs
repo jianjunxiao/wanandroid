@@ -5,14 +5,14 @@ import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSy
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-// 在独立目录中替代外部工具，验证脚本控制流程，不接触实际设备和签名材料。
+/** 在含空格的独立目录中模拟根 Wrapper 和设备工具，验证部署顺序与错误传播。 */
 function runFixture(t, options = {}, input = '') {
   const root = mkdtempSync(path.join(tmpdir(), 'wanandroid-harmony-run-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const appDir = path.join(root, 'harmony app');
   const binDir = path.join(root, 'bin');
   const outputDir = path.join(appDir, 'entry/build/default/outputs/default');
-  mkdirSync(path.join(appDir, 'harmony'), { recursive: true });
+  mkdirSync(appDir, { recursive: true });
   mkdirSync(binDir);
   mkdirSync(outputDir, { recursive: true });
   copyFileSync(new URL('./run.sh', import.meta.url), path.join(appDir, 'run.sh'));
@@ -27,7 +27,9 @@ const options = JSON.parse(process.env.RUN_TEST_OPTIONS);
 const command = path.basename(process.argv[1]);
 const args = process.argv.slice(2);
 fs.appendFileSync(process.env.RUN_TEST_LOG, JSON.stringify({ command, args }) + '\\n');
-if (command === 'hvigorw') {
+if (command === 'gradlew') {
+  process.exit(options.gradleExit ?? 0);
+} else if (command === 'hvigorw') {
   if (options.buildExit) process.exit(options.buildExit);
   if (options.artifact !== 'none') {
     const kind = options.artifact ?? 'signed';
@@ -53,7 +55,7 @@ if (command === 'hvigorw') {
   for (const command of ['java', 'ohpm', 'hvigorw', 'hdc']) {
     writeFileSync(path.join(binDir, command), tool, { mode: 0o755 });
   }
-  writeFileSync(path.join(appDir, 'harmony/gradlew'), tool, { mode: 0o755 });
+  writeFileSync(path.join(root, 'gradlew'), tool, { mode: 0o755 });
   const logFile = path.join(root, 'commands.jsonl');
   writeFileSync(logFile, '');
   const env = {
@@ -148,6 +150,17 @@ test('单设备自动选择，并安装本次生成的已签名 HAP', t => {
   assert.equal(result.status, 0, result.output);
   assert.match(installCommands(result)[0].args[4], /entry-default-signed\.hap$/);
   assert.equal(startCommands(result).length, 1);
+  // 鸿蒙运行入口必须调用根 shared，不能依赖已移除的嵌套工程。
+  assert.deepEqual(result.commands.find(({ command }) => command === 'gradlew').args,
+    ['-p', '..', ':shared:publishDebugBinariesToHarmonyApp']);
+});
+
+test('shared 编译失败时不继续打包、安装或启动宿主', t => {
+  const result = runFixture(t, { gradleExit: 1 });
+  assert.notEqual(result.status, 0, result.output);
+  assert.equal(result.commands.some(({ command }) => command === 'hvigorw'), false);
+  assert.equal(installCommands(result).length, 0);
+  assert.equal(startCommands(result).length, 0);
 });
 
 test('取消签名配置后不会误装残留签名包，且说明真机签名要求', t => {

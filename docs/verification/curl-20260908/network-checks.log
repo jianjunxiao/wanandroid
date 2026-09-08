@@ -1,0 +1,15 @@
+09-08 17:44:25.245  3222  3397 I A0FF00/aojianjun.wanandroid.curlsmoke/CurlSmoke: CURL_SMOKE_STARTED
+09-08 17:44:25.875  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS HTTPS_API
+09-08 17:44:25.887  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS MULTIPLE_SET_COOKIE_AND_SEND
+09-08 17:44:25.892  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS FORM_UTF8
+09-08 17:44:25.902  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS REDIRECT
+09-08 17:44:26.104  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS REQUEST_TIMEOUT
+09-08 17:44:26.316  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS CANCEL_AND_REUSE
+09-08 17:44:26.328  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS UNTRUSTED_TLS_REJECTED: TLS verification failed for request: CurlRequestData(url='https://127.0.0.1:18877/ok', method='GET', content: 0 bytes). Reason: SSL peer certificate or SSH remote key was not OK
+09-08 17:44:27.640  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS CANCELLATION_CLOSES_CONNECTION
+09-08 17:44:27.646  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS HTTP_PROTOCOL_VERSION
+09-08 17:44:27.649  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS TRUNCATED_BODY_REJECTED: Content-Length mismatch: expected 100 bytes, but received 7 bytes
+09-08 17:44:28.720  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS CANCEL_AFTER_HEADERS_CLOSES_CONNECTION
+09-08 17:44:29.723  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: PASS CLOSE_AFTER_CANCELLATION
+09-08 17:44:29.723  3222  3397 I A00000/aojianjun.wanandroid.curlsmoke/Konan_main: CURL_SMOKE_SUCCESS 12/12
+09-08 17:44:29.724  3222  3397 I A0FF00/aojianjun.wanandroid.curlsmoke/CurlSmoke: CURL_SMOKE_RESULT=0

@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D96B419960234D26B583A001 /* WanAndroid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D96B419960234D26B583A002 /* WanAndroid.framework */; };
+		D96B419960234D26B583A001 /* libWanAndroid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D96B419960234D26B583A002 /* libWanAndroid.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D96B419960234D26B583A002 /* WanAndroid.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WanAndroid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		/* 使用标准 .a 文件参与静态链接，让 Xcode 跟踪共享库内容变化。 */
+		D96B419960234D26B583A002 /* libWanAndroid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libWanAndroid.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5348941C5086760A12F4F4F /* WanAndroid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WanAndroid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -46,7 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D96B419960234D26B583A001 /* WanAndroid.framework in Frameworks */,
+				D96B419960234D26B583A001 /* libWanAndroid.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,7 +57,7 @@
 		02EBBF1394FD6FF19A251EAB = {
 			isa = PBXGroup;
 			children = (
-				D96B419960234D26B583A002 /* WanAndroid.framework */,
+				D96B419960234D26B583A002 /* libWanAndroid.a */,
 				641992CDFA4932584A879E09 /* Configuration */,
 				858446D8B2ADC7A3E63283B2 /* iosApp */,
 				ABA992FC04CB45BB7BB84105 /* Products */,
@@ -158,10 +159,11 @@
 			outputPaths = (
 				"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)/WanAndroid.framework/WanAndroid",
 				"$(BUILT_PRODUCTS_DIR)/WanAndroid.framework/WanAndroid",
+				"$(BUILT_PRODUCTS_DIR)/libWanAndroid.a",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"\n  exit 0\nfi\ncd \"$SRCROOT/..\"\n./gradlew :shared:embedAndSignAppleFrameworkForXcode\n";
+			shellScript = "set -eu\nif [ \"YES\" != \"${OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED:-NO}\" ]; then\n  cd \"$SRCROOT/..\"\n  ./gradlew :shared:embedAndSignAppleFrameworkForXcode\nfi\n# CPF 静态 framework 的库文件没有扩展名；按标准 .a 名称交给 Xcode 链接器跟踪。\n# 仅在内容变化时更新，避免无改动构建重复复制和链接；IDE 已构建共享库时也执行此同步。\nframework_binary=\"$SRCROOT/../shared/build/xcode-frameworks/$CONFIGURATION/$SDK_NAME/WanAndroid.framework/WanAndroid\"\nstatic_library=\"$BUILT_PRODUCTS_DIR/libWanAndroid.a\"\nif ! cmp -s \"$framework_binary\" \"$static_library\"; then\n  cp -p \"$framework_binary\" \"$static_library\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
